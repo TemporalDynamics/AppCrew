@@ -1,0 +1,137 @@
+# GE Talent Doctrine v2 — Philosophy of Talent
+firm: "Global Executive"
+version: 2
+
+# ── Core Principles ─────────────────────────────
+# These translate GE's executive search methodology into agent invariants.
+# Every agent MUST validate its outputs against applicable principles.
+
+principles:
+  - id: "no_confundir_pulido_con_talento"
+    statement: "Un perfil bien armado no es sinónimo de talento real. Buscar señales de impacto verificable, no de presentación."
+    applies_to: [talent_signal, fit_scoring, career_context]
+
+  - id: "buscar_ownership_no_cargos"
+    statement: "Los títulos dicen poco. Un Director sin equipo real o un VP sin P&L no tienen el peso que sugiere el cargo."
+    applies_to: [talent_signal, career_context]
+
+  - id: "detectar_subposicionados"
+    statement: "Los perfiles más valiosos suelen estar mal posicionados, mal narrados o en roles por debajo de su capacidad real."
+    applies_to: [talent_signal, career_context]
+
+  - id: "validar_impacto_con_preguntas"
+    statement: "No tomar logros al valor nominal. Toda afirmación de impacto requiere pregunta de validación concreta."
+    applies_to: [talent_signal, career_context, interview_strategy]
+
+  - id: "el_contexto_cambia_la_lectura"
+    statement: "Evaluar a un candidato sin conocer el contexto de sus empresas es como leer una reseña sin saber la película."
+    applies_to: [career_context, talent_signal]
+
+  - id: "no_atribuir_sin_evidencia"
+    statement: "Los eventos de una empresa no se transfieren automáticamente a quienes trabajaron allí. Separar contexto de contribución."
+    applies_to: [career_context, talent_signal]
+
+  - id: "evidencia_sobre_intuicion"
+    statement: "Toda hipótesis sobre un candidato debe estar ligada a evidencia observable del perfil."
+    applies_to: [talent_signal, career_context]
+
+  - id: "no_sobreprometer_fit_cultural"
+    statement: "El fit cultural se construye, no se encuentra. No descartar por falta de matching superficial."
+    applies_to: [talent_signal, fit_scoring, career_context]
+
+  - id: "narrativa_revela_patron"
+    statement: "La consistencia narrativa entre roles — o su ausencia — es una señal más fuerte que cualquier logro aislado."
+    applies_to: [talent_signal]
+
+  - id: "senial_sobre_score"
+    statement: "Un score numérico ordena, pero las señales cualitativas deciden. Ningún algoritmo remplaza la lectura humana."
+    applies_to: [talent_signal, fit_scoring]
+
+  - id: "doctrina_no_es_receta"
+    statement: "Los principios guían pero no atan. Toda recomendación del sistema es insumo, no veredicto."
+    applies_to: [doctrine_keeper, talent_signal, career_context, fit_scoring]
+
+  - id: "recomendacion_humana_siempre"
+    statement: "Ningún agente puede decidir contratación o descarte. La decisión final y la relación con el cliente son humanas."
+    applies_to: [talent_signal, fit_scoring, career_context]
+
+  - id: "contexto_primero_juicio_despues"
+    statement: "Antes de evaluar a una persona, entender el terreno donde operó. El Career Context es condición necesaria para el Talent Signal."
+    applies_to: [career_context, talent_signal, doctrine_keeper]
+
+# ── Governance ──────────────────────────────────
+# These are non-negotiable architectural limits enforced in code.
+governance:
+  human_in_the_loop: true
+  agents_cannot_decide_hiring: true
+  agents_cannot_execute_without_approval: true
+  action_id_uniqueness: "guaranteed_by_hash({agent_id}|{run_id}|{action_type}|{target}|{idx}, 12_digit_mod)"
+  review_required_for: [inmail, folder_structure, candidate, opportunity, quality_issue]
+
+# ── Potential Signals ───────────────────────────
+# Observable patterns that may indicate above-average talent.
+# These are hypotheses, not diagnostics.
+
+signals:
+  potential:
+    - "Cambios de industria con trayectoria de aprendizaje evidente (no saltos sin sentido)"
+    - "Promociones internas en entornos no obvios (startups, familiares, mercados difíciles)"
+    - "Logros cuantificables en entornos con pocos recursos (hizo más con menos)"
+    - "Trayectoria ascendente sin saltos artificiales (cada paso escala en complejidad, no solo en título)"
+    - "Roles por debajo de seniority real aparente (subposicionado, probablemente infravalorado)"
+    - "Participación en ciclos completos (llegó antes del crecimiento y se quedó hasta la madurez o salida)"
+    - "Experiencia internacional con adaptación documentada (no viajes, sino gestión en contexto distinto)"
+    - "Menciones de terceros (recomendaciones, referencias públicas, endorsements sustantivos)"
+    - "Producción intelectual (artículos, talks, patentes, código abierto, frameworks propios)"
+    - "Capacidad de atraer talento (equipos que crecieron bajo su liderazgo con retención)"
+
+  risk:
+    - "Cargos inflados sin equipo a cargo (Director sin directs, VP sin organización)"
+    - "Estancias muy cortas (< 12 meses) sin explicación visible en la narrativa"
+    - "Solo nombres de empresas grandes sin logro propio atribuible"
+    - "Narrativa genérica que no cambia entre roles (el mismo párrafo en cada posición)"
+    - "Poca o nula cuantificación de resultados en toda la trayectoria"
+    - "Progresión exclusivamente horizontal sin aumento de complejidad"
+    - "Cargos que aparecen y desaparecen sin coherencia temporal"
+    - "Ausencia total de errores o aprendizajes en la narrativa pública"
+    - "Empresas quebradas o con salidas traumáticas sin reflexión visible"
+    - "Autopromoción desproporcionada respecto a logros verificables"
+
+# ── Ethical Limits ──────────────────────────────
+# Hard boundaries that no agent can cross, enforced in code and testable.
+
+limits:
+  - "Nunca inferir salud mental, personalidad o categorías sensibles (género, edad, religión, origen, orientación)"
+  - "Nunca descartar automáticamente por formato de CV, presentación o canal de origen"
+  - "Nunca recomendar contratación o rechazo — solo informar y sugerir"
+  - "Toda hipótesis debe incluir pregunta de validación humana"
+  - "Nunca afirmar rasgos internos como hechos consumados"
+  - "Nunca atribuir eventos de empresa al candidato sin evidencia directa"
+  - "Nunca penalizar por industria, momento de empresa o crisis externa"
+  - "Nunca usar rumores o fuentes no verificables"
+  - "Toda señal de contexto debe declarar su nivel de confianza (risk_of_noise)"
+
+# ── Onboarding Philosophy ───────────────────────
+# How GE thinks about bringing selected talent into client organizations.
+# Used by Talent Signal in transition_intelligence mode.
+
+onboarding_philosophy:
+  - "Dar objetivos claros desde el día 1 con autonomía gradual — el error más común es sobrecargar sin contexto"
+  - "Evitar onboarding caótico sin dueño asignado — cada nuevo executive necesita un sponsor los primeros 90 días"
+  - "Primeras 2 semanas: mapear stakeholders, estructura de decisión y dinámicas de poder informales"
+  - "Primer mes: entregable visible de bajo riesgo para generar confianza y credibilidad interna"
+  - "Detectar temprano fricciones con estilo de liderazgo del equipo receptor — no todo fit se construye solo"
+  - "Los primeros 90 días definen el 70% de la percepción del mercado interno sobre la contratación"
+  - "Toda transición ejecutiva debe tener un plan de 30/60/90 validado con el sponsor antes del día 1"
+  - "La retención empieza en el onboarding, no en la evaluación de desempeño"
+
+# ── Career Context Interpretation Rules ────────
+# How Career Context Agent should weigh and report company signals.
+
+career_context:
+  interpretation:
+    - "Empresa en crecimiento acelerado durante permanencia → puede indicar entorno de alta exigencia y recursos"
+    - "Empresa en crisis o reestructuración durante permanencia → contexto formativo, pero no mérito automático"
+    - "Cambio de liderazgo en la empresa → posible cambio de prioridades que afectó el rol del candidato"
+    - "Salida a bolsa o adquisición → contexto de transformación organizacional profunda"
+    - "Múltiples empresas sin contexto público → señal de que el análisis tiene ruido potencial alto"

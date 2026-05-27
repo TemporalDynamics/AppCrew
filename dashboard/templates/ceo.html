@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GE — CEO Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #080B12;
+  --bg-surface: #0F172A;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --border: #1F2937;
+  --border-active: #2a3a4f;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --accent: #38BDF8;
+  --accent-dim: #0EA5E9;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.app { display:flex; flex-direction:column; min-height:100vh; }
+.main { display:flex; flex:1; }
+.sidebar {
+  width: 72px; background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display:flex; flex-direction:column; align-items:center;
+  padding: 1rem 0; gap: 0.5rem;
+  position: sticky; top:0; height:100vh;
+}
+.sidebar-logo {
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),#2563EB);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.75rem;color:white;margin-bottom:1.5rem;
+}
+.sidebar-nav { display:flex; flex-direction:column; gap:0.25rem; flex:1; }
+.sidebar-btn {
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-muted);cursor:pointer;transition:all 0.2s;
+  border:none;background:transparent;font-size:1.25rem;text-decoration:none;
+}
+.sidebar-btn:hover, .sidebar-btn.active { background:var(--bg-card); color:var(--text-primary); }
+.sidebar-btn.active { color:var(--accent); }
+.content { flex:1; padding:1.5rem 2rem; max-width: 1440px; }
+
+.cockpit {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.75rem 1.5rem; margin-bottom:1.5rem;
+  background:var(--bg-card); border-radius:var(--radius);
+  border:1px solid var(--border);
+}
+.cockpit-left { display:flex; align-items:center; gap:1.5rem; }
+.cockpit-brand h1 { font-size:1rem; font-weight:700; letter-spacing:-0.02em; }
+.cockpit-brand span { font-size:0.7rem; color:var(--text-muted); display:block; text-transform:uppercase; letter-spacing:0.08em; }
+.cockpit-metrics { display:flex; gap:1.25rem; }
+.cockpit-metric { display:flex; flex-direction:column; align-items:center; }
+.cockpit-metric .value { font-size:1.1rem; font-weight:700; line-height:1.2; }
+.cockpit-metric .label { font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; }
+.cockpit-right { display:flex; align-items:center; gap:0.75rem; }
+.pulse-dot { width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.ceo-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem;
+  position:relative; overflow:hidden;
+}
+.ceo-card::before {
+  content:''; position:absolute; top:0; left:0;
+  width:4px; height:100%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-dim));
+  border-radius:0 2px 2px 0;
+}
+.ceo-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; }
+.ceo-avatar {
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),#2563EB);
+  display:flex;align-items:center;justify-content:center;font-size:1.25rem;
+}
+.ceo-title h2 { font-size:0.95rem; font-weight:600; }
+.ceo-title span { font-size:0.7rem; color:var(--text-muted); }
+
+.task-input { display:flex; gap:0.75rem; flex-wrap:wrap; }
+.task-input textarea {
+  flex:1; min-width:200px; background:var(--bg-surface);
+  border:1px solid var(--border); border-radius:var(--radius-sm);
+  padding:0.75rem 1rem; color:var(--text-primary);
+  font-size:0.85rem; font-family:var(--font);
+  resize:vertical; min-height:60px; outline:none; transition:border-color 0.2s;
+}
+.task-input textarea:focus { border-color:var(--accent); }
+.btn {
+  padding:0.6rem 1.5rem; border:none; border-radius:var(--radius-sm);
+  font-size:0.85rem; font-weight:600; cursor:pointer; transition:all 0.2s;
+  background:var(--accent); color:#000; align-self:flex-end;
+}
+.btn:hover { filter:brightness(1.15); }
+.btn:disabled { opacity:0.5; cursor:not-allowed; }
+
+.examples { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.75rem; }
+.example-chip {
+  background:var(--bg-surface); padding:0.35rem 0.75rem; border-radius:999px;
+  font-size:0.75rem; color:var(--text-secondary); cursor:pointer;
+  border:1px solid var(--border); transition:all 0.2s;
+}
+.example-chip:hover { border-color:var(--accent); color:var(--accent); background:rgba(56,189,248,0.06); }
+
+.conversation { display:flex; flex-direction:column; gap:0.75rem; }
+.msg {
+  padding:0.85rem 1.1rem; border-radius:var(--radius-sm); max-width:80%;
+  font-size:0.85rem; line-height:1.6;
+}
+.msg.human {
+  background:var(--bg-surface); align-self:flex-end;
+  border:1px solid var(--border);
+  border-bottom-right-radius:4px;
+}
+.msg.ceo {
+  background:var(--bg-card); align-self:flex-start;
+  border-left:3px solid var(--accent); border:1px solid var(--border);
+  border-left-color:var(--accent);
+  white-space:pre-wrap;
+}
+.msg .meta { font-size:0.65rem; color:var(--text-muted); margin-top:0.4rem; }
+
+.agent-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:0.5rem; margin-bottom:1.5rem;
+}
+.agent-chip {
+  background:var(--bg-card); padding:0.6rem 0.75rem; border-radius:var(--radius-sm);
+  font-size:0.75rem; text-align:center; border:1px solid var(--border);
+}
+.agent-chip .icon { font-size:1.1rem; }
+
+@media (max-width:900px) {
+  .sidebar { width:56px; }
+  .sidebar-logo { width:32px;height:32px;font-size:0.6rem; }
+  .sidebar-btn { width:36px;height:36px;font-size:1rem; }
+  .content { padding:1rem; }
+  .cockpit { flex-direction:column; align-items:flex-start; gap:0.5rem; }
+  .cockpit-left { flex-direction:column; align-items:flex-start; gap:0.5rem; }
+  .cockpit-metrics { flex-wrap:wrap; gap:0.75rem; }
+  .msg { max-width:95%; }
+}
+@media (max-width:480px) {
+  .content { padding:0.75rem; }
+  .ceo-card { padding:1rem; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="main">
+    <nav class="sidebar">
+      <div class="sidebar-logo">GE</div>
+      <div class="sidebar-nav">
+        <a href="/" class="sidebar-btn" title="Command Room">⌂</a>
+        <a href="/ceo" class="sidebar-btn active" title="CEO Agent">🧠</a>
+        <a href="/" class="sidebar-btn" onclick="runAgents(event)" title="Run All Agents">▶</a>
+      </div>
+    </nav>
+
+    <div class="content">
+      <div class="cockpit">
+        <div class="cockpit-left">
+          <div class="cockpit-brand">
+            <h1>Global Executive</h1>
+            <span>CEO Agent — Centro de Mando</span>
+          </div>
+          <div class="cockpit-metrics">
+            <div class="cockpit-metric">
+              <span class="value" id="run-id">{{ status.run_id }}</span>
+              <span class="label">Run actual</span>
+            </div>
+            <div class="cockpit-metric">
+              <span class="value" id="pending-count" style="color:var(--warning)">{{ status.pending_count }}</span>
+              <span class="label">Pendientes</span>
+            </div>
+            <div class="cockpit-metric">
+              <span class="value">{{ status.agents|length }}</span>
+              <span class="label">Agentes</span>
+            </div>
+          </div>
+        </div>
+        <div class="cockpit-right">
+          <div class="pulse-dot"></div>
+          <span style="font-size:0.7rem;color:var(--text-muted);">Conectado</span>
+        </div>
+      </div>
+
+      <div class="agent-grid">
+      {% for id, agent in status.agents.items() %}
+        {% if id != 'ceo' %}
+        <div class="agent-chip" title="{{ agent.description }}">
+          <div class="icon">{{ agent.icon }}</div>
+          <div style="margin-top:2px;color:var(--text-secondary)">{{ agent.name }}</div>
+          <div style="font-size:0.6rem;color:var(--text-muted);text-transform:capitalize">{{ agent.state }}</div>
+        </div>
+        {% endif %}
+      {% endfor %}
+      </div>
+
+      <div class="ceo-card">
+        <div class="ceo-header">
+          <div class="ceo-avatar">🧠</div>
+          <div class="ceo-title">
+            <h2>¿Qué necesitás hacer?</h2>
+            <span>Decime en lenguaje natural lo que necesitás y yo coordino los agentes</span>
+          </div>
+        </div>
+
+        <div class="task-input">
+          <textarea id="task-input" placeholder="Ej: Buscar oportunidades de CTOs en México que estén en expansión..."></textarea>
+          <button class="btn" id="send-btn" onclick="sendTask()">→ Enviar</button>
+        </div>
+
+        <div class="examples">
+          <span class="example-chip" onclick="setExample(this)">Buscar oportunidades de contratación en México</span>
+          <span class="example-chip" onclick="setExample(this)">Encontrar candidatos CTO para empresa fintech</span>
+          <span class="example-chip" onclick="setExample(this)">Preparar borradores para contactar leads</span>
+          <span class="example-chip" onclick="setExample(this)">Revisar calidad de los datos actuales</span>
+          <span class="example-chip" onclick="setExample(this)">Organizar carpetas ejecutivas</span>
+        </div>
+      </div>
+
+      <div class="conversation" id="conversation">
+      {% for msg in conversation %}
+        <div class="msg {{ msg.role }}">
+          {{ msg.text }}
+          <div class="meta">{{ msg.timestamp[:19] if msg.timestamp else '' }}</div>
+        </div>
+      {% endfor %}
+        <div id="loading" style="display:none;color:var(--text-muted);text-align:center;padding:12px;font-size:0.8rem;">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 0.8s infinite;margin-right:6px"></span>
+          Procesando...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setExample(el) {
+  document.getElementById('task-input').value = el.textContent;
+}
+
+async function sendTask() {
+  const input = document.getElementById('task-input');
+  const btn = document.getElementById('send-btn');
+  const task = input.value.trim();
+  if (!task) return;
+
+  btn.disabled = true;
+  const conversation = document.getElementById('conversation');
+  const loading = document.getElementById('loading');
+
+  const humanMsg = document.createElement('div');
+  humanMsg.className = 'msg human';
+  humanMsg.innerHTML = task + '<div class="meta">ahora</div>';
+  conversation.insertBefore(humanMsg, loading);
+  loading.style.display = 'block';
+  conversation.scrollTop = conversation.scrollHeight;
+
+  try {
+    const res = await fetch('/api/ceo/task', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ task }),
+    });
+    const data = await res.json();
+    loading.style.display = 'none';
+
+    let responseText = data.summary || 'Tarea procesada.';
+
+    if (data.results) {
+      for (const [agentId, result] of Object.entries(data.results)) {
+        const agent = result.agent || {};
+        const n = (result.actions || []).length;
+        responseText += `\n\n${agent.icon || '•'} ${agent.name || agentId}: ${n} acciones`;
+        (result.actions || []).slice(0, 3).forEach(a => {
+          responseText += `\n  · ${a.action_type} → ${a.target} (score: ${a.score})`;
+        });
+      }
+    }
+
+    if (data.pending_actions && data.pending_actions.length) {
+      responseText += `\n\n⏳ ${data.pending_actions.length} acción(es) pendiente(s) de revisión en el Dashboard.`;
+    }
+
+    const ceoMsg = document.createElement('div');
+    ceoMsg.className = 'msg ceo';
+    ceoMsg.innerHTML = responseText.replace(/\n/g, '<br>') + '<div class="meta">ahora</div>';
+    conversation.insertBefore(ceoMsg, loading);
+  } catch (e) {
+    loading.style.display = 'none';
+    const errMsg = document.createElement('div');
+    errMsg.className = 'msg ceo';
+    errMsg.innerHTML = '⚠️ Error al procesar la tarea: ' + e.message;
+    conversation.insertBefore(errMsg, loading);
+  }
+
+  input.value = '';
+  btn.disabled = false;
+  conversation.scrollTop = conversation.scrollHeight;
+}
+
+function runAgents(e) {
+  e.preventDefault();
+  fetch('/api/run-all').then(() => location.href = '/ceo');
+}
+
+document.getElementById('task-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendTask();
+  }
+});
+
+setInterval(() => {
+  fetch('/api/status').then(r => r.json()).then(s => {
+    document.getElementById('run-id').textContent = s.run_id || '-';
+    document.getElementById('pending-count').textContent = s.pending_count || 0;
+  });
+}, 30000);
+</script>
+</body>
+</html>

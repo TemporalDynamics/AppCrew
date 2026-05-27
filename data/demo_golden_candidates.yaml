@@ -1,0 +1,65 @@
+# Golden set de calibracion.
+# Reemplazar estos nombres por perfiles elegidos por Rodri.
+# No son "candidatos que el sistema tiene que encontrar si o si".
+# Son perfiles de calibracion para medir si la busqueda piensa parecido a Rodri.
+
+golden_candidates:
+  - id: "golden_1"
+    type: "obvious_yes"
+    name: "Mariana Rios"
+    current_role: "VP Engineering"
+    company: "KontaPay"
+    market: "Mexico"
+    industry: "fintech"
+    why_rodri_likes: "Liderazgo tecnico claro, ownership real y contexto de expansion."
+    expected_system_behavior: "rank_high"
+    signals_positive:
+      - "scaled_team_20_plus"
+      - "worked_in_scaleup_context"
+      - "shows_ownership_beyond_title"
+    signals_negative: []
+
+  - id: "golden_2"
+    type: "hidden_gem"
+    name: "Diego Solis"
+    current_role: "Country Manager"
+    company: "NexoRetail"
+    market: "LATAM"
+    industry: "retail"
+    why_rodri_likes: "No vende humo, pero tiene expansion regional y P&L real."
+    expected_system_behavior: "surface_as_non_obvious"
+    signals_positive:
+      - "opened_new_market"
+      - "managed_pnl"
+      - "worked_in_scaleup_context"
+    signals_negative: []
+
+  - id: "golden_3"
+    type: "risky_maybe"
+    name: "Valeria Campos"
+    current_role: "VP Product"
+    company: "CloudMesa"
+    market: "Mexico"
+    industry: "SaaS B2B"
+    why_rodri_likes: "Perfil bueno, pero requiere validar si el ownership fue real."
+    expected_system_behavior: "flagged_with_risk"
+    signals_positive:
+      - "shows_ownership_beyond_title"
+      - "worked_in_scaleup_context"
+    signals_negative:
+      - "purely_corporate_without_ownership"
+
+  - id: "golden_4"
+    type: "false_positive"
+    name: "Andres Navarro"
+    current_role: "Director Operations"
+    company: "MercadoRuta"
+    market: "LATAM"
+    industry: "e-commerce"
+    why_rodri_rejects: "Parece fuerte por titulo y logos, pero los cambios cortos generan ruido."
+    expected_system_behavior: "rejected_or_low_rank"
+    signals_positive:
+      - "scaled_team_20_plus"
+      - "opened_new_market"
+    signals_negative:
+      - "too_many_short_tenures"

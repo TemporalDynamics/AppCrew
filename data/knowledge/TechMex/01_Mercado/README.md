@@ -1,0 +1,1 @@
+# TechMex — Mercado (pre-poblado)

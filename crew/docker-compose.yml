@@ -1,0 +1,58 @@
+version: '3.9'
+
+# EcoSign — Hermes Agent Infrastructure
+# Levanta: Hermes gateway + tunnel Tailscale opcional
+#
+# Uso:
+#   cp crew/.env.example crew/.env   # y completar valores
+#   docker compose -f crew/docker-compose.yml up -d
+
+services:
+
+  hermes:
+    image: hermesagent/hermes:latest
+    container_name: ecosign-hermes
+    restart: unless-stopped
+    environment:
+      # Proveedor principal: Claude como orchestrator
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      # Agentes secundarios
+      - OPENAI_API_KEY=${OPENAI_API_KEY}           # Codex (auditor)
+      - GEMINI_API_KEY=${GEMINI_API_KEY}           # Gemini (coder / DB)
+      # Telegram gateway
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS}  # IDs separados por coma
+      # Configuración de Hermes
+      - HERMES_DEFAULT_PROVIDER=anthropic
+      - HERMES_DEFAULT_MODEL=claude-sonnet-4-6
+      - HERMES_SKILLS_DIR=/app/skills
+      - HERMES_WORKSPACE=/workspace
+      - HERMES_LOG_LEVEL=info
+    volumes:
+      - ./skills:/app/skills:ro          # skills de ecosign (read-only)
+      - ./logs:/app/logs                 # logs de sesiones
+      - ./briefs:/app/briefs             # briefs generados
+      - ..:/workspace:ro                 # repo completo (read-only para Hermes)
+    ports:
+      - "9119:9119"    # Hermes dashboard (solo acceso local / Tailscale)
+    networks:
+      - ecosign-agents
+
+  # Gateway de Telegram (si Hermes no lo integra directo)
+  # Descomentar si se usa gateway standalone
+  # telegram-gateway:
+  #   image: hermesagent/gateway:latest
+  #   container_name: ecosign-telegram-gw
+  #   restart: unless-stopped
+  #   environment:
+  #     - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+  #     - HERMES_ENDPOINT=http://hermes:9119
+  #   networks:
+  #     - ecosign-agents
+
+networks:
+  ecosign-agents:
+    driver: bridge
+
+volumes:
+  hermes-logs:

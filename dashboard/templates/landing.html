@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Executive Agent Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ec;
+    --ink: #13201c;
+    --muted: #4f5f58;
+    --card: #fbfaf3;
+    --line: #d6d3c1;
+    --accent: #136f63;
+    --accent-2: #c1572a;
+    --shadow: 0 10px 24px rgba(19, 32, 28, 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 80% 12%, rgba(19, 111, 99, 0.12) 0%, rgba(19, 111, 99, 0) 30%),
+      radial-gradient(circle at 20% 90%, rgba(193, 87, 42, 0.10) 0%, rgba(193, 87, 42, 0) 24%),
+      var(--bg);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 48px; }
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    margin-bottom: 42px;
+  }
+  .brand {
+    font-family: "Manrope", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    font-size: 1.05rem;
+  }
+  .nav {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .btn {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: #fffdf6;
+  }
+  .btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .hero { margin-bottom: 36px; }
+  .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  h1 {
+    font-family: "Manrope", sans-serif;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    font-size: clamp(2rem, 6vw, 3.7rem);
+    max-width: 900px;
+    margin-bottom: 12px;
+  }
+  .subtitle {
+    max-width: 840px;
+    font-size: clamp(1rem, 2.3vw, 1.3rem);
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .lead {
+    font-size: 1.05rem;
+    max-width: 800px;
+    margin-bottom: 22px;
+  }
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  .pillar {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--card);
+    padding: 14px 14px 12px;
+    box-shadow: var(--shadow);
+  }
+  .pillar h3 {
+    font-family: "Manrope", sans-serif;
+    font-size: 1rem;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .pillar p { color: var(--muted); font-size: 0.92rem; }
+  .section {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    margin-top: 14px;
+  }
+  .section h2 {
+    font-family: "Manrope", sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .list { color: var(--muted); }
+  .list li { margin-left: 18px; margin-bottom: 6px; }
+  .dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--card);
+    padding: 14px;
+  }
+  .card h3 {
+    font-family: "Manrope", sans-serif;
+    margin-bottom: 6px;
+  }
+  .trust {
+    border-left: 4px solid var(--accent-2);
+    padding: 10px 14px;
+    background: #fff9f3;
+    margin-top: 16px;
+    border-radius: 8px;
+  }
+  .cta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+  }
+  @media (max-width: 760px) {
+    .dual { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">Global Executive Agent Team</div>
+      <nav class="nav">
+        <a class="btn primary" href="/ops">Ver Demo Operativa</a>
+        <a class="btn" href="mailto:hola@globalexecutive.mx?subject=Propuesta%20piloto%20GE%20Agent%20Team">Solicitar Propuesta Piloto</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Executive Search Aumentado</div>
+      <h1>Criterio experto, evidencia y agentes gobernados.</h1>
+      <p class="subtitle">Global Executive transforma su experiencia en una capa computacional que amplifica la decisión humana.</p>
+      <p class="lead">No reemplazamos al recruiter. Lo volvemos más potente, más preciso y más defendible.</p>
+    </section>
+
+    <section class="pillars">
+      <article class="pillar">
+        <h3>Doctrina GE como código</h3>
+        <p>El sistema opera con principios de la firma, no con IA genérica de recruiting.</p>
+      </article>
+      <article class="pillar">
+        <h3>Señales más allá del CV</h3>
+        <p>Detecta potencial oculto y riesgos narrativos que un score tradicional no captura.</p>
+      </article>
+      <article class="pillar">
+        <h3>Contexto empresarial real</h3>
+        <p>Analiza el entorno donde creció cada trayectoria sin atribuir mérito sin evidencia.</p>
+      </article>
+      <article class="pillar">
+        <h3>Decision Shield</h3>
+        <p>Cada recomendación queda trazada con señales, fuentes, scoring y revisión humana.</p>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2>Qué problema resuelve</h2>
+      <ul class="list">
+        <li>Reduce decisiones difíciles de defender frente al cliente.</li>
+        <li>Evita descartar perfiles con potencial subposicionado.</li>
+        <li>Convierte criterio experto en memoria operativa reutilizable.</li>
+        <li>Conecta selección con transición para aumentar éxito post-hire.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Formatos comerciales</h2>
+      <div class="dual">
+        <article class="card">
+          <h3>Search Intelligence</h3>
+          <p>Para búsquedas ejecutivas. Acelera sourcing, mejora priorización y fortalece la trazabilidad de recomendación.</p>
+        </article>
+        <article class="card">
+          <h3>Transition Intelligence</h3>
+          <p>Para onboarding y primeros 90 días. Anticipa fricciones y mejora integración de liderazgo.</p>
+        </article>
+      </div>
+      <div class="trust">
+        Los agentes no deciden contrataciones ni usan categorías sensibles. Preparan evidencia para que el equipo humano decida mejor.
+      </div>
+      <div class="cta">
+        <a class="btn primary" href="/ops">Ver Demo Operativa</a>
+        <a class="btn" href="/ceo">Ver Vista CEO</a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

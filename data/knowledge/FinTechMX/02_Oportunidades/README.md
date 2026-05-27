@@ -1,0 +1,1 @@
+# FinTechMX — Oportunidades (pre-poblado)

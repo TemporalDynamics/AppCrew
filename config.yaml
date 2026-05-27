@@ -1,0 +1,47 @@
+system:
+  name: "GE Recruiting Desk"
+  orchestrator: "Manu"
+  cadence:
+    review_hour: 18
+    review_minute: 0
+    working_days: [0, 1, 2, 3, 4]  # lun-vie
+
+linkedin:
+  session_file: "data/linkedin_auth.json"
+  user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+
+firecrawl:
+  api_key: ""
+  base_url: "https://api.firecrawl.dev"
+
+agents:
+  demand_radar:
+    enabled: true
+    interval_minutes: 1440  # once per day
+    sources:
+      - techcrunch
+      - google_news
+      - crunchbase
+
+  talent_sourcing:
+    enabled: true
+    linkedin_search: true
+    max_results: 20
+
+  fit_scoring:
+    enabled: true
+    weights:
+      skills: 0.35
+      experience: 0.30
+      mobility_signals: 0.20
+      career_consistency: 0.15
+
+  outreach:
+    enabled: true
+    require_approval: true
+
+  knowledge:
+    enabled: true
+
+  qa:
+    enabled: true

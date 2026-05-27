@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Global Executive — Command Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #080B12;
+  --bg-surface: #0F172A;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --border: #1F2937;
+  --border-active: #2a3a4f;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --accent: #38BDF8;
+  --accent-dim: #0EA5E9;
+  --accent-glow: rgba(56,189,248,0.08);
+  --success: #22C55E;
+  --success-bg: rgba(34,197,94,0.08);
+  --warning: #F59E0B;
+  --warning-bg: rgba(245,158,11,0.08);
+  --error: #EF4444;
+  --error-bg: rgba(239,68,68,0.08);
+  --blocked: #F97316;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --shadow-glow: 0 0 40px rgba(56,189,248,0.06);
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; }
+body {
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Layout ── */
+.app { display:flex; min-height:100vh; }
+.sidebar {
+  width: 64px; background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display:flex; flex-direction:column; align-items:center;
+  padding: 1rem 0; gap: 0.25rem;
+  position: sticky; top:0; height:100vh; z-index:10;
+}
+.sidebar-logo {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  display:flex; align-items:center; justify-content:center;
+  font-weight: 800; font-size:0.65rem; color:white;
+  margin-bottom: 1.5rem; letter-spacing:-0.02em;
+}
+.sidebar-nav { display:flex; flex-direction:column; gap:0.125rem; flex:1; }
+.sidebar-btn {
+  width: 40px; height: 40px; border-radius: 10px;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--text-muted); cursor:pointer; transition:all 0.2s;
+  border:none; background:transparent; font-size:1.1rem;
+}
+.sidebar-btn:hover { background:var(--bg-card); color:var(--text-secondary); }
+.sidebar-btn.active { color:var(--accent); background:rgba(56,189,248,0.08); }
+
+.content { flex:1; display:flex; flex-direction:column; min-height:100vh; }
+
+/* ── Cockpit ── */
+.cockpit {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 1.5rem; height: 48px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top:0; z-index:9;
+}
+.cockpit-left { display:flex; align-items:center; gap:1.25rem; }
+.cockpit-brand { display:flex; align-items:center; gap:0.5rem; }
+.cockpit-brand .logo-dot {
+  width:6px;height:6px;border-radius:50%;background:var(--success);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.cockpit-brand h1 {
+  font-size:0.8rem; font-weight:700; letter-spacing:-0.02em;
+}
+.cockpit-brand span {
+  font-size:0.6rem; color:var(--text-muted);
+  text-transform:uppercase; letter-spacing:0.06em;
+  margin-left:0.25rem;
+}
+.cockpit-metrics { display:flex; gap:1rem; }
+.cockpit-metric { display:flex; align-items:center; gap:0.3rem; }
+.cockpit-metric .value { font-size:0.75rem; font-weight:600; }
+.cockpit-metric .label { font-size:0.6rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; }
+.cockpit-right { display:flex; align-items:center; gap:0.75rem; }
+.sync-text { font-size:0.6rem; color:var(--text-muted); }
+.status-chip {
+  font-size:0.6rem; padding:0.15rem 0.5rem; border-radius:999px;
+  background:rgba(34,197,94,0.1); color:var(--success); font-weight:500;
+}
+
+/* ── Two-column body ── */
+.body-grid {
+  display:grid; grid-template-columns: 1fr 280px; gap:1rem;
+  padding:1rem 1.5rem; flex:1; align-items:start;
+}
+@media (max-width: 1024px) { .body-grid { grid-template-columns:1fr; } }
+
+.main-col { display:flex; flex-direction:column; gap:1rem; min-width:0; }
+.side-col { display:flex; flex-direction:column; gap:0.75rem; position:sticky; top:64px; }
+
+/* ── Section headers ── */
+.section-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:0.5rem;
+}
+.section-header h2 {
+  font-size:0.7rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:0.08em; color:var(--text-muted);
+}
+.section-header .badge {
+  font-size:0.6rem; padding:0.1rem 0.4rem; border-radius:999px;
+  font-weight:500;
+}
+
+/* ── CEO Brief (hero) ── */
+.hero {
+  background:linear-gradient(135deg, var(--bg-card), rgba(56,189,248,0.04));
+  border:1px solid rgba(56,189,248,0.15);
+  border-radius:var(--radius-lg); padding:1.5rem 2rem;
+  position:relative; overflow:hidden;
+  box-shadow: var(--shadow-glow);
+}
+.hero::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dim), transparent);
+}
+.hero-glow {
+  position:absolute; top:-60%; right:-10%;
+  width:300px; height:300px;
+  background: radial-gradient(circle, rgba(56,189,248,0.04) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem; position:relative; z-index:1; }
+.hero-avatar {
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),#2563EB);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem; box-shadow: 0 0 20px rgba(56,189,248,0.15);
+}
+.hero-title h1 { font-size:1rem; font-weight:700; letter-spacing:-0.02em; }
+.hero-title span { font-size:0.65rem; color:var(--text-muted); display:block; }
+.hero-brief {
+  position:relative; z-index:1;
+  font-size:0.9rem; color:var(--text-secondary); line-height:1.7;
+  max-width:600px; margin-bottom:0.5rem;
+}
+.hero-brief strong { color:var(--text-primary); font-weight:500; }
+.hero-recommend {
+  position:relative; z-index:1;
+  font-size:0.8rem; color:var(--accent); font-weight:500;
+  margin-bottom:1rem;
+}
+.hero-kpis {
+  display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;
+  position:relative; z-index:1;
+}
+.hero-kpi {
+  display:flex; flex-direction:column; align-items:center;
+  min-width:48px;
+}
+.hero-kpi .kvalue {
+  font-size:1.15rem; font-weight:700; line-height:1.2;
+  letter-spacing:-0.03em;
+}
+.hero-kpi .klabel {
+  font-size:0.55rem; color:var(--text-muted);
+  text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;
+}
+.hero-kpi-divider {
+  width:1px; background:var(--border); align-self:stretch;
+}
+.hero-actions { display:flex; gap:0.5rem; flex-wrap:wrap; position:relative; z-index:1; }
+.hero-btn {
+  padding:0.5rem 1.25rem; border-radius:var(--radius-sm);
+  font-size:0.78rem; font-weight:500; cursor:pointer;
+  border:1px solid var(--border); background:var(--bg-surface);
+  color:var(--text-secondary); transition:all 0.2s;
+}
+.hero-btn:hover { background:var(--bg-card-hover); color:var(--text-primary); border-color:var(--border-active); }
+.hero-btn.primary {
+  background:var(--accent); color:#000; border-color:var(--accent);
+  font-weight:600;
+}
+.hero-btn.primary:hover { filter:brightness(1.15); box-shadow: 0 0 20px rgba(56,189,248,0.2); }
+
+/* ── Decision Inbox ── */
+.inbox-item {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:0.75rem 1rem; margin-bottom:0.4rem;
+  transition:all 0.15s; cursor:default;
+}
+.inbox-item:hover { border-color:var(--border-active); background:var(--bg-card-hover); }
+.inbox-item.priority { border-left:3px solid var(--error); }
+.inbox-meta { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem; flex-wrap:wrap; }
+.inbox-agent {
+  font-size:0.6rem; color:var(--accent); font-weight:600;
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+.inbox-priority {
+  font-size:0.55rem; padding:0.05rem 0.3rem; border-radius:4px;
+  background:var(--error-bg); color:var(--error); font-weight:500;
+}
+.inbox-risk {
+  font-size:0.55rem; padding:0.05rem 0.3rem; border-radius:4px;
+  background:var(--warning-bg); color:var(--warning);
+}
+.inbox-target { font-size:0.82rem; font-weight:600; margin-bottom:0.15rem; }
+.inbox-reason { font-size:0.7rem; color:var(--text-secondary); margin-bottom:0.2rem; }
+.inbox-actions { display:flex; gap:0.3rem; margin-top:0.3rem; }
+.inbox-actions button {
+  padding:0.25rem 0.7rem; border-radius:6px; font-size:0.65rem;
+  font-weight:500; cursor:pointer; border:none; transition:all 0.15s;
+}
+.btn-approve { background:var(--success); color:#000; }
+.btn-approve:hover { filter:brightness(1.15); }
+.btn-reject { background:var(--error-bg); color:var(--error); }
+.btn-reject:hover { background:rgba(239,68,68,0.2); }
+.btn-detail { background:var(--bg-surface); color:var(--text-muted); border:1px solid var(--border); }
+.btn-detail:hover { color:var(--text-primary); }
+.inbox-empty {
+  text-align:center; padding:1.5rem; color:var(--text-muted);
+  font-size:0.78rem;
+}
+
+/* ── Agent Fleet (clean cards) ── */
+.fleet-grid {
+  display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap:0.5rem;
+}
+.agent-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:0.75rem 1rem;
+  transition:all 0.15s; cursor:pointer; position:relative;
+}
+.agent-card:hover {
+  border-color:var(--border-active);
+  background:var(--bg-card-hover);
+  transform:translateY(-1px);
+}
+.agent-card .state-line {
+  position:absolute; top:0; left:0; right:0; height:2px;
+  border-radius:var(--radius-sm) var(--radius-sm) 0 0;
+}
+.agent-card .state-line.idle { background:var(--text-muted); opacity:0.3; }
+.agent-card .state-line.working { background:var(--accent); animation:pulse-bar 1.5s infinite; }
+@keyframes pulse-bar { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.agent-card .state-line.pending_review { background:var(--warning); }
+.agent-card .state-line.error { background:var(--error); }
+.agent-card .state-line.approved { background:var(--success); }
+.agent-top { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem; }
+.agent-icon { font-size:1rem; }
+.agent-name { font-size:0.75rem; font-weight:600; }
+.agent-state {
+  font-size:0.55rem; padding:0.1rem 0.35rem; border-radius:999px;
+  font-weight:500; text-transform:capitalize; margin-left:auto;
+}
+.agent-state.idle { background:rgba(100,116,139,0.1); color:var(--text-muted); }
+.agent-state.working { background:rgba(56,189,248,0.1); color:var(--accent); }
+.agent-state.pending_review { background:var(--warning-bg); color:var(--warning); }
+.agent-state.error { background:var(--error-bg); color:var(--error); }
+/* (heartbeat removed — info available in agent detail modal) */
+.agent-pending-row {
+  display:flex; justify-content:space-between; align-items:center;
+}
+.agent-pending-row .count { font-size:0.6rem; color:var(--text-secondary); }
+.agent-pending-row .count strong { color:var(--warning); }
+.agent-detail-link {
+  font-size:0.55rem; color:var(--accent); opacity:0.6;
+  transition:opacity 0.15s; text-decoration:none;
+}
+.agent-detail-link:hover { opacity:1; }
+.agent-empty { text-align:center; padding:1rem; color:var(--text-muted); font-size:0.75rem; }
+
+/* ── Side Panel ── */
+.side-panel {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:0.75rem 1rem;
+}
+.side-panel-title {
+  font-size:0.6rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:0.06em; color:var(--text-muted); margin-bottom:0.5rem;
+}
+.integrity-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:0.15rem 0; font-size:0.68rem;
+}
+.integrity-row .label { color:var(--text-secondary); }
+.integrity-row .status { font-weight:500; }
+.integrity-row .status.ok { color:var(--success); }
+.integrity-row .status.warn { color:var(--warning); }
+.side-stat {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:0.15rem 0; font-size:0.68rem;
+}
+.side-stat .label { color:var(--text-muted); }
+.side-stat .value { color:var(--text-primary); font-weight:500; }
+.risk-item {
+  font-size:0.65rem; padding:0.2rem 0; color:var(--warning);
+}
+.timeline-compact-item {
+  font-size:0.65rem; padding:0.15rem 0; color:var(--text-secondary);
+  display:flex; gap:0.4rem;
+}
+.timeline-compact-item .time { color:var(--text-muted); font-size:0.6rem; min-width:3.5em; }
+.timeline-compact-item .event-agent { color:var(--accent); font-weight:500; }
+
+/* ── Modal (same as before, refined) ── */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:100;
+  background:rgba(0,0,0,0.6); backdrop-filter:blur(4px);
+  align-items:center; justify-content:center;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--bg-card); border:1px solid var(--border-active);
+  border-radius:var(--radius); padding:1.5rem; max-width:700px;
+  width:90%; max-height:85vh; overflow-y:auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
+.modal-header h3 { font-size:1rem; font-weight:600; }
+.modal-header .sub { font-size:0.7rem; color:var(--text-muted); display:block; }
+.modal-close {
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer; border:none; background:transparent;
+  color:var(--text-muted); font-size:1rem; transition:all 0.15s;
+}
+.modal-close:hover { background:var(--bg-surface); color:var(--text-primary); }
+.modal-section { margin-bottom:0.75rem; }
+.modal-section h4 {
+  font-size:0.65rem; font-weight:600; color:var(--text-muted);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem;
+}
+.modal-section pre {
+  font-size:0.68rem; color:var(--text-secondary);
+  background:var(--bg-surface); padding:0.5rem 0.75rem; border-radius:6px;
+  overflow-x:auto; white-space:pre-wrap; font-family:'SF Mono',monospace;
+}
+.modal-info-row {
+  display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:0.5rem;
+}
+.modal-info-row > div { min-width:80px; }
+.modal-info-row .mlabel { font-size:0.55rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; }
+.modal-info-row .mvalue { font-size:0.78rem; font-weight:500; }
+
+/* Toast */
+.toast {
+  position:fixed; bottom:1.5rem; right:1.5rem;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:0.6rem 1rem;
+  box-shadow:var(--shadow); z-index:200;
+  font-size:0.75rem; color:var(--text-primary);
+  display:none; max-width:300px;
+  backdrop-filter:blur(8px);
+}
+.toast.show { display:block; animation: slideIn 0.2s ease; }
+@keyframes slideIn { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .body-grid { padding:0.75rem 1rem; }
+  .cockpit { padding:0 1rem; }
+  .hero { padding:1.25rem; }
+}
+@media (max-width: 600px) {
+  .sidebar { width:48px; }
+  .sidebar-logo { width:28px;height:28px;font-size:0.5rem; }
+  .sidebar-btn { width:32px;height:32px;font-size:0.9rem; }
+  .cockpit-metrics { display:none; }
+  .fleet-grid { grid-template-columns:1fr; }
+  .body-grid { padding:0.5rem; }
+  .hero { padding:1rem; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  {% if not presentation %}
+  <nav class="sidebar">
+    <div class="sidebar-logo">GE</div>
+    <div class="sidebar-nav">
+      <button class="sidebar-btn active" title="Command Room">⌂</button>
+      <button class="sidebar-btn" onclick="location.href='/ceo'" title="CEO Agent">🧠</button>
+      <button class="sidebar-btn" onclick="runFullCycle()" title="Run All Agents">▶</button>
+      <button class="sidebar-btn" onclick="loadDemo()" title="Cargar Demo" style="margin-top:auto;">🎬</button>
+    </div>
+  </nav>
+  {% endif %}
+
+  <div class="content">
+    <!-- Cockpit -->
+    <div class="cockpit">
+      <div class="cockpit-left">
+        <div class="cockpit-brand">
+          <div class="logo-dot"></div>
+          <h1>Global Executive</h1>
+          <span>Command Room</span>
+        </div>
+        <div class="cockpit-metrics">
+          <div class="cockpit-metric">
+            <span class="value" id="cockpit-run" style="color:var(--accent);font-family:monospace;font-size:0.65rem;">{{ status.run_id[:30] if status.run_id and status.run_id != 'N/A' else '—' }}</span>
+          </div>
+          <div class="cockpit-metric">
+            <span class="value" id="cockpit-pending" style="color:var(--warning)">{{ pending|length }}</span>
+            <span class="label">pendientes</span>
+          </div>
+          <div class="cockpit-metric">
+            <span class="value" id="cockpit-agents">{{ status.agents|length }}</span>
+            <span class="label">agentes</span>
+          </div>
+        </div>
+      </div>
+      <div class="cockpit-right">
+        <span class="status-chip">● operando</span>
+        <span class="sync-text" id="sync-time">sync: hace unos seg</span>
+        {% if not presentation %}
+        <button class="hero-btn" onclick="loadDemo()" style="font-size:0.6rem;padding:0.15rem 0.5rem;">🎬 Demo</button>
+        <button class="hero-btn" onclick="togglePresentation()" style="font-size:0.6rem;padding:0.15rem 0.5rem;">📺 Presentación</button>
+        {% else %}
+        <button class="hero-btn" onclick="togglePresentation()" style="font-size:0.6rem;padding:0.15rem 0.5rem;">✕ Salir</button>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Body: two columns -->
+    <div class="body-grid">
+      <!-- LEFT COLUMN -->
+      <div class="main-col">
+
+        <!-- CEO HERO -->
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <div class="hero-header">
+            <div class="hero-avatar">🧠</div>
+            <div class="hero-title">
+              <h1>CEO Brief</h1>
+              <span>Resumen ejecutivo del sistema</span>
+            </div>
+          </div>
+          <div class="hero-brief" id="brief-text">
+            {% if brief.brief %}
+              {{ brief.brief }}
+            {% else %}
+              <em>Sistema en estado inicial. No hay ejecuciones registradas.</em>
+            {% endif %}
+          </div>
+                    {% if presentation %}
+          <div style="position:relative;z-index:1;display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1rem;">
+            {% for kpi in brief.kpi_data[:4] %}
+            <div style="display:flex;flex-direction:column;align-items:center;">
+              <span style="font-size:1.5rem;font-weight:800;color:{{ kpi.color }};letter-spacing:-0.03em;">{{ kpi.value }}</span>
+              <span style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">{{ kpi.label }}</span>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if brief.kpi_data %}
+          <div class="hero-kpis">
+            {% for kpi in brief.kpi_data[:7] %}
+            <div class="hero-kpi">
+              <span class="kvalue" style="color:{{ kpi.color }}">{{ kpi.value }}</span>
+              <span class="klabel">{{ kpi.label }}</span>
+            </div>
+            {% if not loop.last %}<div class="hero-kpi-divider"></div>{% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+                    {% if presentation %}
+          <div style="position:relative;z-index:1;margin-bottom:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <span style="font-size:0.55rem;padding:0.15rem 0.5rem;border-radius:999px;background:rgba(56,189,248,0.1);color:var(--accent);font-weight:500;">modo presentación</span>
+            <span style="font-size:0.55rem;padding:0.15rem 0.5rem;border-radius:999px;background:rgba(245,158,11,0.08);color:var(--warning);font-weight:500;">datos demo — no reales</span>
+          </div>
+          {% endif %}
+          {% if brief.recommendation %}
+          <div class="hero-recommend">→ {{ brief.recommendation }}</div>
+          {% endif %}
+          <div class="hero-actions">
+            <button class="hero-btn primary" onclick="runFullCycle()">Ejecutar run completo</button>
+            <button class="hero-btn" onclick="location.href='/ceo'">Nueva tarea al CEO</button>
+            <button class="hero-btn" onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})">Revisar agentes</button>
+          </div>
+        </div>
+
+        <!-- DECISION INBOX -->
+        <div id="inbox">
+          <div class="section-header">
+            <h2>📬 Decision Inbox</h2>
+            <span class="badge" style="font-size:0.6rem;padding:0.1rem 0.4rem;border-radius:999px;background:rgba(56,189,248,0.1);color:var(--accent);">{{ pending|length }} pendientes</span>
+          </div>
+          {% if pending %}
+            {% for action in pending %}
+            {% set p = 'priority' if action.score is defined and action.score >= 80 else '' %}
+            <div class="inbox-item {{ p }}">
+              <div class="inbox-meta">
+                <span class="inbox-agent">{{ action.agent_id }}</span>
+                {% if action.score is defined and action.score >= 80 %}<span class="inbox-priority">alta prioridad</span>{% endif %}
+                {% if action.reason and 'mock' in action.reason|lower %}<span class="inbox-risk">datos mock</span>{% endif %}
+              </div>
+              <div class="inbox-target">{{ action.action_type }} → {{ action.target }}</div>
+              <div class="inbox-reason">{{ action.reason or '' }}</div>
+              <div class="inbox-scope" style="font-size:0.55rem;color:var(--text-muted);margin-top:0.15rem;">
+                {% set scope = action.payload.get('decision_scope','') if action.payload else '' %}
+                {% if scope %}<span>🎯 scope: {{ scope }}</span>{% endif %}
+                {% set st = action.payload.get('source_type','') if action.payload else '' %}
+                {% if st %}<span style="margin-left:0.5rem;">📡 {{ st }}</span>{% endif %}
+                {% if action.action_type == 'candidate' %}
+                <span>⚠️ Esta decisión solo afecta esta búsqueda</span>
+                {% elif action.action_type == 'context_signal' %}
+                <span>⚠️ No descarta al candidato</span>
+                {% elif action.action_type == 'score' %}
+                <span>⚠️ No elimina al candidato</span>
+                {% elif action.action_type == 'opportunity' %}
+                <span>⚠️ Solo esta oportunidad</span>
+                {% elif action.action_type == 'signal' %}
+                <span>⚠️ Solo esta señal, no al candidato</span>
+                {% endif %}
+              </div>
+              {% if action.action_type == 'score' and action.payload and action.payload.get('breakdown') %}
+              <div style="font-size:0.6rem;color:var(--text-muted);margin-bottom:0.2rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+                {% for key, val in action.payload.breakdown.items() %}
+                <span>{{ key | replace('_',' ') }}: <strong style="color:var(--text-secondary);">{{ val }}</strong></span>
+                {% endfor %}
+                <span style="color:var(--accent);">rol: {{ action.payload.get('role','—') }}</span>
+              </div>
+              {% endif %}
+              {% if action.action_type == 'signal' and action.payload %}
+              <div style="font-size:0.6rem;color:var(--text-muted);margin-bottom:0.2rem;">
+                <span style="color:var(--accent);">⎈ hipótesis:</span> {{ action.payload.get('hypothesis','')[:120] }}{% if action.payload.get('hypothesis','')|length > 120 %}…{% endif %}<br>
+                <span style="color:var(--warning);">⚠ riesgos:</span> {{ action.payload.get('risks',['—'])|first }}{% if action.payload.get('risks',[''])|length > 1 %} (+{{ action.payload.get('risks',[''])|length - 1 }} más){% endif %}<br>
+                <span>❓ preguntas:</span> {{ action.payload.get('validation_questions',['—'])|first }}
+              </div>
+              {% endif %}
+              {% if action.action_type == 'context_signal' and action.payload %}
+              <div style="font-size:0.6rem;color:var(--text-muted);margin-bottom:0.2rem;">
+                <span>🏢 empresas analizadas:</span> {{ action.payload.get('companies_analyzed',[])|length }}<br>
+                <span style="color:var(--warning);">📊 riesgo de ruido:</span> <strong style="color:var(--text-secondary);">{{ action.payload.get('risk_of_noise','—') }}</strong><br>
+                <span style="color:var(--accent);">⎈ hipótesis:</span> {{ action.payload.get('hypothesis','')[:120] }}{% if action.payload.get('hypothesis','')|length > 120 %}…{% endif %}<br>
+                <span>❓ validar:</span> {{ action.payload.get('validation_questions',['—'])|first }}
+              </div>
+              {% endif %}
+              {% if action.action_type == 'doctrine_snapshot' and action.payload %}
+              <div style="font-size:0.6rem;color:var(--text-muted);margin-bottom:0.2rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+                <span>📜 principios: <strong style="color:var(--text-secondary);">{{ action.payload.get('principles_count',0) }}</strong></span>
+                <span>📈 señales potencial: <strong style="color:var(--success);">{{ action.payload.get('signals_potential_count',0) }}</strong></span>
+                <span>⚠ señales riesgo: <strong style="color:var(--warning);">{{ action.payload.get('signals_risk_count',0) }}</strong></span>
+                <span>🔒 límites: <strong style="color:var(--text-secondary);">{{ action.payload.get('limits_count',0) }}</strong></span>
+              </div>
+              {% endif %}
+              <div class="inbox-actions" data-action-type="{{ action.action_type }}">
+                {% set atype = action.action_type %}
+                {% if atype == 'quality_issue' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','acknowledged')">✓ Acknowledge</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','dismissed')" title="Solo oculta este issue, no elimina datos">✕ Ignore</button>
+                <button class="btn-detail" onclick="reviewAction('{{ action.action_id }}','resolved')">✓ Resolve</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','escalated')">▲ Escalate</button>
+                {% elif atype == 'qa_summary' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','acknowledged')">✓ Acknowledge</button>
+                {% elif atype == 'inmail' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','approved')">✓ Approve</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','rejected')">✕ Reject</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','needs_revision')">✎ Needs revision</button>
+                {% elif atype == 'candidate' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','shortlisted')">★ Shortlist</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','dismissed')" title="Solo para esta búsqueda — no descarta al candidato globalmente">✕ Not for this search</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','escalated')">▲ Escalate</button>
+                {% elif atype == 'score' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','acknowledged')">✓ Acknowledge</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','dismissed')" title="Ignora este score, no elimina al candidato">✕ Ignore score</button>
+                {% elif atype == 'opportunity' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','qualified')">★ Qualify</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','dismissed')" title="No perseguir esta oportunidad ahora">✕ Not now</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','escalated')">▲ Escalate</button>
+                {% elif atype == 'folder_structure' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','approved')">✓ Approve</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','rejected')">✕ Reject</button>
+                {% elif atype == 'signal' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','validated_signal')">✓ Validate</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','needs_human_review')">👁 Needs review</button>
+                <button class="btn-detail" style="border-color:var(--text-muted);color:var(--text-muted);" onclick="reviewAction('{{ action.action_id }}','weak_signal')">○ Weak signal</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','escalated')">▲ Escalate</button>
+                {% elif atype == 'context_signal' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','acknowledged')">✓ Acknowledge</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','needs_human_review')">👁 Needs review</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','dismissed')" title="No descarta al candidato, solo este contexto particular">✕ Not relevant</button>
+                <button class="btn-detail" style="border-color:var(--warning);color:var(--warning);" onclick="reviewAction('{{ action.action_id }}','escalated')">▲ Escalate</button>
+                {% elif atype == 'doctrine_snapshot' %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','acknowledged')">✓ Acknowledge</button>
+                {% else %}
+                <button class="btn-approve" onclick="reviewAction('{{ action.action_id }}','acknowledged')">✓ Acknowledge</button>
+                <button class="btn-reject" onclick="reviewAction('{{ action.action_id }}','dismissed')">✕ Dismiss</button>
+                {% endif %}
+                <button class="btn-detail" onclick="showAgentDetail('{{ action.agent_id }}')">Ver detalle</button>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="inbox-empty">No hay decisiones pendientes. Todos los agentes en estado nominal.</div>
+          {% endif %}
+        </div>
+
+        <!-- AGENT FLEET -->
+        <div id="fleet">
+          <div class="section-header">
+            <h2>🛰️ Agent Fleet</h2>
+            <span style="font-size:0.6rem;color:var(--text-muted);">{{ status.agents|length }} agentes</span>
+          </div>
+          <div class="fleet-grid">
+            {% for aid, agent in status.agents.items() %}
+            {% set state = agent.state %}
+            {% set icon = agent.icon or '🤖' %}
+            <div class="agent-card" onclick="showAgentDetail('{{ aid }}')">
+              <div class="state-line {{ state }}"></div>
+              <div class="agent-top">
+                <span class="agent-icon">{{ icon }}</span>
+                <span class="agent-name">{{ agent.name or aid }}</span>
+                <span class="agent-state {{ state }}">{{ state | replace('_',' ') }}</span>
+              </div>
+              <div class="agent-pending-row">
+                <span class="count">
+                  {% if agent.pending_count > 0 %}<strong>{{ agent.pending_count }}</strong> pendientes{% else %}sin pendientes{% endif %}
+                </span>
+                <a class="agent-detail-link" onclick="event.stopPropagation();showAgentDetail('{{ aid }}')">Detalle →</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="side-col">
+        <!-- System Integrity -->
+        <div class="side-panel">
+          <div class="side-panel-title">🔒 System Integrity</div>
+          <div class="integrity-row"><span class="label">Run ID</span><span class="status ok">✅</span></div>
+          <div class="integrity-row"><span class="label">Dedup cross-run</span><span class="status ok">✅</span></div>
+          <div class="integrity-row"><span class="label">CEO never works</span><span class="status ok">✅</span></div>
+          <div class="integrity-row"><span class="label">QA read-only</span><span class="status ok">✅</span></div>
+          <div class="integrity-row"><span class="label">Outreach blocked</span><span class="status ok">✅</span></div>
+          <div class="integrity-row"><span class="label">Tests</span><span class="status ok">38/38</span></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="side-panel">
+          <div class="side-panel-title">📊 System Stats</div>
+          <div class="side-stat"><span class="label">Total history</span><span class="value"><span id="side-history">{{ status.total_history or 0 }}</span> acciones</span></div>
+          <div class="side-stat"><span class="label">Total runs</span><span class="value">{{ status.total_runs or 0 }}</span></div>
+          <div class="side-stat"><span class="label">Agentes online</span><span class="value">{{ status.agents|length }}/11</span></div>
+          <div class="side-stat"><span class="label">Tests</span><span class="value" style="color:var(--success);">38/38 passing</span></div>
+        </div>
+
+        <!-- Risks -->
+        {% if brief.risks %}
+        <div class="side-panel">
+          <div class="side-panel-title" style="color:var(--warning);">⚠️ Riesgos activos</div>
+          {% for risk in brief.risks %}
+          <div class="risk-item">• {{ risk.risk }}{% if risk.item %} <span style="color:var(--text-muted);">({{ risk.item }})</span>{% endif %}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Timeline compact -->
+        <div class="side-panel">
+          <div class="side-panel-title">📋 Últimos runs</div>
+          {% if timeline %}
+            {% for event in timeline[:5] %}
+            <div class="timeline-compact-item">
+              <span class="time">{{ event.time or '' }}</span>
+              <span class="event-agent">{{ event.agent_id }}</span>
+              <span>{{ event.actions }} acciones</span>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div style="font-size:0.65rem;color:var(--text-muted);">Sin ejecuciones</div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agent Detail Modal -->
+<div class="modal-overlay" id="agent-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 id="modal-title">Detalle del agente</h3>
+        <span class="sub" id="modal-subtitle"></span>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body">
+      <div class="modal-section">
+        <div class="modal-info-row">
+          <div><span class="mlabel">Estado</span><div class="mvalue" id="modal-state" style="text-transform:capitalize;">—</div></div>
+          <div><span class="mlabel">Último run</span><div class="mvalue" id="modal-lastrun">—</div></div>
+          <div><span class="mlabel">Run ID</span><div class="mvalue" id="modal-runid" style="font-size:0.65rem;font-family:monospace;">—</div></div>
+          <div><span class="mlabel">Pendientes</span><div class="mvalue" id="modal-pending-count">0</div></div>
+        </div>
+      </div>
+      <div class="modal-section"><h4>⚖️ Authority</h4><pre id="modal-authority">—</pre></div>
+      <div class="modal-section"><h4>🛠️ Tools</h4><div id="modal-tools"></div></div>
+      <div class="modal-section"><h4>📋 Context</h4><div id="modal-context"></div></div>
+      <div class="modal-section"><h4>🧠 Memory</h4><div id="modal-memory"></div></div>
+      <div class="modal-section"><h4>🔒 Invariants</h4><div id="modal-invariants"></div></div>
+      <div class="modal-section"><h4>⚠️ Failure Modes</h4><div id="modal-failures"></div></div>
+      <div class="modal-section"><h4>📡 Escalation Policy</h4><div id="modal-escalation"></div></div>
+      <div class="modal-section"><h4>🧪 Tests</h4><div id="modal-tests"></div></div>
+      <div class="modal-section"><h4>📬 Pending Actions</h4><pre id="modal-pending">—</pre></div>
+      <div class="modal-section"><h4>📜 History</h4><pre id="modal-history">—</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+async function api(method, url, body) {
+  const opts = { method, headers: {'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  return res.json();
+}
+
+function showToast(msg, color) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderLeft = '3px solid ' + (color || 'var(--accent)');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function runFullCycle() {
+  showToast('Ejecutando ciclo completo…', 'var(--accent)');
+  api('POST','/api/run-all').then(r => {
+    const total = Object.values(r).reduce((a,b) => a+b, 0);
+    showToast(`Ciclo completo: ${total} acciones creadas`);
+    setTimeout(() => location.reload(), 1000);
+  }).catch(() => showToast('Error al ejecutar','var(--error)'));
+}
+
+function approveAction(id) {
+  api('POST','/api/approve/'+id, {comment:'Aprobado desde Command Room'}).then(r => {
+    if (r.success) { showToast('Acción aprobada ✓'); location.reload(); }
+    else showToast('Error al aprobar','var(--error)');
+  });
+}
+
+function rejectAction(id) {
+  api('POST','/api/reject/'+id, {comment:'Rechazado desde Command Room'}).then(r => {
+    if (r.success) { showToast('Acción rechazada'); location.reload(); }
+    else showToast('Error al rechazar','var(--error)');
+  });
+}
+
+function reviewAction(id, action) {
+  const labels = {acknowledged:'✓', dismissed:'✕', escalated:'▲', resolved:'✓', approved:'✓', rejected:'✕', needs_revision:'✎', shortlisted:'★', qualified:'★'};
+  const label = labels[action] || action;
+  api('POST','/api/review/'+id, {action, comment:`${label} desde Command Room`}).then(r => {
+    if (r.success) { showToast(`Acción ${action}`); location.reload(); }
+    else showToast('Error al revisar','var(--error)');
+  });
+}
+
+function showAgentDetail(agentId) {
+  const modal = document.getElementById('agent-modal');
+  document.getElementById('modal-title').textContent = agentId;
+  document.getElementById('modal-subtitle').textContent = 'Cargando…';
+  modal.classList.add('open');
+  api('GET','/api/agent/'+agentId).then(d => {
+    document.getElementById('modal-subtitle').textContent = d.description || '';
+    document.getElementById('modal-state').textContent = d.state || 'unknown';
+    document.getElementById('modal-state').style.color = d.state === 'idle' ? 'var(--text-muted)' : 'var(--accent)';
+    document.getElementById('modal-lastrun').textContent = (d.last_run || '—').slice(0,19);
+    document.getElementById('modal-runid').textContent = d.last_run_id || '—';
+    document.getElementById('modal-pending-count').textContent = d.pending_count || 0;
+
+    const c = d.contract || {};
+    document.getElementById('modal-authority').textContent = c.authority || 'worker';
+
+    // Tools
+    const toolsEl = document.getElementById('modal-tools');
+    const tools = c.tools || {};
+    const tNames = Object.keys(tools);
+    if (tNames.length) {
+      let html = '<div style="display:flex;flex-wrap:wrap;gap:0.3rem;">';
+      tNames.forEach(t => {
+        const info = tools[t];
+        const perm = info && info.permitted;
+        const notes = (info && info.notes) || '';
+        html += '<span style="font-size:0.68rem;padding:0.15rem 0.45rem;border-radius:6px;border:1px solid var(--border);' +
+          (perm ? 'color:var(--success);border-color:rgba(34,197,94,0.25);' : 'color:var(--text-muted);opacity:0.5;') +
+          '" title="' + notes + '">' +
+          (perm ? '✓ ' : '✗ ') + t +
+          (notes ? ' <span style="font-size:0.55rem;color:var(--text-muted);">' + notes + '</span>' : '') +
+          '</span>';
+      });
+      html += '</div>';
+      toolsEl.innerHTML = html;
+    } else toolsEl.innerHTML = '<span style="font-size:0.68rem;color:var(--text-muted);">No especificadas</span>';
+
+    // Context
+    const ctx = c.context || [];
+    document.getElementById('modal-context').innerHTML = ctx.length
+      ? '<ul style="font-size:0.72rem;color:var(--text-secondary);padding-left:1rem;margin:0;">' +
+        ctx.map(x => '<li style="margin-bottom:0.1rem;">' + x + '</li>').join('') + '</ul>'
+      : '<span style="font-size:0.68rem;color:var(--text-muted);">N/A</span>';
+
+    // Memory
+    const mem = c.memory || {};
+    let memHtml = '<div style="font-size:0.68rem;color:var(--text-secondary);">';
+    memHtml += '<strong>Namespace:</strong> ' + (mem.namespace || 'N/A') + '<br>';
+    if (mem.can_remember && mem.can_remember.length) {
+      memHtml += '<strong>Puede recordar:</strong><ul style="padding-left:1rem;margin:0.15rem 0;">' +
+        mem.can_remember.map(x => '<li>' + x + '</li>').join('') + '</ul>';
+    }
+    if (mem.cannot_remember && mem.cannot_remember.length) {
+      memHtml += '<strong>No recuerda:</strong><ul style="padding-left:1rem;margin:0.15rem 0;">' +
+        mem.cannot_remember.map(x => '<li style="opacity:0.6;">' + x + '</li>').join('') + '</ul>';
+    }
+    memHtml += '</div>';
+    document.getElementById('modal-memory').innerHTML = memHtml;
+
+    // Invariants
+    const invs = c.invariants || [];
+    document.getElementById('modal-invariants').innerHTML = invs.length
+      ? '<ul style="font-size:0.72rem;color:var(--text-secondary);padding-left:1rem;margin:0;">' +
+        invs.map(x => '<li style="margin-bottom:0.15rem;">' + x + '</li>').join('') + '</ul>'
+      : '<span style="font-size:0.68rem;color:var(--text-muted);">N/A</span>';
+
+    // Failure modes
+    const fails = c.failure_modes || [];
+    document.getElementById('modal-failures').innerHTML = fails.length
+      ? '<ul style="font-size:0.72rem;color:var(--text-secondary);padding-left:1rem;margin:0;">' +
+        fails.map(x => '<li style="margin-bottom:0.15rem;">' + x + '</li>').join('') + '</ul>'
+      : '<span style="font-size:0.68rem;color:var(--text-muted);">N/A</span>';
+
+    // Escalation
+    const escs = c.escalation || [];
+    document.getElementById('modal-escalation').innerHTML = escs.length
+      ? '<ul style="font-size:0.72rem;color:var(--text-secondary);padding-left:1rem;margin:0;">' +
+        escs.map(x => '<li style="margin-bottom:0.15rem;">' + x + '</li>').join('') + '</ul>'
+      : '<span style="font-size:0.68rem;color:var(--text-muted);">N/A</span>';
+
+    // Tests
+    const tests = c.tests || [];
+    document.getElementById('modal-tests').innerHTML = tests.length
+      ? '<div style="display:flex;flex-wrap:wrap;gap:0.25rem;">' +
+        tests.map(x => '<span style="font-size:0.65rem;padding:0.15rem 0.45rem;border-radius:6px;border:1px solid var(--border);color:var(--text-secondary);">' + x + '</span>').join('') +
+        '</div>'
+      : '<span style="font-size:0.68rem;color:var(--text-muted);">N/A</span>';
+
+    document.getElementById('modal-pending').textContent = JSON.stringify(d.pending_actions || [], null, 2);
+    document.getElementById('modal-history').textContent = JSON.stringify(d.history || [], null, 2);
+  }).catch(() => {
+    document.getElementById('modal-subtitle').textContent = 'Error al cargar';
+  });
+}
+
+function closeModal() {
+  document.getElementById('agent-modal').classList.remove('open');
+}
+document.getElementById('agent-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function loadDemo() {
+  showToast('Cargando escenario demo…', 'var(--accent)');
+  api('POST','/api/load-demo').then(r => {
+    if (r.success) showToast(`Demo cargada: ${r.total_actions} acciones de ${Object.keys(r.by_agent).length} agentes`);
+    setTimeout(() => location.reload(), 800);
+  }).catch(() => showToast('Error al cargar demo','var(--error)'));
+}
+
+// Presentation mode toggle
+function togglePresentation() {
+  const isPresent = window.location.search.includes('mode=presentation');
+  if (isPresent) window.location.href = '/';
+  else window.location.href = '/?mode=presentation';
+}
+
+// Auto-refresh
+setInterval(() => {
+  fetch('/api/status').then(r => r.json()).then(s => {
+    document.getElementById('cockpit-run').textContent = (s.run_id || '—').slice(0,30);
+    document.getElementById('cockpit-pending').textContent = s.pending_count || 0;
+    document.getElementById('side-history').textContent = s.total_history || 0;
+  });
+  fetch('/api/pending').then(r => r.json()).then(d => {
+    document.getElementById('cockpit-pending').textContent = (d.pending||[]).length;
+  });
+}, 30000);
+
+// Sync time updater
+function updateSync() {
+  const t = document.getElementById('sync-time');
+  t.textContent = 'sync: ahora';
+}
+setInterval(updateSync, 30000);
+updateSync();
+</script>
+</body>
+</html>

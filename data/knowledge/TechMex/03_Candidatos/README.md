@@ -1,0 +1,1 @@
+# TechMex — Candidatos (pre-poblado)
