@@ -1,32 +1,33 @@
 # Golden set de calibracion.
-# Reemplazar estos nombres por perfiles elegidos por Rodri.
-# No son "candidatos que el sistema tiene que encontrar si o si".
-# Son perfiles de calibracion para medir si la busqueda piensa parecido a Rodri.
+# Perfiles de referencia para medir si el sistema piensa como Rodri.
+# No son candidatos que el sistema tiene que encontrar si o si.
+# Son anclas de criterio: el sistema surfacea, Rodri valida.
 
 golden_candidates:
   - id: "golden_1"
     type: "obvious_yes"
-    name: "Mariana Rios"
-    current_role: "VP Engineering"
-    company: "KontaPay"
+    name: "Jorge Martínez"
+    current_role: "VP Operations"
+    company: "Kueski"
     market: "Mexico"
     industry: "fintech"
-    why_rodri_likes: "Liderazgo tecnico claro, ownership real y contexto de expansion."
+    why_rodri_likes: "Escaló el equipo de ops de 12 a 55 personas en 18 meses, abrió el hub de Monterrey, tiene P&L real de cobranza y underwriting. Kueski es un nombre que Rodri reconoce de inmediato."
     expected_system_behavior: "rank_high"
     signals_positive:
       - "scaled_team_20_plus"
+      - "managed_pnl"
       - "worked_in_scaleup_context"
       - "shows_ownership_beyond_title"
     signals_negative: []
 
   - id: "golden_2"
     type: "hidden_gem"
-    name: "Diego Solis"
+    name: "Sofía Herrera"
     current_role: "Country Manager"
-    company: "NexoRetail"
+    company: "Pagali"
     market: "LATAM"
-    industry: "retail"
-    why_rodri_likes: "No vende humo, pero tiene expansion regional y P&L real."
+    industry: "fintech"
+    why_rodri_likes: "Nadie la conoce de nombre, pero abrió Colombia y Perú desde cero con P&L de USD 4M. Perfil que requiere leer entre líneas — exactamente lo que el sistema tiene que poder hacer."
     expected_system_behavior: "surface_as_non_obvious"
     signals_positive:
       - "opened_new_market"
@@ -36,12 +37,12 @@ golden_candidates:
 
   - id: "golden_3"
     type: "risky_maybe"
-    name: "Valeria Campos"
-    current_role: "VP Product"
-    company: "CloudMesa"
+    name: "Carlos Mendoza"
+    current_role: "VP Digital"
+    company: "Banorte"
     market: "Mexico"
-    industry: "SaaS B2B"
-    why_rodri_likes: "Perfil bueno, pero requiere validar si el ownership fue real."
+    industry: "fintech"
+    why_rodri_likes: "Título impresionante, empresa reconocida, equipo de 40+ personas. Pero Banorte es banca tradicional — hay que validar si el ownership fue real o solo autoridad de presupuesto."
     expected_system_behavior: "flagged_with_risk"
     signals_positive:
       - "shows_ownership_beyond_title"
@@ -51,12 +52,12 @@ golden_candidates:
 
   - id: "golden_4"
     type: "false_positive"
-    name: "Andres Navarro"
-    current_role: "Director Operations"
-    company: "MercadoRuta"
+    name: "Andrés Torres"
+    current_role: "Director of Growth"
+    company: "Jüsto"
     market: "LATAM"
     industry: "e-commerce"
-    why_rodri_rejects: "Parece fuerte por titulo y logos, pero los cambios cortos generan ruido."
+    why_rodri_rejects: "Logos perfectos — Rappi, Cornershop, NotCo, ahora Jüsto. Pero 8-10 meses en cada uno. Rodri lo ve de lejos: este no se queda. El sistema tiene que detectar ese patrón antes de que llegue a la entrevista."
     expected_system_behavior: "rejected_or_low_rank"
     signals_positive:
       - "scaled_team_20_plus"

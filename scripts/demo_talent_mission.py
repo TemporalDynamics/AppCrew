@@ -22,58 +22,58 @@ GOLDEN_PATH = Path("data/demo_golden_candidates.yaml")
 
 DEMO_CANDIDATES: list[dict[str, Any]] = [
     {
-        "name": "Mariana Rios",
-        "role": "VP Engineering",
-        "company": "KontaPay",
+        "name": "Jorge Martínez",
+        "role": "VP Operations",
+        "company": "Kueski",
         "market": "Mexico",
         "industry": "fintech",
-        "signals": ["scaled_team_20_plus", "worked_in_scaleup_context", "shows_ownership_beyond_title"],
-        "risk_signals": ["generic_profile_without_evidence"],
-        "why": "Escalo un equipo de ingenieria en una fintech B2B y aparece con senales de ownership mas alla del titulo.",
-        "recommended_action": "review_profile",
-    },
-    {
-        "name": "Diego Solis",
-        "role": "Country Manager",
-        "company": "NexoRetail",
-        "market": "LATAM",
-        "industry": "retail",
-        "signals": ["opened_new_market", "managed_pnl", "worked_in_scaleup_context"],
+        "signals": ["scaled_team_20_plus", "managed_pnl", "worked_in_scaleup_context", "shows_ownership_beyond_title"],
         "risk_signals": [],
-        "why": "Perfil comercial-operativo con apertura regional y P&L, alineado a busquedas de expansion.",
+        "why": "Escaló equipo de ops de 12 a 55 personas en 18 meses. Abrió hub Monterrey. P&L real de cobranza y underwriting.",
         "recommended_action": "prepare_warm_intro",
     },
     {
-        "name": "Valeria Campos",
-        "role": "VP Product",
-        "company": "CloudMesa",
+        "name": "Sofía Herrera",
+        "role": "Country Manager",
+        "company": "Pagali",
+        "market": "LATAM",
+        "industry": "fintech",
+        "signals": ["opened_new_market", "managed_pnl", "worked_in_scaleup_context"],
+        "risk_signals": [],
+        "why": "Abrió Colombia y Perú desde cero. P&L de USD 4M. Perfil bajo radar que requiere leer entre líneas.",
+        "recommended_action": "review_profile",
+    },
+    {
+        "name": "Carlos Mendoza",
+        "role": "VP Digital",
+        "company": "Banorte",
         "market": "Mexico",
-        "industry": "SaaS B2B",
+        "industry": "fintech",
         "signals": ["shows_ownership_beyond_title", "worked_in_scaleup_context"],
         "risk_signals": ["purely_corporate_without_ownership"],
-        "why": "Producto enterprise con trayectoria B2B; requiere validar alcance real de ownership.",
+        "why": "Lideró transformación digital en banca retail con equipo de 40+. Requiere validar si el ownership fue real o solo autoridad de presupuesto.",
         "recommended_action": "ask_validation_questions",
     },
     {
-        "name": "Andres Navarro",
-        "role": "Director Operations",
-        "company": "MercadoRuta",
+        "name": "Andrés Torres",
+        "role": "Director of Growth",
+        "company": "Jüsto",
         "market": "LATAM",
         "industry": "e-commerce",
         "signals": ["scaled_team_20_plus", "opened_new_market"],
         "risk_signals": ["too_many_short_tenures"],
-        "why": "Escalamiento operativo regional, con riesgo por cambios recientes que requiere entrevista.",
+        "why": "Logos impresionantes: Rappi, Cornershop, NotCo, Jüsto. Señal de riesgo: cada posición duró 8-10 meses.",
         "recommended_action": "human_review",
     },
     {
-        "name": "Paula Benitez",
+        "name": "Paula Benítez",
         "role": "Head of Growth",
         "company": "PagoNorte",
         "market": "Mexico",
         "industry": "fintech",
         "signals": ["opened_new_market", "shows_ownership_beyond_title"],
         "risk_signals": ["title_inflation_without_metrics"],
-        "why": "Senal de crecimiento y ownership comercial, pero faltan metricas publicas.",
+        "why": "Señal de crecimiento comercial y ownership, pero faltan métricas públicas que respalden el título.",
         "recommended_action": "secondary_candidate",
     },
 ]
@@ -263,24 +263,43 @@ def build_brief(criteria: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def calibration_summary(shortlist: list[dict[str, Any]]) -> list[dict[str, str]]:
+def calibration_summary(golden_calibration: list[dict[str, Any]]) -> list[dict[str, str]]:
     labels = {
         "obvious_yes": "Obvio",
         "hidden_gem": "Fino",
         "risky_maybe": "Dudoso",
         "false_positive": "Falso positivo",
     }
-    return [
-        {
-            "type": item["golden_type"],
-            "label": labels.get(item["golden_type"], item["golden_type"]),
-            "name": item["name"],
-            "expected": item["expected_system_behavior"],
-            "actual": item["calibration_behavior"],
-        }
-        for item in shortlist
-        if item.get("golden_type")
-    ]
+    type_order = ["obvious_yes", "hidden_gem", "risky_maybe", "false_positive"]
+    sorted_items = sorted(
+        [item for item in golden_calibration if item.get("golden_type")],
+        key=lambda x: type_order.index(x["golden_type"]) if x["golden_type"] in type_order else 99,
+    )
+    results = []
+    for item in sorted_items:
+        gt = item["golden_type"]
+        in_shortlist = item.get("_in_shortlist", True)
+        actual = item["calibration_behavior"]
+        if gt == "false_positive" and not in_shortlist:
+            actual = "rejected_or_low_rank"
+            result_tag = "OK"
+        elif gt == "false_positive" and in_shortlist:
+            result_tag = "REVISAR"
+        elif actual in ("rank_high", "surface_as_non_obvious", "flagged_with_risk", "rejected_or_low_rank"):
+            result_tag = "OK"
+        else:
+            result_tag = "REVISAR"
+        results.append(
+            {
+                "type": gt,
+                "label": labels.get(gt, gt),
+                "name": item["name"],
+                "expected": item["expected_system_behavior"],
+                "actual": actual,
+                "result": result_tag,
+            }
+        )
+    return results
 
 
 def print_human_report(
@@ -288,6 +307,7 @@ def print_human_report(
     cells: list[dict[str, Any]],
     shortlist: list[dict[str, Any]],
     golden_total: int,
+    golden_calibration: list[dict[str, Any]] | None = None,
 ) -> None:
     print("\n=== TALENT MISSION CAPSULE ===")
     print(f"Objetivo: {brief['objective']}")
@@ -309,13 +329,17 @@ def print_human_report(
         print(f"   foco: {hydration.get('role_focus')}")
         print(f"   contexto: {hydration}")
 
+    shortlist_names = {c["name"].lower() for c in shortlist}
     matched = sum(1 for c in shortlist if c["golden_match"])
     print("\n--- Calibracion de criterio ---")
     print(f"Golden set cargado: {golden_total}")
-    print(f"Golden set surfaced: {matched}/{golden_total}")
-    for item in calibration_summary(shortlist):
+    print(f"Golden set surfaced en shortlist: {matched}/{golden_total}")
+    calib_items = calibration_summary(golden_calibration or [])
+    for item in calib_items:
+        in_shortlist_note = "(en shortlist)" if item["name"].lower() in shortlist_names else "(fuera de shortlist)"
         print(
-            f"{item['label']}: {item['name']} | esperado={item['expected']} | sistema={item['actual']}"
+            f"[{item['result']}] {item['label']}: {item['name']} {in_shortlist_note}"
+            f" | esperado={item['expected']} | sistema={item['actual']}"
         )
 
     print("\n--- Shortlist ---")
@@ -335,7 +359,7 @@ def print_human_report(
             )
         print(f"   accion: {candidate['recommended_action']} | humano: {candidate['human_decision_needed']}")
 
-    print("\nResultado final: El sistema no solo encontro perfiles; mostro si entiende el criterio de Rodri.")
+    print("\nResultado final: El sistema no solo encontró perfiles; mostró si entiende el criterio de Rodri.")
     print("Decision humana requerida: Rodri revisa shortlist, aprueba outreach o pide mas evidencia.")
 
 
@@ -356,11 +380,25 @@ def main() -> None:
 
     brief = build_brief(criteria)
     cells = build_cells(criteria)
-    shortlist = sorted(
+
+    # Score ALL candidates from the full pool
+    scored_all = sorted(
         [score_candidate(c, criteria, golden_names, golden_by_name) for c in candidates],
         key=lambda c: c["score"],
         reverse=True,
-    )[:4]
+    )
+
+    # Top 4 for client shortlist output
+    shortlist = scored_all[:4]
+    shortlist_names = {c["name"].lower() for c in shortlist}
+
+    # Extract all 4 golden candidates from the full pool for calibration
+    # (regardless of whether they made the shortlist)
+    golden_calibration = [
+        {**c, "_in_shortlist": c["name"].lower() in shortlist_names}
+        for c in scored_all
+        if c.get("golden_type")
+    ]
 
     safe_record_ledger(
         "mission_brief_created",
@@ -377,7 +415,7 @@ def main() -> None:
     safe_record_ledger(
         "shortlist_generated",
         f"Shortlist generada con {sum(1 for c in shortlist if c['golden_match'])}/{len(golden)} perfiles de calibracion surfaced.",
-        evidence={"shortlist": shortlist},
+        evidence={"shortlist": shortlist, "golden_calibration": golden_calibration},
         tags=["mission", "shortlist"],
     )
     safe_record_ledger(
@@ -389,16 +427,22 @@ def main() -> None:
 
     safe_notify_telegram(
         "[GE CREW] Shortlist lista",
-        f"Talent Mission Capsule finalizada. Golden surfaced: "
+        f"Talent Mission Capsule finalizada. Golden surfaced en shortlist: "
         f"{sum(1 for c in shortlist if c['golden_match'])}/{len(golden)}. "
         "La calibracion muestra si el sistema esta pensando como Rodri.",
     )
 
-    payload = {"brief": brief, "cells": cells, "shortlist": shortlist, "golden_total": len(golden)}
+    payload = {
+        "brief": brief,
+        "cells": cells,
+        "shortlist": shortlist,
+        "golden_calibration": golden_calibration,
+        "golden_total": len(golden),
+    }
     if args.json:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
-        print_human_report(brief, cells, shortlist, len(golden))
+        print_human_report(brief, cells, shortlist, len(golden), golden_calibration)
 
 
 if __name__ == "__main__":

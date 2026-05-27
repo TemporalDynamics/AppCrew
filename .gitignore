@@ -3,6 +3,8 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
-data/state/*.db
-data/state/*.db-wal
-data/state/*.db-shm
+data/state/**/*.db
+data/state/**/*.db-wal
+data/state/**/*.db-shm
+data/state/**/*.jsonl
+verifiable-memory-mcp/
