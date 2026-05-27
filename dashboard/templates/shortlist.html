@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carpeta de Candidatos · GE</title>
+<style>
+  :root {
+    --paper:      #F7F5F0;
+    --card:       #FFFFFF;
+    --border:     #E2DDD5;
+    --border-mid: #C9C3B8;
+    --ink:        #1C1C1E;
+    --ink-mid:    #6B6869;
+    --ink-light:  #A09C98;
+    --folder-tab: #EDE9E1;
+
+    --type-obvio:    #1B4332;
+    --type-fino:     #1E3A5F;
+    --type-dudoso:   #7A4F1A;
+    --type-false:    #6B1D1D;
+    --type-disc:     #3D3B39;
+
+    --bg-obvio:   #D8F0E2;
+    --bg-fino:    #D0E4F5;
+    --bg-dudoso:  #F5E8C8;
+    --bg-false:   #F5D5D5;
+    --bg-disc:    #E8E5E0;
+
+    --action-approve: #1B4332;
+    --action-reject:  #6B1D1D;
+    --action-more:    #3D3B39;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 64px;
+  }
+
+  /* ─── Header ─── */
+  .page-header {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+  }
+  .page-header .wordmark {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+  }
+  .page-header .nav-link {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  .page-header .nav-link:hover { color: var(--ink-mid); }
+
+  /* ─── Mission strip ─── */
+  .mission-strip {
+    width: 100%;
+    max-width: 640px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    margin-bottom: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .mission-strip .label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .mission-strip .value {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+  }
+
+  /* ─── Calibración summary ─── */
+  .calib-row {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .calib-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .calib-chip .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .chip-ok   { background: #D8F0E2; color: var(--type-obvio); }
+  .chip-ok   .dot { background: var(--type-obvio); }
+  .chip-warn { background: #F5E8C8; color: var(--type-dudoso); }
+  .chip-warn .dot { background: var(--type-dudoso); }
+  .chip-bad  { background: #F5D5D5; color: var(--type-false); }
+  .chip-bad  .dot { background: var(--type-false); }
+
+  /* ─── Carpeta / folder wrapper ─── */
+  .folder-wrap {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  /* Folder tab */
+  .folder-tab {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+    background: var(--folder-tab);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    font-size: 0.75rem;
+    color: var(--ink-mid);
+  }
+  .folder-tab .counter {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 0.82rem;
+  }
+  .folder-tab .type-label {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+  .folder-tab .spacer { flex: 1; }
+  .folder-tab .progress-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .progress-dots .pdot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--border-mid);
+    transition: background 0.3s;
+  }
+  .progress-dots .pdot.active { background: var(--ink); }
+  .progress-dots .pdot.decided-approve { background: var(--type-obvio); }
+  .progress-dots .pdot.decided-reject  { background: var(--type-false); }
+
+  /* ─── Card stage (animation container) ─── */
+  .card-stage {
+    position: relative;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    background: var(--card);
+    overflow: hidden;
+    min-height: 520px;
+  }
+
+  /* ─── Individual candidate card ─── */
+  .candidate-card {
+    position: absolute;
+    inset: 0;
+    padding: 32px 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  .candidate-card.active {
+    opacity: 1;
+    pointer-events: all;
+    position: relative;
+    inset: unset;
+  }
+  .candidate-card.leaving {
+    animation: page-leave 0.28s ease-in forwards;
+    pointer-events: none;
+  }
+  .candidate-card.entering {
+    animation: page-enter 0.28s ease-out forwards;
+  }
+  .candidate-card.leaving-back {
+    animation: page-leave-back 0.28s ease-in forwards;
+    pointer-events: none;
+  }
+  .candidate-card.entering-back {
+    animation: page-enter-back 0.28s ease-out forwards;
+  }
+
+  @keyframes page-leave {
+    0%   { transform: translateX(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(-28px) rotate(-0.8deg); opacity: 0; }
+  }
+  @keyframes page-enter {
+    0%   { transform: translateX(28px) rotate(0.8deg); opacity: 0; }
+    100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+  }
+  @keyframes page-leave-back {
+    0%   { transform: translateX(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(28px) rotate(0.8deg); opacity: 0; }
+  }
+  @keyframes page-enter-back {
+    0%   { transform: translateX(-28px) rotate(-0.8deg); opacity: 0; }
+    100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+  }
+
+  /* Type accent bar at top of card */
+  .type-bar {
+    height: 3px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    flex-shrink: 0;
+  }
+  .bar-obvio   { background: var(--type-obvio); }
+  .bar-fino    { background: var(--type-fino); }
+  .bar-dudoso  { background: var(--type-dudoso); }
+  .bar-false   { background: var(--type-false); }
+  .bar-disc    { background: var(--type-disc); }
+
+  /* Name + role block */
+  .name-block { margin-bottom: 24px; }
+  .name-block .name {
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 6px;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+  .name-block .role-line {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .name-block .company { font-weight: 600; color: var(--ink); }
+  .name-block .sep { color: var(--border-mid); }
+  .name-block .market-tag {
+    font-size: 0.7rem;
+    background: var(--folder-tab);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: var(--ink-mid);
+  }
+
+  /* Score */
+  .score-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  .score-num {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .score-denom {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+  }
+  .score-criteria {
+    margin-left: 12px;
+    font-size: 0.78rem;
+    color: var(--ink-mid);
+  }
+  .score-high { color: var(--type-obvio); }
+  .score-mid  { color: var(--type-dudoso); }
+  .score-low  { color: var(--type-false); }
+
+  /* Divider */
+  .rule {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+    flex-shrink: 0;
+  }
+
+  /* Signals */
+  .signals-block { margin-bottom: 20px; }
+  .signals-block .block-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+  .signals-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
+  .signal-tag {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    color: var(--ink-mid);
+    background: var(--paper);
+  }
+  .signal-tag.risk {
+    background: #FEF3EC;
+    border-color: #F0C89A;
+    color: var(--type-dudoso);
+  }
+  .signals-wrap.empty { color: var(--ink-light); font-size: 0.8rem; font-style: italic; }
+
+  /* Why block */
+  .why-block {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink-mid);
+    margin-bottom: 24px;
+    padding: 14px 16px;
+    background: var(--paper);
+    border-radius: 4px;
+    border-left: 2px solid var(--border-mid);
+  }
+
+  /* Calibration info */
+  .calib-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .calib-obvio  { background: var(--bg-obvio);  color: var(--type-obvio); }
+  .calib-fino   { background: var(--bg-fino);   color: var(--type-fino);  }
+  .calib-dudoso { background: var(--bg-dudoso); color: var(--type-dudoso);}
+  .calib-false  { background: var(--bg-false);  color: var(--type-false); }
+  .calib-disc   { background: var(--bg-disc);   color: var(--type-disc);  }
+
+  /* Action buttons */
+  .actions-block {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .action-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .action-btn:active { transform: translateY(0); }
+  .action-btn.approve {
+    background: var(--type-obvio);
+    color: #fff;
+  }
+  .action-btn.reject {
+    background: transparent;
+    border-color: var(--border-mid);
+    color: var(--ink-mid);
+  }
+  .action-btn.reject:hover { border-color: var(--type-false); color: var(--type-false); }
+  .action-btn.more {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--ink-light);
+    font-weight: 400;
+  }
+  .action-btn.decided-approve {
+    background: var(--bg-obvio);
+    color: var(--type-obvio);
+    border-color: transparent;
+    cursor: default;
+  }
+  .action-btn.decided-reject {
+    background: var(--bg-false);
+    color: var(--type-false);
+    border-color: transparent;
+    cursor: default;
+  }
+
+  /* Approval note */
+  .approval-note {
+    font-size: 0.72rem;
+    color: var(--ink-light);
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── Card navigation ─── */
+  .card-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+  .nav-btn {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--ink-mid);
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .nav-btn:hover { border-color: var(--border-mid); color: var(--ink); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-count {
+    font-size: 0.75rem;
+    color: var(--ink-light);
+  }
+
+  /* ─── Decision summary ─── */
+  .decision-bar {
+    width: 100%;
+    max-width: 640px;
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: var(--folder-tab);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .decision-bar .label { font-size: 0.72rem; color: var(--ink-light); letter-spacing: 0.06em; text-transform: uppercase; }
+  .decision-bar .tally { display: flex; gap: 20px; }
+  .tally-item { text-align: center; }
+  .tally-item .num { font-size: 1.2rem; font-weight: 700; display: block; }
+  .tally-item .lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); }
+  .num-approve { color: var(--type-obvio); }
+  .num-reject  { color: var(--type-false); }
+  .num-pending { color: var(--ink-mid); }
+
+  /* ─── Empty state ─── */
+  .empty-state {
+    width: 100%;
+    max-width: 640px;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--ink-light);
+  }
+  .empty-state .big { font-size: 1.1rem; margin-bottom: 12px; color: var(--ink-mid); }
+  .empty-state .small { font-size: 0.85rem; line-height: 1.6; }
+  .empty-state code {
+    background: var(--folder-tab);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 520px) {
+    body { padding: 20px 12px 48px; }
+    .candidate-card { padding: 24px 20px 20px; }
+    .name-block .name { font-size: 1.3rem; }
+    .score-num { font-size: 2rem; }
+    .folder-tab { padding: 10px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <span class="wordmark">GE · Talent</span>
+  <a href="/ops" class="nav-link">← Sistema</a>
+</div>
+
+{% if not shortlist %}
+<div class="empty-state">
+  <div class="big">No hay shortlist cargada</div>
+  <div class="small">
+    Ejecutá el reset para sembrar el estado:<br><br>
+    <code>bash scripts/demo_reset.sh</code><br><br>
+    Luego recargá esta página.
+  </div>
+</div>
+{% else %}
+
+<!-- Mission strip -->
+{% if brief %}
+<div class="mission-strip">
+  <div class="label">Misión</div>
+  <div class="value">{{ brief.objective }}</div>
+  {% if brief.criteria_owner and brief.role_target %}
+  <div class="value" style="color: var(--ink-light); font-size: 0.78rem;">
+    Criterio: {{ brief.criteria_owner }} · {{ brief.role_target }}
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+<!-- Calibración summary -->
+{% if golden_calibration %}
+<div class="calib-row">
+  {% for item in golden_calibration %}
+    {% set label_map = {"obvious_yes": "Obvio", "hidden_gem": "Fino", "risky_maybe": "Dudoso", "false_positive": "Falso positivo"} %}
+    {% set ok = item.calibration_behavior in ("rank_high", "surface_as_non_obvious", "flagged_with_risk", "rejected_or_low_rank") or (item.golden_type == "false_positive" and not item._in_shortlist) %}
+    <div class="calib-chip {{ 'chip-ok' if ok else 'chip-warn' }}">
+      <span class="dot"></span>
+      {{ label_map.get(item.golden_type, item.golden_type) }} — {{ item.name.split()[0] }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Folder -->
+<div class="folder-wrap">
+  <div class="folder-tab" id="folder-tab">
+    <span class="counter" id="tab-counter">1 / {{ shortlist|length }}</span>
+    <span class="sep" style="color: var(--border-mid);">·</span>
+    <span class="type-label" id="tab-type">—</span>
+    <span class="spacer"></span>
+    <div class="progress-dots" id="progress-dots">
+      {% for c in shortlist %}
+      <span class="pdot {{ 'active' if loop.first else '' }}" data-idx="{{ loop.index0 }}"></span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card-stage" id="card-stage">
+    {% for c in shortlist %}
+    {% set idx = loop.index0 %}
+    {% set gt = c.get("golden_type", "") %}
+    {% set type_labels = {"obvious_yes": "Obvio", "hidden_gem": "Fino", "risky_maybe": "Dudoso", "false_positive": "Falso positivo"} %}
+    {% set bar_cls = {"obvious_yes": "bar-obvio", "hidden_gem": "bar-fino", "risky_maybe": "bar-dudoso", "false_positive": "bar-false"} %}
+    {% set calib_cls = {"obvious_yes": "calib-obvio", "hidden_gem": "calib-fino", "risky_maybe": "calib-dudoso", "false_positive": "calib-false"} %}
+    {% set score_cls = "score-high" if c.score >= 85 else ("score-mid" if c.score >= 70 else "score-low") %}
+
+    <div class="candidate-card {{ 'active' if idx == 0 else '' }}"
+         data-idx="{{ idx }}"
+         data-type="{{ type_labels.get(gt, 'Discovery') }}"
+         data-name="{{ c.name }}"
+         id="card-{{ idx }}">
+
+      <div class="type-bar {{ bar_cls.get(gt, 'bar-disc') }}"></div>
+
+      <div class="name-block">
+        <div class="name">{{ c.name }}</div>
+        <div class="role-line">
+          <span class="company">{{ c.company }}</span>
+          <span class="sep">·</span>
+          <span>{{ c.role }}</span>
+          <span class="market-tag">{{ c.market }}</span>
+        </div>
+      </div>
+
+      <div class="score-row">
+        <span class="score-num {{ score_cls }}">{{ c.score }}</span>
+        <span class="score-denom">/ 100</span>
+        <span class="score-criteria">{{ c.criteria_match }} criterios</span>
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="signals-block">
+        <div class="block-label">Señales positivas</div>
+        <div class="signals-wrap {{ 'empty' if not c.matched_criteria else '' }}">
+          {% if c.matched_criteria %}
+            {% for s in c.matched_criteria %}
+            <span class="signal-tag">{{ s.replace("_", " ") }}</span>
+            {% endfor %}
+          {% else %}
+            <span>Sin señales fuertes detectadas</span>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if c.risks %}
+      <div class="signals-block">
+        <div class="block-label">Señales de riesgo</div>
+        <div class="signals-wrap">
+          {% for r in c.risks %}
+          <span class="signal-tag risk">{{ r.replace("_", " ") }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="why-block">{{ c.why }}</div>
+
+      {% if gt %}
+      <div class="calib-info {{ calib_cls.get(gt, 'calib-disc') }}">
+        <strong>{{ type_labels.get(gt, gt) }}</strong>
+        <span>·</span>
+        <span>Sistema: {{ c.calibration_behavior.replace("_", " ") }}</span>
+      </div>
+      {% else %}
+      <div class="calib-info calib-disc">
+        <strong>Discovery</strong>
+        <span>·</span>
+        <span>Encontrado por el sistema</span>
+      </div>
+      {% endif %}
+
+      <div class="actions-block" id="actions-{{ idx }}">
+        <button class="action-btn approve" onclick="decide({{ idx }}, 'approve')">
+          Aprobar outreach
+        </button>
+        <button class="action-btn reject" onclick="decide({{ idx }}, 'reject')">
+          Rechazar
+        </button>
+        <button class="action-btn more" onclick="decide({{ idx }}, 'more')">
+          Pedir más evidencia
+        </button>
+      </div>
+
+      <div class="approval-note">
+        Ninguna acción se ejecuta sin tu aprobación explícita.
+      </div>
+
+      <div class="card-nav">
+        <button class="nav-btn" id="btn-prev-{{ idx }}" onclick="navigate(-1)"
+          {{ 'disabled' if idx == 0 else '' }}>← Anterior</button>
+        <span class="nav-count" id="nav-count-{{ idx }}">{{ idx + 1 }} de {{ shortlist|length }}</span>
+        <button class="nav-btn" id="btn-next-{{ idx }}" onclick="navigate(1)"
+          {{ 'disabled' if loop.last else '' }}>Siguiente →</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Decision summary bar -->
+<div class="decision-bar">
+  <span class="label">Decisiones</span>
+  <div class="tally">
+    <div class="tally-item">
+      <span class="num num-approve" id="tally-approve">0</span>
+      <span class="lbl">Aprobados</span>
+    </div>
+    <div class="tally-item">
+      <span class="num num-reject" id="tally-reject">0</span>
+      <span class="lbl">Rechazados</span>
+    </div>
+    <div class="tally-item">
+      <span class="num num-pending" id="tally-pending">{{ shortlist|length }}</span>
+      <span class="lbl">Pendientes</span>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+<script>
+const TOTAL = {{ shortlist|length if shortlist else 0 }};
+let current = 0;
+const decisions = {};  // idx → 'approve' | 'reject' | 'more'
+
+const TYPE_LABELS = {
+  "obvious_yes": "Obvio",
+  "hidden_gem": "Fino",
+  "risky_maybe": "Dudoso",
+  "false_positive": "Falso positivo",
+};
+
+function getCard(idx) { return document.getElementById('card-' + idx); }
+function getDot(idx)  { return document.querySelector(`.pdot[data-idx="${idx}"]`); }
+
+function updateTab(idx) {
+  const card = getCard(idx);
+  document.getElementById('tab-counter').textContent = (idx + 1) + ' / ' + TOTAL;
+  document.getElementById('tab-type').textContent = card?.dataset.type || '—';
+}
+
+function updateTally() {
+  let approve = 0, reject = 0;
+  for (const v of Object.values(decisions)) {
+    if (v === 'approve') approve++;
+    else if (v === 'reject') reject++;
+  }
+  document.getElementById('tally-approve').textContent = approve;
+  document.getElementById('tally-reject').textContent = reject;
+  document.getElementById('tally-pending').textContent = TOTAL - Object.keys(decisions).length;
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 0 || next >= TOTAL) return;
+
+  const leaving = getCard(current);
+  const entering = getCard(next);
+  const leaveClass = dir > 0 ? 'leaving' : 'leaving-back';
+  const enterClass = dir > 0 ? 'entering' : 'entering-back';
+
+  leaving.classList.remove('active');
+  leaving.classList.add(leaveClass);
+  leaving.style.position = 'absolute';
+
+  entering.style.position = 'absolute';
+  entering.classList.add(enterClass);
+
+  // Update dots
+  getDot(current)?.classList.remove('active');
+  const decision = decisions[current];
+  if (decision === 'approve') getDot(current)?.classList.add('decided-approve');
+  else if (decision === 'reject') getDot(current)?.classList.add('decided-reject');
+
+  setTimeout(() => {
+    leaving.classList.remove(leaveClass);
+    leaving.style.position = 'absolute';
+    leaving.style.opacity = '0';
+    leaving.style.pointerEvents = 'none';
+
+    entering.classList.remove(enterClass);
+    entering.classList.add('active');
+    entering.style.position = 'relative';
+    entering.style.opacity = '1';
+
+    getDot(next)?.classList.add('active');
+    current = next;
+    updateTab(current);
+  }, 280);
+}
+
+function decide(idx, action) {
+  decisions[idx] = action;
+
+  const actionsEl = document.getElementById('actions-' + idx);
+  const labelMap = {
+    approve: '✓ Outreach aprobado',
+    reject: '✗ Rechazado',
+    more: '⟳ Más evidencia solicitada',
+  };
+  const clsMap = { approve: 'decided-approve', reject: 'decided-reject', more: 'decided-approve' };
+
+  actionsEl.innerHTML = `<div class="action-btn ${clsMap[action]}" style="cursor:default">${labelMap[action]}</div>`;
+
+  const dot = getDot(idx);
+  if (dot) {
+    dot.classList.remove('active');
+    if (action === 'approve' || action === 'more') dot.classList.add('decided-approve');
+    else dot.classList.add('decided-reject');
+  }
+
+  updateTally();
+
+  // Auto-advance after brief pause
+  setTimeout(() => {
+    if (idx + 1 < TOTAL) navigate(1);
+  }, 600);
+}
+
+// Init
+updateTab(0);
+</script>
+</body>
+</html>

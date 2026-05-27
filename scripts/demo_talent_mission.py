@@ -364,10 +364,23 @@ def print_human_report(
 
 
 def main() -> None:
+    import contextlib
+
     parser = argparse.ArgumentParser(description="Run the GE Talent Mission Capsule demo")
     parser.add_argument("--json", action="store_true", help="Print machine-readable JSON")
     args = parser.parse_args()
 
+    # In JSON mode redirect operational prints to stderr; stdout stays clean for JSON.
+    _redirect = contextlib.redirect_stdout(sys.stderr) if args.json else contextlib.nullcontext()
+
+    with _redirect:
+        payload = _run(args)
+
+    if args.json:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+
+
+def _run(args: argparse.Namespace) -> dict:
     criteria = load_yaml(CRITERIA_PATH)
     if not criteria:
         raise SystemExit(
@@ -439,10 +452,9 @@ def main() -> None:
         "golden_calibration": golden_calibration,
         "golden_total": len(golden),
     }
-    if args.json:
-        print(json.dumps(payload, ensure_ascii=False, indent=2))
-    else:
+    if not args.json:
         print_human_report(brief, cells, shortlist, len(golden), golden_calibration)
+    return payload
 
 
 if __name__ == "__main__":

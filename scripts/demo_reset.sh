@@ -24,11 +24,12 @@ echo "[2/4] Cargando criterio de Rodri..."
 $PYTHON scripts/demo_criterion_intake.py --demo
 echo "  ✓ Criterio listo en data/demo_rodri_criteria.yaml"
 
-# 3. Correr talent mission para sembrar estado
+# 3. Correr talent mission para sembrar estado y cache JSON
 echo ""
 echo "[3/4] Ejecutando Talent Mission Capsule..."
 $PYTHON scripts/demo_talent_mission.py
-echo "  ✓ Shortlist generada, ledger sembrado, Telegram notificado."
+$PYTHON scripts/demo_talent_mission.py --json > data/shortlist_cache.json 2>/dev/null
+echo "  ✓ Shortlist generada, ledger sembrado, cache JSON listo."
 
 # 4. Verificar integridad del ledger
 echo ""

@@ -4,7 +4,12 @@ import sys
 import re
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 import yaml
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi import Header, HTTPException
 from fastapi.responses import HTMLResponse
@@ -148,6 +153,25 @@ def _build_brief(status: dict, pending: list[dict]) -> dict:
 async def landing():
     template = templates.get_template("landing.html")
     return template.render()
+
+
+@app.get("/shortlist", response_class=HTMLResponse)
+async def shortlist_view():
+    cache_path = ROOT / "data" / "shortlist_cache.json"
+    data: dict = {}
+    if cache_path.exists():
+        try:
+            data = json.loads(cache_path.read_text(encoding="utf-8"))
+        except Exception:
+            data = {}
+    template = templates.get_template("shortlist.html")
+    return template.render(
+        shortlist=data.get("shortlist", []),
+        golden_calibration=data.get("golden_calibration", []),
+        golden_total=data.get("golden_total", 0),
+        brief=data.get("brief", {}),
+        cells=data.get("cells", []),
+    )
 
 
 @app.get("/ops", response_class=HTMLResponse)
@@ -406,3 +430,7 @@ async def api_firecrawl_scrape(
         },
         "raw": raw,
     }
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8080, reload=False, log_level="info")
