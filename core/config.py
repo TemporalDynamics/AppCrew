@@ -30,7 +30,11 @@ class Settings(BaseSettings):
     # Playwright
     playwright_skip_browser_download: bool = False
 
-    model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+    # Telegram
+    telegram_bot_token: str = ""
+    telegram_chat_id: str = ""
+
+    model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "extra": "ignore"}
 
 
 settings = Settings()

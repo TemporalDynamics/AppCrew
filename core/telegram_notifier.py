@@ -13,9 +13,9 @@ def _esc(text: str) -> str:
 
 class TelegramNotifier:
     def __init__(self, bot_token: str | None = None, chat_id: str | None = None):
-        # Read from config/env or fall back
-        self.bot_token = bot_token or os.getenv("TELEGRAM_BOT_TOKEN", "")
-        self.chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID", "")
+        from core.config import settings
+        self.bot_token = bot_token or settings.telegram_bot_token or os.getenv("TELEGRAM_BOT_TOKEN", "")
+        self.chat_id = chat_id or settings.telegram_chat_id or os.getenv("TELEGRAM_CHAT_ID", "")
         self.enabled = bool(self.bot_token and self.chat_id)
 
     def send_raw_message(self, text: str, escaped: bool = False) -> bool:
