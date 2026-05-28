@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blind Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #080B12;
+  --bg-surface: #0F172A;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2332;
+  --border: #1F2937;
+  --border-active: #2a3a4f;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --accent: #38BDF8;
+  --accent-dim: #0EA5E9;
+  --accent-glow: rgba(56,189,248,0.08);
+  --success: #22C55E;
+  --success-bg: rgba(34,197,94,0.08);
+  --warning: #F59E0B;
+  --warning-bg: rgba(245,158,11,0.08);
+  --error: #EF4444;
+  --error-bg: rgba(239,68,68,0.08);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top:0; z-index:10;
+}
+.header h1 { font-size:0.85rem; font-weight:700; letter-spacing:-0.02em; }
+.header .sub { font-size:0.6rem; color:var(--text-muted); }
+.header-actions { display:flex; gap:0.5rem; align-items:center; }
+.header-btn {
+  padding:0.35rem 0.85rem; border-radius:var(--radius-sm);
+  font-size:0.72rem; font-weight:500; cursor:pointer;
+  border:1px solid var(--border); background:var(--bg-surface);
+  color:var(--text-secondary); transition:all 0.15s; text-decoration:none;
+}
+.header-btn:hover { background:var(--bg-card-hover); color:var(--text-primary); }
+.header-btn.primary { background:var(--accent); color:#000; border-color:var(--accent); font-weight:600; }
+.header-btn.primary:hover { filter:brightness(1.15); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 1.5rem; }
+
+.intro {
+  text-align:center; margin-bottom:1.5rem;
+  padding:1rem; border-radius:var(--radius);
+  background:linear-gradient(135deg, var(--bg-card), rgba(56,189,248,0.04));
+  border:1px solid rgba(56,189,248,0.15);
+}
+.intro h2 { font-size:0.8rem; font-weight:600; color:var(--accent); letter-spacing:0.04em; text-transform:uppercase; margin-bottom:0.3rem; }
+.intro p { font-size:0.7rem; color:var(--text-muted); max-width:500px; margin:0 auto; }
+.intro strong { color:var(--text-secondary); }
+
+.card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:1.25rem; margin-bottom:0.75rem;
+  transition:all 0.15s;
+}
+.card:hover { border-color:var(--border-active); }
+.card.revealed { border-color:var(--success); background:linear-gradient(135deg, var(--bg-card), rgba(34,197,94,0.04)); }
+
+.card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; }
+.card-band {
+  font-size:0.55rem; padding:0.1rem 0.4rem; border-radius:999px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.06em;
+}
+.band-high { background:var(--success-bg); color:var(--success); }
+.band-medium { background:var(--warning-bg); color:var(--warning); }
+.band-low { background:var(--error-bg); color:var(--error); }
+.card-source {
+  font-size:0.55rem; color:var(--text-muted);
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+.card-identity {
+  display:none; margin-bottom:0.5rem; padding:0.5rem 0.75rem;
+  background:var(--bg-surface); border-radius:var(--radius-sm);
+  border:1px solid var(--success);
+}
+.card-identity.visible { display:block; }
+.identity-name { font-size:0.9rem; font-weight:700; }
+.identity-role { font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.15rem; }
+.identity-links { font-size:0.6rem; }
+.identity-links a { color:var(--accent); }
+
+.card-evidence { margin:0.5rem 0; }
+.evidence-item {
+  font-size:0.7rem; padding:0.25rem 0; color:var(--text-secondary);
+  display:flex; gap:0.4rem;
+}
+.evidence-signal { color:var(--accent); font-weight:500; min-width:8em; }
+.evidence-source { color:var(--text-muted); font-size:0.6rem; }
+.evidence-inferred { font-size:0.55rem; color:var(--warning); }
+
+.card-skills { display:flex; flex-wrap:wrap; gap:0.25rem; margin:0.5rem 0; }
+.skill-tag {
+  font-size:0.6rem; padding:0.1rem 0.4rem; border-radius:4px;
+  background:var(--bg-surface); color:var(--text-muted); border:1px solid var(--border);
+}
+
+.card-reason {
+  font-size:0.7rem; color:var(--text-secondary);
+  padding:0.4rem 0; border-top:1px solid var(--border); margin-top:0.4rem;
+}
+
+.card-actions { display:flex; gap:0.3rem; margin-top:0.5rem; }
+.card-actions button {
+  padding:0.35rem 0.85rem; border-radius:6px; font-size:0.68rem;
+  font-weight:500; cursor:pointer; border:none; transition:all 0.15s;
+}
+.btn-reveal { background:var(--accent); color:#000; }
+.btn-reveal:hover { filter:brightness(1.15); }
+.btn-shortlist { background:var(--success); color:#000; }
+.btn-shortlist:hover { filter:brightness(1.15); }
+.btn-dismiss { background:var(--error-bg); color:var(--error); }
+.btn-dismiss:hover { background:rgba(239,68,68,0.2); }
+
+.empty-state {
+  text-align:center; padding:3rem 1rem; color:var(--text-muted);
+}
+.empty-state h3 { font-size:1rem; margin-bottom:0.5rem; color:var(--text-secondary); }
+.empty-state p { font-size:0.78rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Blind Review</h1>
+    <span class="sub">Revisión anonimizada — sin sesgo de identidad</span>
+  </div>
+  <div class="header-actions">
+    <span style="font-size:0.65rem;color:var(--text-muted);">{{ candidates|length }} candidatos</span>
+    <a class="header-btn" href="/">Command Room</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <h2>Evaluación a ciegas</h2>
+    <p>
+      Estos perfiles se muestran <strong>sin nombre ni datos identificatorios</strong>
+      para reducir el sesgo temprano. Podés revelar la identidad cuando quieras.
+      Tu decisión se registra junto con la señal que la motivó.
+    </p>
+  </div>
+
+  {% if candidates %}
+    {% for c in candidates %}
+    <div class="card" id="card-{{ c.candidate_id }}">
+      <div class="card-header">
+        <span class="card-band band-{{ c.band or 'medium' }}">{{ c.band_label or 'Media prioridad' }}</span>
+        <span class="card-source">{{ c.source_label or c.source or '—' }}</span>
+      </div>
+
+      <div class="card-identity" id="identity-{{ c.candidate_id }}">
+        <div class="identity-name">{{ c.full_name or '—' }}</div>
+        <div class="identity-role">{{ c.current_role or '' }}{% if c.company %} en {{ c.company }}{% endif %}</div>
+        {% if c.source_url %}
+        <div class="identity-links"><a href="{{ c.source_url }}" target="_blank">Ver perfil original →</a></div>
+        {% endif %}
+      </div>
+
+      <div class="card-evidence">
+        {% for ev in c.evidence %}
+        <div class="evidence-item">
+          <span class="evidence-signal">{{ ev.signal_name }}</span>
+          <span>{{ ev.keyword_triggered or '' }}</span>
+          {% if ev.confidence_impact == 'inferred' %}
+          <span class="evidence-inferred">📡 inferido</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if c.skills %}
+      <div class="card-skills">
+        {% for sk in c.skills[:8] %}
+        <span class="skill-tag">{{ sk }}</span>
+        {% endfor %}
+        {% if c.skills|length > 8 %}
+        <span class="skill-tag">+{{ c.skills|length - 8 }}</span>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if c.reason %}
+      <div class="card-reason">{{ c.reason[:200] }}</div>
+      {% endif %}
+
+      <div class="card-actions">
+        <button class="btn-shortlist" onclick="shortlist('{{ c.candidate_id }}')">★ Shortlist</button>
+        <button class="btn-dismiss" onclick="dismiss('{{ c.candidate_id }}')">✕ Descartar</button>
+        <button class="btn-reveal" id="reveal-btn-{{ c.candidate_id }}"
+          {% if c.revealed %}style="display:none"{% endif %}
+          onclick="revealIdentity('{{ c.candidate_id }}')">👁 Revelar identidad</button>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <h3>No hay candidatos pendientes</h3>
+      <p>Los candidatos aparecen aquí después de una búsqueda, sin datos identificatorios.</p>
+      <p style="margin-top:0.5rem;"><a href="/" style="color:var(--accent);">Volver a Command Room</a></p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+async function api(method, url, body) {
+  const opts = { method, headers: {'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  return res.json();
+}
+
+function revealIdentity(candidateId) {
+  if (!confirm('Al revelar la identidad, verás el nombre y datos identificatorios del candidato. ¿Continuar?')) return;
+  api('POST', '/api/blind/reveal/' + candidateId).then(r => {
+    if (r.success) {
+      document.getElementById('identity-' + candidateId).classList.add('visible');
+      document.getElementById('reveal-btn-' + candidateId).style.display = 'none';
+      document.getElementById('card-' + candidateId).classList.add('revealed');
+    }
+  });
+}
+
+function shortlist(candidateId) {
+  api('POST', '/api/blind/shortlist/' + candidateId, {action: 'shortlisted', stage: 'blind'}).then(r => {
+    if (r.success) {
+      const card = document.getElementById('card-' + candidateId);
+      card.style.opacity = '0.3';
+      card.querySelectorAll('.card-actions button').forEach(b => b.disabled = true);
+    }
+  });
+}
+
+function dismiss(candidateId) {
+  api('POST', '/api/blind/dismiss/' + candidateId, {action: 'dismissed', stage: 'blind'}).then(r => {
+    if (r.success) {
+      const card = document.getElementById('card-' + candidateId);
+      card.style.opacity = '0.3';
+      card.querySelectorAll('.card-actions button').forEach(b => b.disabled = true);
+    }
+  });
+}
+</script>
+</body>
+</html>

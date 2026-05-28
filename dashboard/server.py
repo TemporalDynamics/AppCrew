@@ -10,7 +10,7 @@ if str(ROOT) not in sys.path:
 
 import yaml
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi import Header, HTTPException
 from fastapi.responses import HTMLResponse
 from jinja2 import Environment, FileSystemLoader
@@ -18,12 +18,29 @@ from jinja2 import Environment, FileSystemLoader
 from core.orchestrator import Orchestrator
 from core.heartbeat import HeartbeatStore
 from core.config import settings
+from core.talent_pool import TalentPool
+from core.workspace import WorkspaceManager
 
 app = FastAPI()
 orch = Orchestrator()
 
+# Seed SelectaHR workspace on startup
+TalentPool.seed_selectahr()
+
 HERE = Path(__file__).parent
 templates = Environment(loader=FileSystemLoader(HERE / "templates"))
+
+
+def get_workspace(request: Request) -> dict:
+    """FastAPI dependency: resolve workspace from X-Workspace-Token header or ?token= param."""
+    token = request.headers.get("X-Workspace-Token", "").strip()
+    if not token:
+        token = request.query_params.get("token", "").strip()
+    if token:
+        ws = WorkspaceManager.get_by_token(token)
+        if ws:
+            return ws
+    return WorkspaceManager.get_default()
 
 
 def _require_api_token(authorization: str | None, x_api_key: str | None) -> None:
@@ -99,6 +116,13 @@ def _build_brief(status: dict, pending: list[dict]) -> dict:
         brief_parts.append(f"✉️ <strong>{by_type['inmail']} draft(s)</strong> de Outreach listos para aprobación.")
     if by_type.get("candidate", 0) > 0:
         brief_parts.append(f"🎯 <strong>{by_type['candidate']} candidato(s)</strong> nuevos por revisar.")
+        # Count candidates with inferred signals
+        inferred_count = sum(
+            1 for p in pending
+            if p.get("action_type") == "candidate" and p.get("payload", {}).get("signals_inferred")
+        )
+        if inferred_count:
+            brief_parts.append(f"📡 <strong>{inferred_count}</strong> con señales inferidas (no verificadas).")
     if by_type.get("quality_issue", 0) > 0:
         brief_parts.append(f"🔧 <strong>{by_type['quality_issue']} issue(s)</strong> de calidad pendientes.")
 
@@ -149,6 +173,13 @@ def _build_brief(status: dict, pending: list[dict]) -> dict:
     }
 
 
+@app.get("/workspace/info")
+async def workspace_info(workspace: dict = Depends(get_workspace)):
+    """Return the active workspace config without exposing the token."""
+    safe = {k: v for k, v in workspace.items() if k != "token"}
+    return safe
+
+
 @app.get("/", response_class=HTMLResponse)
 async def landing():
     template = templates.get_template("landing.html")
@@ -172,6 +203,55 @@ async def shortlist_view():
         brief=data.get("brief", {}),
         cells=data.get("cells", []),
     )
+
+
+@app.get("/coverage", response_class=HTMLResponse)
+async def coverage_page(request: Request, workspace: dict = Depends(get_workspace)):
+    workspace_id = workspace.get("id", "default")
+    try:
+        from core.talent_pool import TalentPool
+        import sqlite3
+        from pathlib import Path
+        db_path = Path("data/state/talent_pool.db")
+        if db_path.exists():
+            conn = sqlite3.connect(str(db_path))
+            conn.row_factory = sqlite3.Row
+            searches = conn.execute(
+                "SELECT * FROM search_requests ORDER BY created_at DESC LIMIT 10"
+            ).fetchall()
+            searches = [dict(s) for s in searches]
+            conn.close()
+        else:
+            searches = []
+        coverage_data = []
+        pool = TalentPool()
+        for s in searches:
+            search_id = s.get("search_id", "")
+            if search_id:
+                cov = pool.get_search_coverage(search_id, workspace_id=workspace_id)
+            else:
+                cov = {"total_matches": 0, "by_band": {}, "by_source": {}, "by_status": {}}
+            coverage_data.append({**s, "coverage": cov})
+        pool_size = pool.get_pool_size(workspace_id=workspace_id)
+    except Exception:
+        searches = []
+        coverage_data = []
+        pool_size = 0
+
+    template = templates.get_template("coverage.html")
+    return template.render(
+        searches=coverage_data,
+        pool_size=pool_size,
+    )
+
+
+@app.get("/blind", response_class=HTMLResponse)
+async def blind_review(workspace: dict = Depends(get_workspace)):
+    workspace_id = workspace.get("id", "default")
+    pool = TalentPool()
+    with_evidence = pool._get_candidates_with_evidence(workspace_id=workspace_id)
+    template = templates.get_template("blind_review.html")
+    return template.render(candidates=with_evidence)
 
 
 @app.get("/ops", response_class=HTMLResponse)
@@ -311,6 +391,43 @@ async def api_run_all(
     return {k: len(v) for k, v in results.items()}
 
 
+@app.get("/api/workspace/{name}")
+async def api_workspace(name: str):
+    ws = TalentPool.get_workspace(name)
+    if not ws:
+        return {"error": "not_found"}
+    ws["users"] = TalentPool.get_users(ws["workspace_id"])
+    return ws
+
+
+@app.post("/api/blind/reveal/{candidate_id}")
+async def blind_reveal(candidate_id: str):
+    pool = TalentPool()
+    full = pool.get_full_candidate(candidate_id)
+    if not full:
+        return {"success": False, "error": "not_found"}
+    pool.record_review(candidate_id, decision="reviewed", comment="revealed by human")
+    return {"success": True, "candidate_id": candidate_id}
+
+
+@app.post("/api/blind/shortlist/{candidate_id}")
+async def blind_shortlist(candidate_id: str, request: Request):
+    pool = TalentPool()
+    body = await request.json()
+    pool.record_review(candidate_id, decision=body.get("action", "shortlisted"),
+                       comment=body.get("comment", ""), reviewer="human")
+    return {"success": True}
+
+
+@app.post("/api/blind/dismiss/{candidate_id}")
+async def blind_dismiss(candidate_id: str, request: Request):
+    pool = TalentPool()
+    body = await request.json()
+    pool.record_review(candidate_id, decision=body.get("action", "rejected"),
+                       comment=body.get("comment", ""), reviewer="human")
+    return {"success": True}
+
+
 @app.get("/api/agent/{agent_id}")
 async def api_agent_detail(agent_id: str):
     detail = orch.get_agent_detail(agent_id)
@@ -430,6 +547,10 @@ async def api_firecrawl_scrape(
         },
         "raw": raw,
     }
+
+
+from dashboard.api_v1 import router as api_router
+app.include_router(api_router, prefix="/api/v1")
 
 
 if __name__ == "__main__":

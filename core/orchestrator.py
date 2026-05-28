@@ -16,6 +16,14 @@ from agents.tester import TesterAgent
 from agents.doctrine_keeper import DoctrineKeeperAgent
 from agents.talent_signal import TalentSignalAgent
 from agents.career_context import CareerContextAgent
+
+from agents.intake_agent import IntakeAgent
+from agents.criteria_agent import CriteriaAgent
+from agents.normalization_agent import NormalizationAgent
+from agents.deduplication_agent import DeduplicationAgent
+from agents.evidence_agent import EvidenceAgent
+from agents.memory_update_agent import MemoryUpdateAgent
+
 from contracts import RunRecord
 
 
@@ -71,7 +79,7 @@ class Orchestrator:
         career_context.bind_doctrine(doctrine)
         self.agents["career_context"] = career_context
 
-        registry = {
+        legacy_registry = {
             "demand_radar": DemandRadarAgent,
             "talent_sourcing": TalentSourcingAgent,
             "fit_scoring": FitScoringAgent,
@@ -79,7 +87,19 @@ class Orchestrator:
             "knowledge": KnowledgeAgent,
             "qa": QAAgent,
         }
-        for agent_id, cls in registry.items():
+        for agent_id, cls in legacy_registry.items():
+            if cfg.get(agent_id, {}).get("enabled", True):
+                self.agents[agent_id] = cls(self.config)
+
+        pipeline_registry = {
+            "intake": IntakeAgent,
+            "criteria": CriteriaAgent,
+            "normalization": NormalizationAgent,
+            "deduplication": DeduplicationAgent,
+            "evidence": EvidenceAgent,
+            "memory_update": MemoryUpdateAgent,
+        }
+        for agent_id, cls in pipeline_registry.items():
             if cfg.get(agent_id, {}).get("enabled", True):
                 self.agents[agent_id] = cls(self.config)
 
@@ -138,8 +158,35 @@ class Orchestrator:
 
     async def run_all(self) -> dict[str, list[AgentAction]]:
         results = {}
-        for agent_id, agent in self.agents.items():
-            results[agent_id] = await self.run_agent(agent_id)
+
+        import asyncio
+
+        # Fase 1: inteligencia de mercado (paralela)
+        phase1 = ["demand_radar", "knowledge", "criteria"]
+        phase1_tasks = {aid: self.run_agent(aid) for aid in phase1 if aid in self.agents}
+        phase1_results = await asyncio.gather(*phase1_tasks.values(), return_exceptions=True)
+        for aid, result in zip(phase1_tasks.keys(), phase1_results):
+            results[aid] = result if not isinstance(result, Exception) else []
+
+        # Fase 2: sourcing + intake (paralela)
+        phase2 = ["talent_sourcing", "intake", "normalization", "deduplication"]
+        phase2_tasks = {aid: self.run_agent(aid) for aid in phase2 if aid in self.agents}
+        phase2_results = await asyncio.gather(*phase2_tasks.values(), return_exceptions=True)
+        for aid, result in zip(phase2_tasks.keys(), phase2_results):
+            results[aid] = result if not isinstance(result, Exception) else []
+
+        # Fase 3: análisis (paralela)
+        phase3 = ["talent_signal", "career_context", "fit_scoring", "evidence"]
+        phase3_tasks = {aid: self.run_agent(aid) for aid in phase3 if aid in self.agents}
+        phase3_results = await asyncio.gather(*phase3_tasks.values(), return_exceptions=True)
+        for aid, result in zip(phase3_tasks.keys(), phase3_results):
+            results[aid] = result if not isinstance(result, Exception) else []
+
+        # Fase 4: memoria + QA + outreach (serial — dependen de fases anteriores)
+        for aid in ["memory_update", "qa", "outreach", "ceo"]:
+            if aid in self.agents:
+                results[aid] = await self.run_agent(aid)
+
         return results
 
     def get_pending_actions(self) -> list[dict]:

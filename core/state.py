@@ -11,7 +11,7 @@ DATA_DIR = ROOT / "data"
 STATE_DIR = DATA_DIR / "state"
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 
-DB_PATH = STATE_DIR / "ge_state.db"
+DB_PATH = STATE_DIR / "state.db"
 RUNS_FILE = STATE_DIR / "runs.json"
 ACTIONS_FILE = STATE_DIR / "actions.json"
 AGENTS_FILE = STATE_DIR / "agent_states.json"

@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import argparse
+import asyncio
 import json
 import sys
+import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -14,69 +17,13 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from core.demo_notifiers import safe_notify_telegram, safe_record_ledger
+from core.sources.aggregator import TalentSourceAggregator
+from core.talent_pool import TalentPool
+from contracts.talent import CandidateSignal, CandidateEvidence
 
 
 CRITERIA_PATH = Path("data/demo_rodri_criteria.yaml")
 GOLDEN_PATH = Path("data/demo_golden_candidates.yaml")
-
-
-DEMO_CANDIDATES: list[dict[str, Any]] = [
-    {
-        "name": "Jorge Martínez",
-        "role": "VP Operations",
-        "company": "Kueski",
-        "market": "Mexico",
-        "industry": "fintech",
-        "signals": ["scaled_team_20_plus", "managed_pnl", "worked_in_scaleup_context", "shows_ownership_beyond_title"],
-        "risk_signals": [],
-        "why": "Escaló equipo de ops de 12 a 55 personas en 18 meses. Abrió hub Monterrey. P&L real de cobranza y underwriting.",
-        "recommended_action": "prepare_warm_intro",
-    },
-    {
-        "name": "Sofía Herrera",
-        "role": "Country Manager",
-        "company": "Pagali",
-        "market": "LATAM",
-        "industry": "fintech",
-        "signals": ["opened_new_market", "managed_pnl", "worked_in_scaleup_context"],
-        "risk_signals": [],
-        "why": "Abrió Colombia y Perú desde cero. P&L de USD 4M. Perfil bajo radar que requiere leer entre líneas.",
-        "recommended_action": "review_profile",
-    },
-    {
-        "name": "Carlos Mendoza",
-        "role": "VP Digital",
-        "company": "Banorte",
-        "market": "Mexico",
-        "industry": "fintech",
-        "signals": ["shows_ownership_beyond_title", "worked_in_scaleup_context"],
-        "risk_signals": ["purely_corporate_without_ownership"],
-        "why": "Lideró transformación digital en banca retail con equipo de 40+. Requiere validar si el ownership fue real o solo autoridad de presupuesto.",
-        "recommended_action": "ask_validation_questions",
-    },
-    {
-        "name": "Andrés Torres",
-        "role": "Director of Growth",
-        "company": "Jüsto",
-        "market": "LATAM",
-        "industry": "e-commerce",
-        "signals": ["scaled_team_20_plus", "opened_new_market"],
-        "risk_signals": ["too_many_short_tenures"],
-        "why": "Logos impresionantes: Rappi, Cornershop, NotCo, Jüsto. Señal de riesgo: cada posición duró 8-10 meses.",
-        "recommended_action": "human_review",
-    },
-    {
-        "name": "Paula Benítez",
-        "role": "Head of Growth",
-        "company": "PagoNorte",
-        "market": "Mexico",
-        "industry": "fintech",
-        "signals": ["opened_new_market", "shows_ownership_beyond_title"],
-        "risk_signals": ["title_inflation_without_metrics"],
-        "why": "Señal de crecimiento comercial y ownership, pero faltan métricas públicas que respalden el título.",
-        "recommended_action": "secondary_candidate",
-    },
-]
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -158,7 +105,12 @@ def score_candidate(
 
     criteria_total = max(len(positive), 1)
     criteria_match = len(matched)
-    score = 55 + criteria_match * 8
+
+    # Confidence decay: signals inferred from external keyword matching carry half weight
+    # vs. signals declared explicitly (golden set, structured criteria responses)
+    signal_weight = 4 if candidate.get("signals_inferred") else 8
+
+    score = 55 + criteria_match * signal_weight
     if market_match:
         score += 6
     if industry_match:
@@ -218,22 +170,41 @@ def candidate_from_golden(talent: dict[str, Any], criteria: dict[str, Any], idx:
     }
 
 
-def build_candidate_pool(golden: list[dict[str, Any]], criteria: dict[str, Any]) -> list[dict[str, Any]]:
-    by_name: dict[str, dict[str, Any]] = {
-        c["name"].lower(): {**c, "source": c.get("source", "demo_discovery")}
-        for c in DEMO_CANDIDATES
-    }
+async def fetch_live_candidates(criteria: dict[str, Any]) -> list[dict[str, Any]]:
+    """Run the aggregator (Torre + Brave + seed fallback) and convert to scoring dict format."""
+    from core.sources.aggregator import TalentSourceAggregator
+    agg = TalentSourceAggregator()
+    signals = await agg.search({**criteria, "limit": 15})
+    live: list[dict[str, Any]] = []
+    for s in signals:
+        live.append(TalentSourceAggregator.signal_to_candidate_dict(s, criteria))
+    return live
+
+
+def build_candidate_pool(
+    golden: list[dict[str, Any]],
+    criteria: dict[str, Any],
+    live_candidates: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    by_name: dict[str, dict[str, Any]] = {}
+
+    # Live / real candidates (from aggregator)
+    for c in (live_candidates or []):
+        by_name[c["name"].lower()] = {**c, "source": c.get("source", "torre")}
+
+    # Golden calibration anchors — overwrite if name collision so scoring metadata is preserved
     for idx, talent in enumerate(golden):
         name = talent.get("name", "").strip()
         if not name:
             continue
         by_name[name.lower()] = {**by_name.get(name.lower(), {}), **candidate_from_golden(talent, criteria, idx)}
+
     return list(by_name.values())
 
 
 def build_brief(criteria: dict[str, Any]) -> dict[str, Any]:
     return {
-        "objective": "Recuperar pipeline ejecutivo con shortlist accionable para Global Executive.",
+        "objective": "Recuperar pipeline ejecutivo con shortlist accionable para Cerno.",
         "context": "Demo offline: capturar criterio de Rodri, hidratar celulas chicas y producir decisiones revisables.",
         "criteria_owner": criteria.get("owner", "Rodri"),
         "role_target": criteria.get("role_target", ""),
@@ -349,7 +320,10 @@ def print_human_report(
             f"{idx}. {candidate['name']} — {candidate['role']} @ {candidate['company']} "
             f"[{marker}] score={candidate['score']} criteria={candidate['criteria_match']}"
         )
-        print(f"   fuente demo: {candidate.get('source', 'demo_discovery')}")
+        source_info = candidate.get('source', 'demo_discovery')
+        if candidate.get('source_url'):
+            source_info += f" → {candidate['source_url']}"
+        print(f"   fuente: {source_info}")
         print(f"   por que: {candidate['why']}")
         print(f"   match: {', '.join(candidate['matched_criteria']) or 'sin match fuerte'}")
         print(f"   riesgo: {', '.join(candidate['risks']) or 'sin riesgo fuerte'}")
@@ -389,7 +363,17 @@ def _run(args: argparse.Namespace) -> dict:
     golden = load_yaml(GOLDEN_PATH).get("golden_candidates", [])
     golden_names = {g["name"].lower() for g in golden}
     golden_by_name = {g["name"].lower(): g for g in golden}
-    candidates = build_candidate_pool(golden, criteria)
+
+    # Generate search_id early so aggregator can record it too
+    search_id = f"search_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+
+    # Fetch real candidates from Torre / Brave (falls back to seed if no live results)
+    print("[TALENT MISSION] Buscando candidatos reales...", flush=True)
+    live_candidates = asyncio.run(fetch_live_candidates({**criteria, "search_id": search_id}))
+    live_count = sum(1 for c in live_candidates if c.get("source") != "demo_seed")
+    print(f"[TALENT MISSION] {len(live_candidates)} perfiles encontrados ({live_count} en vivo)", flush=True)
+
+    candidates = build_candidate_pool(golden, criteria, live_candidates=live_candidates)
 
     brief = build_brief(criteria)
     cells = build_cells(criteria)
@@ -401,9 +385,36 @@ def _run(args: argparse.Namespace) -> dict:
         reverse=True,
     )
 
-    # Top 4 for client shortlist output
-    shortlist = scored_all[:4]
+    # Top 8 for client shortlist (4 golden anchors + real Torre candidates)
+    shortlist = scored_all[:8]
     shortlist_names = {c["name"].lower() for c in shortlist}
+
+    # Persist search and matches into TalentPool so Coverage Report has data
+    TalentPool.record_search(search_id, criteria)
+    for c in scored_all:
+        source_url = c.get("source_url", "")
+        if not source_url:
+            source_url = f"demo_seed://{c['name'].replace(' ', '_')}"
+        signal = CandidateSignal(
+            name=c["name"],
+            current_role=c.get("role", ""),
+            company=c.get("company", ""),
+            location=f"{c.get('market', '')}",
+            source=c.get("source", "demo_seed"),
+            source_url=source_url,
+            availability_signal="demo_seed",
+            skills=c.get("signals", []),
+            raw_score=float(c["score"]),
+        )
+        dedup_key = TalentPool.upsert_candidate(signal, run_id=search_id)
+        TalentPool.record_match(
+            search_id=search_id,
+            dedup_key=dedup_key,
+            score=c["score"],
+            criteria_match=c.get("criteria_match", f"{len(c.get('matched_criteria', []))}/?"),
+            matched_criteria=c.get("matched_criteria", []),
+            risks=c.get("risks", []),
+        )
 
     # Extract all 4 golden candidates from the full pool for calibration
     # (regardless of whether they made the shortlist)
@@ -415,7 +426,7 @@ def _run(args: argparse.Namespace) -> dict:
 
     safe_record_ledger(
         "mission_brief_created",
-        "Talent Mission Capsule creada para demo Global Executive.",
+        "Talent Mission Capsule creada para demo Cerno.",
         evidence={"brief": brief},
         tags=["mission", "brief"],
     )

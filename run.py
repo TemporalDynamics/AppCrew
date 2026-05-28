@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GE Agent System — Entry Point"""
+"""Entry Point — Sourcing Platform"""
 
 import argparse
 import asyncio
@@ -9,17 +9,18 @@ from pathlib import Path
 import uvicorn
 
 from core.orchestrator import Orchestrator
+from core.config import settings
 
 
 def main():
-    parser = argparse.ArgumentParser(description="GE Autonomous Recruiting Desk")
+    parser = argparse.ArgumentParser(description="Sourcing Platform Dashboard")
     parser.add_argument("command", nargs="?", default="dashboard",
                         choices=["dashboard", "run", "run-all", "status", "task", "test"],
                         help="Comando a ejecutar")
     parser.add_argument("task_text", nargs="*", help="Texto de tarea para 'task'")
     parser.add_argument("--agent", "-a", help="Agente específico para 'run'")
-    parser.add_argument("--port", "-p", type=int, default=8080, help="Puerto del dashboard")
-    parser.add_argument("--host", default="127.0.0.1", help="Host del dashboard")
+    parser.add_argument("--port", "-p", type=int, default=settings.dashboard_port, help="Puerto del dashboard")
+    parser.add_argument("--host", default=settings.dashboard_host, help="Host del dashboard")
 
     args = parser.parse_args()
 
@@ -65,7 +66,7 @@ def main():
     elif args.command == "status":
         orch = Orchestrator()
         status = orch.get_status()
-        print(f"\n🎛️  {status['orchestrator']} — GE Recruiting Desk\n")
+        print(f"\n🎛️  {status['orchestrator']} — Cerno\n")
         for aid, agent in status["agents"].items():
             print(f"  {agent['icon']} {agent['name']:20s} {agent['state']:20s} {agent['last_action']}")
         print(f"\n  Pendientes: {status['pending_count']} · Historial total: {status['total_history']}")

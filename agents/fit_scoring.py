@@ -106,6 +106,7 @@ class FitScoringAgent(BaseAgent):
                 "skills_score": c["skills"], "experience_score": c["experience"],
                 "mobility_score": c["mobility"], "consistency_score": c["consistency"],
                 "total_score": round(total),
+                "signals_inferred": False,  # True when sourced from external API (confidence decay applies)
                 "breakdown": {n: round(c[k] * self.weights[n], 1)
                               for k, n in [("skills", "skills"), ("experience", "experience"),
                                            ("mobility", "mobility_signals"), ("consistency", "career_consistency")]},

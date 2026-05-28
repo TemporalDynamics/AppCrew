@@ -99,7 +99,7 @@ def safe_record_ledger(
         entry_hash = _sha256(_canonical(content_hash, prev_hash, created_at))
         entry_id = f"mem_ge_{uuid4().hex[:12]}"
         created_epoch = int(datetime.now(timezone.utc).timestamp() * 1000)
-        ledger_tags = sorted(set(["global_executive", "crew", event_type, *tags]))
+        ledger_tags = sorted(set(["agent_crew", event_type, *tags]))
 
         conn.execute(
             """

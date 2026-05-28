@@ -1,5 +1,5 @@
 system:
-  name: "GE Recruiting Desk"
+  name: "Cerno"
   orchestrator: "Manu"
   cadence:
     review_hour: 18

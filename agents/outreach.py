@@ -85,7 +85,7 @@ class OutreachAgent(BaseAgent):
                     "message": (
                         "Hola Carlos,\n\n"
                         "Vi que TechMex está en un momento de expansión importante "
-                        "con la Serie B. En Global Executive hemos ayudado a "
+                        "con la Serie B. En Cerno hemos ayudado a "
                         "empresas en etapa similar a encontrar talento clave "
                         "para sostener ese crecimiento.\n\n"
                         "¿Te parece si agendamos 15 min la semana que viene?\n\n"

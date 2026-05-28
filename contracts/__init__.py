@@ -44,6 +44,7 @@ class ActionType(str, Enum):
     SIGNAL = "signal"
     CONTEXT_SIGNAL = "context_signal"
     DOCTRINE_SNAPSHOT = "doctrine_snapshot"
+    NOTE = "note"
 
 
 class ReviewPolicy:
@@ -60,6 +61,7 @@ class ReviewPolicy:
         ActionType.SIGNAL.value: ["validated_signal", "needs_human_review", "weak_signal", "escalated"],
         ActionType.CONTEXT_SIGNAL.value: ["acknowledged", "needs_human_review", "dismissed", "escalated"],
         ActionType.DOCTRINE_SNAPSHOT.value: ["acknowledged"],
+        ActionType.NOTE.value: ["acknowledged"],
     }
 
     @staticmethod

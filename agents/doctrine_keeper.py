@@ -27,7 +27,7 @@ class DoctrineKeeperAgent(BaseAgent):
         except Exception:
             pass
         return {
-            "firm": "Global Executive",
+            "firm": "Cerno",
             "version": 0,
             "principles": [],
             "signals": {"potential": [], "risk": []},

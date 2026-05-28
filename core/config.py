@@ -24,7 +24,7 @@ class Settings(BaseSettings):
 
     # System
     orchestrator: str = "Manu"
-    system_name: str = "GE Recruiting Desk"
+    system_name: str = "Cerno"
     log_level: str = "info"
 
     # Playwright

@@ -63,7 +63,7 @@ def _split(value: str) -> list[str]:
 
 
 def interactive_criteria() -> dict[str, Any]:
-    print("Criterion Intake — Global Executive\n")
+    print("Criterion Intake — Cerno\n")
     criteria = dict(DEMO_CRITERIA)
     for key, question in QUESTIONS:
         current = criteria[key]

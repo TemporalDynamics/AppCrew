@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Global Executive — Command Room</title>
+<title>Cerno — Command Room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 <style>
@@ -413,7 +413,7 @@ body {
       <div class="cockpit-left">
         <div class="cockpit-brand">
           <div class="logo-dot"></div>
-          <h1>Global Executive</h1>
+          <h1>Cerno</h1>
           <span>Command Room</span>
         </div>
         <div class="cockpit-metrics">
@@ -525,6 +525,16 @@ body {
                 {% if st %}<span style="margin-left:0.5rem;">📡 {{ st }}</span>{% endif %}
                 {% if action.action_type == 'candidate' %}
                 <span>⚠️ Esta decisión solo afecta esta búsqueda</span>
+                {% if action.payload and action.payload.get('signals_inferred') %}
+                <span class="inbox-risk" style="margin-left:0.3rem;">📡 señales inferidas</span>
+                {% endif %}
+                {% if action.payload and action.payload.get('signal_evidence') %}
+                <div style="font-size:0.55rem;color:var(--text-muted);margin-top:0.1rem;">
+                  {% for sig, ev in action.payload.signal_evidence.items() %}
+                  <span style="margin-right:0.5rem;">{{ sig }}: <em>{{ ev }}</em></span>
+                  {% endfor %}
+                </div>
+                {% endif %}
                 {% elif action.action_type == 'context_signal' %}
                 <span>⚠️ No descarta al candidato</span>
                 {% elif action.action_type == 'score' %}
@@ -541,6 +551,9 @@ body {
                 <span>{{ key | replace('_',' ') }}: <strong style="color:var(--text-secondary);">{{ val }}</strong></span>
                 {% endfor %}
                 <span style="color:var(--accent);">rol: {{ action.payload.get('role','—') }}</span>
+                {% if action.payload.get('signals_inferred') %}
+                <span class="inbox-risk">📡 inferido</span>
+                {% endif %}
               </div>
               {% endif %}
               {% if action.action_type == 'signal' and action.payload %}
