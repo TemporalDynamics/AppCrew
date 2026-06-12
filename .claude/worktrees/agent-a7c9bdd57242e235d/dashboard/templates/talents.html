@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — Talentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 1.5rem; font-weight: 700; color: #f1f5f9; letter-spacing: -.02em; margin-bottom: 4px; }
+.page-header p { font-size: .9rem; color: #64748b; }
+
+.banner {
+  background: rgba(99,102,241,.08);
+  border: 1px solid rgba(99,102,241,.2);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: .85rem;
+  color: #818cf8;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.banner a { color: #818cf8; text-decoration: underline; }
+
+.filter-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: .8rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all .15s;
+  border: 1px solid transparent;
+  color: #64748b;
+}
+.tab:hover { background: rgba(255,255,255,.05); color: #94a3b8; }
+.tab.active { background: rgba(99,102,241,.15); color: #818cf8; border-color: rgba(99,102,241,.25); }
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  font-size: .65rem;
+  font-weight: 700;
+  background: rgba(255,255,255,.08);
+}
+.tab.active .tab-count { background: rgba(99,102,241,.3); }
+
+.table-wrap {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+thead { background: rgba(255,255,255,.03); }
+th {
+  padding: 10px 16px;
+  text-align: left;
+  font-size: .68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #64748b;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+td {
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  color: #94a3b8;
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,.02); }
+td.name a { font-weight: 600; color: #e2e8f0; text-decoration: none; }
+td.name a:hover { color: #818cf8; }
+
+.band-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.band-priority_1 { background: rgba(34,197,94,.12); color: #22c55e; }
+.band-priority_2 { background: rgba(99,102,241,.12); color: #818cf8; }
+.band-review_needed { background: rgba(245,158,11,.12); color: #f59e0b; }
+.band-discard { background: rgba(239,68,68,.1); color: #ef4444; }
+
+.action-menu { position: relative; display: inline-block; }
+.action-trigger {
+  background: none;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 1rem;
+  color: #64748b;
+  cursor: pointer;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all .12s;
+}
+.action-trigger:hover { border-color: #6366f1; color: #818cf8; }
+.action-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 10;
+  min-width: 150px;
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  padding: 4px;
+  margin-top: 4px;
+}
+.action-dropdown a, .action-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 7px 12px;
+  font-size: .8rem;
+  color: #94a3b8;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  transition: all .1s;
+}
+.action-dropdown a:hover, .action-dropdown button:hover { background: rgba(99,102,241,.1); color: #818cf8; }
+.action-menu.open .action-dropdown { display: block; }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 440px;
+  width: 90%;
+  box-shadow: 0 24px 64px rgba(0,0,0,.5);
+}
+.modal-box h3 { font-size: 1rem; color: #f1f5f9; margin-bottom: 16px; }
+.modal-box label { display: block; font-size: .8rem; font-weight: 600; color: #94a3b8; margin-bottom: 4px; margin-top: 12px; }
+.modal-box input, .modal-box select, .modal-box textarea {
+  width: 100%;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: .85rem;
+  color: #e2e8f0;
+  outline: none;
+}
+.modal-box input:focus, .modal-box select:focus, .modal-box textarea:focus {
+  border-color: #6366f1;
+}
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+.btn {
+  padding: 7px 14px;
+  border-radius: 7px;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all .12s;
+}
+.btn-secondary { background: rgba(255,255,255,.06); color: #94a3b8; }
+.btn-secondary:hover { background: rgba(255,255,255,.1); }
+.btn-accent { background: #6366f1; color: #fff; }
+.btn-accent:hover { opacity: .85; }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+}
+.empty-state h3 { font-size: 1rem; color: #94a3b8; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+{% set active_page = "talentos" %}{% include "_nav.html" %}
+<div class="wrap">
+
+<div class="page-header">
+  <h1>Talentos</h1>
+  <p>Base de talentos detectados, revisados y gestionados</p>
+</div>
+
+{% if search_filter %}
+<div class="banner">
+  Filtrando por búsqueda: <strong>{{ search_filter }}</strong>
+  <a href="/talents" style="margin-left:auto;">Limpiar filtro ×</a>
+</div>
+{% endif %}
+
+{% set total = (band_counts.get('_pool', 0) or candidates|length) %}
+{% set activos_count = (status_counts.get('new', 0) or 0) + (status_counts.get('shortlisted', 0) or 0) + (status_counts.get('contacted', 0) or 0) %}
+{% set cerrados_count = (status_counts.get('hired', 0) or 0) + (status_counts.get('placed', 0) or 0) + (status_counts.get('colocado', 0) or 0) %}
+{% set cancelados_count = (status_counts.get('rejected', 0) or 0) + (status_counts.get('dismissed', 0) or 0) %}
+
+<div class="filter-tabs">
+  <a class="tab {% if not band_filter and not status_filter %}active{% endif %}" href="/talents{% if search_filter %}?search={{ search_filter }}{% endif %}">
+    Todos <span class="tab-count">{{ total }}</span>
+  </a>
+  <a class="tab {% if status_filter == 'active_group' %}active{% endif %}" href="/talents?status_group=active{% if search_filter %}&search={{ search_filter }}{% endif %}">
+    Activos <span class="tab-count">{{ activos_count }}</span>
+  </a>
+  <a class="tab {% if band_filter == 'priority_1' %}active{% endif %}" href="/talents?band=priority_1{% if search_filter %}&search={{ search_filter }}{% endif %}">
+    Shortlist <span class="tab-count">{{ band_counts.get('priority_1', 0) }}</span>
+  </a>
+  <a class="tab {% if status_filter == 'contacted' %}active{% endif %}" href="/talents?status=contacted{% if search_filter %}&search={{ search_filter }}{% endif %}">
+    Contactados <span class="tab-count">{{ status_counts.get('contacted', 0) }}</span>
+  </a>
+  <a class="tab {% if status_filter == 'closed_group' %}active{% endif %}" href="/talents?status_group=closed{% if search_filter %}&search={{ search_filter }}{% endif %}">
+    Cerrados <span class="tab-count">{{ cerrados_count }}</span>
+  </a>
+  <a class="tab {% if status_filter == 'cancelled_group' %}active{% endif %}" href="/talents?status_group=cancelled{% if search_filter %}&search={{ search_filter }}{% endif %}">
+    Cancelados <span class="tab-count">{{ cancelados_count }}</span>
+  </a>
+</div>
+
+{% if candidates %}
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Talento</th>
+      <th>Rol actual</th>
+      <th>Empresa</th>
+      <th>Ubicación</th>
+      <th>Banda</th>
+      <th>Estado</th>
+      <th style="text-align:right;">Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for c in candidates %}
+    {% set key = c.dedup_key | urlencode %}
+    <tr>
+      <td class="name" data-label="Talento">
+        {% if c.name %}
+          <a href="/candidate/{{ key }}">{{ c.name }}</a>
+        {% else %}
+          <a href="/candidate/{{ key }}" style="color:#64748b;font-style:italic;">[sin identidad]</a>
+        {% endif %}
+      </td>
+      <td data-label="Rol">{{ c.current_role or '—' }}</td>
+      <td data-label="Empresa">{{ c.company or '—' }}</td>
+      <td data-label="Ubicación">{{ c.location or '—' }}</td>
+      <td data-label="Banda">
+        {% set band = c.band or '' %}
+        <span class="band-badge band-{{ band }}">
+          {% if band == 'priority_1' %}Shortlist{% elif band == 'priority_2' %}Alto{% elif band == 'review_needed' %}Revisar{% elif band == 'discard' %}Descartado{% else %}—{% endif %}
+        </span>
+        {% if c.score %}<div style="font-size:.7rem;color:#64748b;margin-top:3px;">{{ c.score }}</div>{% endif %}
+      </td>
+      <td data-label="Estado" style="font-size:.78rem;">{{ c.status or '—' }}</td>
+      <td data-label="Acción" style="text-align:right;">
+        <div class="action-menu">
+          <button class="action-trigger" onclick="toggleMenu(this)">···</button>
+          <div class="action-dropdown">
+            <a href="/candidate/{{ key }}">Ver ficha</a>
+            <button onclick="quickNote('{{ key }}')">Agregar nota</button>
+            <button onclick="quickStatus('{{ key }}')">Cambiar estado</button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">
+  <h3>Sin talentos en este filtro</h3>
+  <p>Intentá con otro filtro o iniciá una búsqueda para encontrar talento.</p>
+  <p style="margin-top:12px;"><a href="/searches" style="color:#6366f1;text-decoration:none;">Ver búsquedas →</a></p>
+</div>
+{% endif %}
+
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<script>
+function toggleMenu(btn) {
+  btn.closest('.action-menu').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.action-menu')) {
+    document.querySelectorAll('.action-menu.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+function quickNote(key) {
+  const box = document.getElementById('modal-box');
+  box.innerHTML = '<h3>Agregar nota</h3>' +
+    '<label>Nota</label><textarea id="note-text" rows="3" placeholder="Escribí tu nota aquí…"></textarea>' +
+    '<label>Tipo</label><select id="note-type"><option value="general">General</option><option value="entrevista">Entrevista</option><option value="cliente">Cliente</option><option value="riesgo">Riesgo</option><option value="oportunidad">Oportunidad</option></select>' +
+    '<div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-accent" onclick="saveNote(\'' + key + '\')">Guardar nota</button></div>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function saveNote(key) {
+  const text = document.getElementById('note-text').value.trim();
+  if (!text) return;
+  fetch('/api/talents/' + encodeURIComponent(key) + '/note', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text: text, note_type: document.getElementById('note-type').value})
+  }).then(r => r.json()).then(d => {
+    if (d.success) { closeModal(); }
+  });
+}
+
+function quickStatus(key) {
+  const box = document.getElementById('modal-box');
+  const states = ['new','shortlist','contacted','interview_scheduled','interviewed','rejected','placed','archived'];
+  box.innerHTML = '<h3>Cambiar estado</h3>' +
+    '<label>Nuevo estado</label><select id="new-status">' + states.map(s => '<option value="' + s + '">' + s.replace(/_/g,' ') + '</option>').join('') + '</select>' +
+    '<div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-accent" onclick="saveStatus(\'' + key + '\')">Cambiar</button></div>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function saveStatus(key) {
+  const status = document.getElementById('new-status').value;
+  fetch('/api/talents/' + encodeURIComponent(key) + '/status', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({status: status})
+  }).then(r => r.json()).then(d => {
+    if (d.success) { location.reload(); }
+  });
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+</script>
+</body>
+</html>

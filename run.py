@@ -10,6 +10,18 @@ import uvicorn
 
 from core.orchestrator import Orchestrator
 from core.config import settings
+from core.logger import get_logger
+
+logger = get_logger("cli")
+
+
+def _check_env():
+    if not settings.openrouter_api_key:
+        logger.warning("OPENROUTER_API_KEY no configurada — LLM no disponible")
+    if not settings.serper_api_key and not settings.brave_search_api_key:
+        logger.warning("SERPER_API_KEY no configurada — búsqueda web limitada a mock")
+    if not settings.telegram_bot_token or not settings.telegram_chat_id:
+        logger.info("TELEGRAM no configurado — notificaciones en mock")
 
 
 def main():
@@ -23,9 +35,10 @@ def main():
     parser.add_argument("--host", default=settings.dashboard_host, help="Host del dashboard")
 
     args = parser.parse_args()
+    _check_env()
 
     if args.command == "dashboard":
-        print(f"🌐 Dashboard: http://{args.host}:{args.port}")
+        logger.info("Dashboard: http://%s:%s", args.host, args.port)
         uvicorn.run(
             "dashboard.server:app",
             host=args.host,
@@ -39,51 +52,52 @@ def main():
             orch = Orchestrator()
             if args.agent:
                 actions = await orch.run_agent(args.agent)
-                print(f"\n  {orch.agents[args.agent].icon} {orch.agents[args.agent].name}")
-                print(f"  → {len(actions)} acciones generadas")
+                agent = orch.agents[args.agent]
+                logger.info("%s %s", agent.icon, agent.name)
+                logger.info("→ %d acciones generadas", len(actions))
                 for a in actions:
-                    print(f"    · {a.action_type} → {a.target} (score: {a.score})")
+                    logger.info("  · %s → %s (score: %s)", a.action_type, a.target, a.score)
             else:
-                print("⚠️  Especificá un agente con --agent. Opciones: " +
-                      ", ".join(Orchestrator().agents.keys()))
+                logger.warning("Especificá un agente con --agent. Opciones: %s",
+                               ", ".join(Orchestrator().agents.keys()))
         asyncio.run(run_single())
 
     elif args.command == "run-all":
         async def run_all():
             orch = Orchestrator()
             results = await orch.run_all()
-            print("\n📊 Todos los agentes ejecutados:\n")
+            logger.info("Todos los agentes ejecutados:")
             for agent_id, actions in results.items():
                 agent = orch.agents[agent_id]
-                print(f"  {agent.icon} {agent.name}: {len(actions)} acciones")
+                logger.info("  %s %s: %d acciones", agent.icon, agent.name, len(actions))
                 for a in actions[:3]:
-                    print(f"    · {a.action_type} → {a.target} (score: {a.score})")
+                    logger.info("    · %s → %s (score: %s)", a.action_type, a.target, a.score)
                 if len(actions) > 3:
-                    print(f"    ... y {len(actions)-3} más")
-            print(f"\n⏳ {orch.get_status()['pending_count']} acciones pendientes de revisión")
+                    logger.info("    ... y %d más", len(actions) - 3)
+            logger.info("%d acciones pendientes de revisión", orch.get_status()["pending_count"])
         asyncio.run(run_all())
 
     elif args.command == "status":
         orch = Orchestrator()
         status = orch.get_status()
-        print(f"\n🎛️  {status['orchestrator']} — Cerno\n")
+        logger.info("%s — Cerno", status["orchestrator"])
         for aid, agent in status["agents"].items():
-            print(f"  {agent['icon']} {agent['name']:20s} {agent['state']:20s} {agent['last_action']}")
-        print(f"\n  Pendientes: {status['pending_count']} · Historial total: {status['total_history']}")
+            logger.info("  %s %-20s %-20s %s", agent["icon"], agent["name"], agent["state"], agent["last_action"])
+        logger.info("  Pendientes: %d · Historial total: %d", status["pending_count"], status["total_history"])
 
     elif args.command == "task":
         async def run_task():
             orch = Orchestrator()
             task_text = " ".join(args.task_text) if args.task_text else ""
             if not task_text:
-                print("⚠️  Especificá una tarea. Ej: python run.py task \"Buscar CTOs en México\"")
+                logger.warning("Especificá una tarea. Ej: python run.py task \"Buscar CTOs en México\"")
                 return
-            print(f"\n🧠 Procesando: {task_text}\n")
+            logger.info("Procesando: %s", task_text)
             result = await orch.run_task(task_text)
-            print(result.get("summary", ""))
+            logger.info(result.get("summary", ""))
             pending = result.get("pending_actions", [])
             if pending:
-                print(f"\n⏳ {len(pending)} acción(es) pendiente(s) de revisión. Abrí el dashboard para aprobar.")
+                logger.info("%d acción(es) pendiente(s) de revisión", len(pending))
         asyncio.run(run_task())
 
     elif args.command == "test":
@@ -91,16 +105,16 @@ def main():
             from core.state import StateStore
             StateStore.clear()
             orch = Orchestrator(restore_state=False)
-            print("\n🔬 Ejecutando tests del sistema...\n")
+            logger.info("Ejecutando tests del sistema...")
             actions = await orch.run_agent("tester")
             tester = orch.agents["tester"]
             summary = tester.get_summary()
             for r in summary["results"]:
-                icon = "✅" if r["verdict"] == "PASS" else "⚠️" if r["verdict"] == "SOFT_FAIL" else "❌"
-                print(f"  {icon} {r['test_name']:30s} {r['verdict']:12s} intentos={r['attempts']}")
-            print(f"\n  {summary['passed']}/{summary['total']} tests OK")
+                icon = "PASS" if r["verdict"] == "PASS" else "FAIL" if r["verdict"] == "HARD_FAIL" else "SOFT"
+                logger.info("  %s %s %s intentos=%d", icon, r["test_name"], r["verdict"], r["attempts"])
+            logger.info("  %d/%d tests OK", summary["passed"], summary["total"])
             if summary["hard_fail"]:
-                print(f"  ❌ {summary['hard_fail']} test(s) requieren atención humana")
+                logger.warning("%d test(s) requieren atención humana", summary["hard_fail"])
         asyncio.run(run_tests())
 
 

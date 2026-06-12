@@ -5,7 +5,10 @@ from datetime import datetime, timezone
 import httpx
 
 from contracts.talent import CandidateEvidence, CandidateSignal
+from core.logger import get_logger
 from core.sources.base import TalentSourceConnector
+
+logger = get_logger("core.sources.torre")
 
 _TORRE_SEARCH = "https://search.torre.co/people/_search"
 _TORRE_PROFILE = "https://torre.co/{username}"
@@ -18,17 +21,61 @@ class TorreConnector(TalentSourceConnector):
     requires_key = False
 
     # Map criteria roles to Torre search terms
+    # Scoped to the 5 target industries: Finanzas, Ventas/Marketing, RRHH, Logística, Ingeniería
     _ROLE_MAP = {
+        # Ingeniería
         "cto": "CTO",
         "vp engineering": "VP Engineering",
         "vp eng": "VP Engineering",
-        "country manager": "Country Manager",
-        "head of product": "Head of Product",
-        "coo": "COO",
-        "cfo": "CFO",
-        "head of growth": "Head of Growth",
+        "engineering manager": "Engineering Manager",
+        "head of engineering": "Head of Engineering",
+        "tech lead": "Tech Lead",
         "vp product": "VP Product",
+        "head of product": "Head of Product",
+        # Finanzas & Banking
+        "cfo": "CFO",
+        "finance director": "Finance Director",
+        "director de finanzas": "Director de Finanzas",
+        "gerente de finanzas": "Gerente de Finanzas",
+        "controller": "Financial Controller",
+        "tesorero": "Tesorero",
+        "treasury manager": "Treasury Manager",
+        "credit manager": "Credit Manager",
+        "risk manager": "Risk Manager",
+        "gerente de riesgos": "Gerente de Riesgos",
+        # Ventas & Marketing
+        "vp sales": "VP Sales",
+        "director de ventas": "Director de Ventas",
+        "gerente de ventas": "Gerente de Ventas",
+        "sales director": "Sales Director",
+        "head of sales": "Head of Sales",
+        "cmo": "CMO",
+        "marketing director": "Marketing Director",
+        "director de marketing": "Director de Marketing",
+        "head of growth": "Head of Growth",
+        "growth manager": "Growth Manager",
+        "head of marketing": "Head of Marketing",
+        # Recursos Humanos
+        "chro": "CHRO",
+        "hr director": "HR Director",
+        "director de rrhh": "Director de RRHH",
+        "gerente de rrhh": "Gerente de RRHH",
+        "head of people": "Head of People",
+        "talent acquisition manager": "Talent Acquisition Manager",
+        "people manager": "People Manager",
+        # Logística
+        "director de logística": "Director de Logística",
+        "logistics director": "Logistics Director",
+        "supply chain director": "Supply Chain Director",
+        "gerente de logística": "Gerente de Logística",
+        "gerente de operaciones": "Gerente de Operaciones",
+        "operations manager": "Operations Manager",
+        "warehouse manager": "Warehouse Manager",
+        # Ejecutivos generales
+        "coo": "COO",
+        "country manager": "Country Manager",
         "director of operations": "Director of Operations",
+        "vp operations": "VP Operations",
     }
 
     async def search(self, criteria: dict) -> list[CandidateSignal]:
@@ -37,18 +84,28 @@ class TorreConnector(TalentSourceConnector):
         limit = min(criteria.get("limit", 10), 20)
 
         roles = self._parse_roles(role_raw)
-        country = self._primary_country(markets)
+        
+        countries = []
+        for m in markets:
+            mapped = self._map_country(m)
+            if mapped not in countries:
+                countries.append(mapped)
+        if not countries:
+            countries = ["Mexico"]
 
         results: list[CandidateSignal] = []
         seen: set[str] = set()
 
-        for role in roles:
-            batch = await self._search_role(role, country, limit)
-            for c in batch:
-                key = c.dedup_key()
-                if key not in seen:
-                    seen.add(key)
-                    results.append(c)
+        for country in countries:
+            for role in roles:
+                batch = await self._search_role(role, country, limit)
+                for c in batch:
+                    key = c.dedup_key()
+                    if key not in seen:
+                        seen.add(key)
+                        results.append(c)
+                if len(results) >= limit:
+                    break
             if len(results) >= limit:
                 break
 
@@ -76,7 +133,7 @@ class TorreConnector(TalentSourceConnector):
                 r.raise_for_status()
                 data = r.json()
         except Exception as exc:
-            print(f"[TORRE] Error: {exc}")
+            logger.error("[TORRE] Error: %s", exc)
             return []
 
         profiles = data.get("results", [])
@@ -147,9 +204,14 @@ class TorreConnector(TalentSourceConnector):
         return [r for r in parts if r][:3]
 
     @staticmethod
-    def _primary_country(markets: list[str]) -> str:
-        priority = {"Mexico": "Mexico", "México": "Mexico", "Colombia": "Colombia", "Argentina": "Argentina"}
-        for m in markets:
-            if m in priority:
-                return priority[m]
-        return markets[0] if markets else "Mexico"
+    def _map_country(market: str) -> str:
+        mapping = {
+            "Mexico": "Mexico", "México": "Mexico", 
+            "Colombia": "Colombia", 
+            "Argentina": "Argentina", 
+            "Uruguay": "Uruguay", 
+            "Peru": "Peru", "Perú": "Peru", 
+            "Chile": "Chile",
+            "Brasil": "Brazil", "Brazil": "Brazil"
+        }
+        return mapping.get(market, market)

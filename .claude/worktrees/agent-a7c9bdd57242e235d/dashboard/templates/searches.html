@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — Búsquedas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.page-header h1 { font-size: 1.5rem; font-weight: 700; color: #f1f5f9; letter-spacing: -.02em; }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #6366f1;
+  color: #fff;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity .15s;
+  white-space: nowrap;
+}
+.btn-primary:hover { opacity: .85; }
+
+.section-label {
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: #64748b;
+  margin-bottom: 10px;
+  margin-top: 24px;
+}
+.section-label:first-of-type { margin-top: 0; }
+
+.search-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.search-card {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color .15s;
+}
+.search-card:hover { border-color: #6366f1; }
+.search-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.search-role { font-size: .95rem; font-weight: 600; color: #f1f5f9; }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.badge-active { background: rgba(34,197,94,.12); color: #22c55e; }
+.badge-closed { background: rgba(100,116,139,.12); color: #64748b; }
+.badge-other { background: rgba(99,102,241,.12); color: #818cf8; }
+
+.search-stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  color: #64748b;
+}
+.stat { display: flex; align-items: center; gap: 5px; }
+.stat-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.dot-indigo { background: #6366f1; }
+.dot-green { background: #22c55e; }
+.dot-gray { background: #475569; }
+
+.empty-state {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px;
+  padding: 60px 40px;
+  text-align: center;
+  color: #64748b;
+}
+.empty-state h3 { font-size: 1rem; color: #94a3b8; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+{% set active_page = "busquedas" %}{% include "_nav.html" %}
+<div class="wrap">
+
+<div class="page-header">
+  <h1>Búsquedas</h1>
+  <a class="btn-primary" href="/setup">+ Nueva búsqueda</a>
+</div>
+
+{% set active_searches = [] %}
+{% set closed_searches = [] %}
+{% set other_searches = [] %}
+{% for s in searches %}
+  {% if s.status in ('active', 'running') %}
+    {% if active_searches.append(s) %}{% endif %}
+  {% elif s.status in ('closed', 'completed') %}
+    {% if closed_searches.append(s) %}{% endif %}
+  {% else %}
+    {% if other_searches.append(s) %}{% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if not searches %}
+<div class="empty-state">
+  <h3>Sin búsquedas aún</h3>
+  <p>Creá tu primera búsqueda para empezar a encontrar talento.</p>
+  <p style="margin-top:16px;"><a class="btn-primary" href="/setup">+ Nueva búsqueda</a></p>
+</div>
+{% else %}
+
+{% if active_searches %}
+<div class="section-label">Activas ({{ active_searches | length }})</div>
+<div class="search-list">
+  {% for s in active_searches %}
+  <a class="search-card" href="/search/{{ s.search_id }}">
+    <div class="search-top">
+      <span class="search-role">{{ s.role_target or 'Búsqueda sin nombre' }}</span>
+      <span class="badge badge-active">activa</span>
+    </div>
+    <div class="search-stats">
+      <span class="stat"><span class="stat-dot dot-gray"></span>{{ (s.created_at or '')[:10] }}</span>
+      <span class="stat"><span class="stat-dot dot-indigo"></span>{{ s.talents_count or 0 }} talentos</span>
+      {% if (s.shortlist_count or 0) > 0 %}
+      <span class="stat"><span class="stat-dot dot-green"></span>{{ s.shortlist_count }} shortlist</span>
+      {% endif %}
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if other_searches %}
+<div class="section-label">En proceso ({{ other_searches | length }})</div>
+<div class="search-list">
+  {% for s in other_searches %}
+  <a class="search-card" href="/search/{{ s.search_id }}">
+    <div class="search-top">
+      <span class="search-role">{{ s.role_target or 'Búsqueda sin nombre' }}</span>
+      <span class="badge badge-other">{{ s.status or 'pendiente' }}</span>
+    </div>
+    <div class="search-stats">
+      <span class="stat"><span class="stat-dot dot-gray"></span>{{ (s.created_at or '')[:10] }}</span>
+      <span class="stat"><span class="stat-dot dot-indigo"></span>{{ s.talents_count or 0 }} talentos</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if closed_searches %}
+<div class="section-label">Cerradas ({{ closed_searches | length }})</div>
+<div class="search-list">
+  {% for s in closed_searches %}
+  <a class="search-card" href="/search/{{ s.search_id }}">
+    <div class="search-top">
+      <span class="search-role">{{ s.role_target or 'Búsqueda sin nombre' }}</span>
+      <span class="badge badge-closed">cerrada</span>
+    </div>
+    <div class="search-stats">
+      <span class="stat"><span class="stat-dot dot-gray"></span>{{ (s.created_at or '')[:10] }}</span>
+      <span class="stat">{{ s.talents_count or 0 }} talentos</span>
+      {% if (s.shortlist_count or 0) > 0 %}
+      <span class="stat">{{ s.shortlist_count }} shortlist</span>
+      {% endif %}
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endif %}
+
+</div>
+</body>
+</html>

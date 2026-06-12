@@ -219,6 +219,54 @@ Telegram / Mobile ──► Cuenta privada (Rodrigo)
 
 ---
 
+---
+
+## Fase 15 — Transition Layer / Continuidad operativa (VISIÓN FUTURA — no activa)
+
+> **No es una tarea inmediata.** Se registra aquí como dirección de expansión, una vez cerradas las fases 1–12.
+
+**Objetivo:** extender la plataforma desde sourcing hacia continuidad de talento — handover, preservación de conocimiento y onboarding contextual cuando una función crítica cambia de manos.
+
+**Escenarios que cubre:**
+renuncia voluntaria, cambio interno de rol, ascenso/traslado, licencia prolongada, jubilación, fin de contrato, reorganización, ingreso de nueva persona a función crítica, salida acordada.
+
+**Lo que NO hace (reglas de producto):**
+1. La plataforma no decide salidas.
+2. La plataforma no comunica despidos.
+3. La plataforma no reemplaza procesos humanos, legales ni de RRHH.
+4. Si la persona afectada no fue informada, el sistema no la contacta ni le solicita información.
+
+**Dos modos de operación:**
+- **Confidencial:** la persona aún no fue informada → solo planning interno para HR/manager.
+- **Abierto:** la persona ya sabe → handover asistido, captura de conocimiento, paquete para quien entra.
+
+**Checklist de continuidad a capturar:** responsabilidades actuales, proyectos abiertos, clientes/proveedores críticos, accesos y sistemas, documentos relevantes, decisiones recientes, riesgos pendientes, personas clave.
+
+**Paquete de onboarding para quien entra:** día 1 / semana 1 / primeros 30 días / primeros 90 días.
+
+**Frase comercial:** *"No gestionamos despidos. Gestionamos continuidad cuando una función crítica cambia de manos."*
+
+- [ ] Definir `transition_cases` en schema de DB
+- [ ] Estados: confidencial_interno → comunicado → handover_activo → reemplazo_en_curso → cerrado
+- [ ] Permisos por caso: HR, manager, legal, IT, reemplazo, admin
+- [ ] Bloqueo automático de contacto si estado = confidencial_interno
+- [ ] Flujo de handover asistido (estado abierto)
+- [ ] Paquete de onboarding para ingresante
+- [ ] Audit trail de eventos de transición en ledger
+- [ ] Seguimiento post-ingreso: fricciones, dudas frecuentes, pendientes heredados
+
+---
+
+## Integración LLM (VISIÓN FUTURA — solo tras flag explícito)
+
+> Los agentes core (Talent Signal, Career Context, CEO) fueron revertidos a lógica keyword/mock.
+> LLM se re-agregará solo cuando exista un flag explícito (`ENABLE_LLM=true`) que lo active.
+> El `LLMClient` sigue disponible en `core/tools/llm_client.py` pero falla si no hay API key configurada (sin fallback mock).
+
+**Regla:** ningún agente puede usar LLM sin que el flag `ENABLE_LLM` esté verificado en su `__init__`.
+
+---
+
 ## Principios rectores
 
 1. **Pipeline secuencial en autoridad. Ejecución paralela en volumen.**

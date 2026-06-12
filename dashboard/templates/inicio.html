@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — Inicio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+
+.page-header { margin-bottom: 32px; }
+.page-header h1 { font-size: 1.5rem; font-weight: 700; color: #f1f5f9; letter-spacing: -.02em; margin-bottom: 4px; }
+.page-header p { font-size: .9rem; color: #64748b; }
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.metric-card {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 20px 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .15s;
+}
+.metric-card:hover { border-color: #6366f1; }
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1;
+  margin-bottom: 6px;
+  color: #f1f5f9;
+}
+.metric-value.accent { color: #6366f1; }
+.metric-value.success { color: #22c55e; }
+.metric-value.warning { color: #f59e0b; }
+.metric-value.danger { color: #ef4444; }
+.metric-label {
+  font-size: .72rem;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.section-title {
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.search-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px; }
+.search-card {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .15s;
+}
+.search-card:hover { border-color: #6366f1; }
+.search-role { font-size: .95rem; font-weight: 600; color: #f1f5f9; flex: 1; }
+.search-meta { font-size: .78rem; color: #64748b; display: flex; gap: 16px; align-items: center; }
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 600;
+}
+.badge-active { background: rgba(34,197,94,.12); color: #22c55e; }
+.badge-closed { background: rgba(100,116,139,.12); color: #64748b; }
+
+.empty-searches {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
+}
+.empty-searches h3 { font-size: 1rem; color: #94a3b8; margin-bottom: 8px; }
+.btn-primary {
+  display: inline-block;
+  background: #6366f1;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity .15s;
+  margin-top: 12px;
+}
+.btn-primary:hover { opacity: .85; }
+</style>
+</head>
+<body>
+{% set active_page = "inicio" %}{% include "_nav.html" %}
+<div class="wrap">
+
+<div class="page-header">
+  <h1>Dashboard</h1>
+  <p>Resumen del pipeline de talento</p>
+</div>
+
+<div class="metrics-grid">
+  <a class="metric-card" href="/searches">
+    <div class="metric-value accent">{{ searches | length }}</div>
+    <div class="metric-label">Búsquedas</div>
+  </a>
+  <a class="metric-card" href="/talents">
+    <div class="metric-value">{{ talent_stats.total or 0 }}</div>
+    <div class="metric-label">Total talentos</div>
+  </a>
+  <a class="metric-card" href="/talents?status=contacted">
+    <div class="metric-value warning">{{ talent_stats.contactados or 0 }}</div>
+    <div class="metric-label">Contactados</div>
+  </a>
+  <a class="metric-card" href="/talents?status=interview_scheduled">
+    <div class="metric-value success">{{ talent_stats.entrevistas or 0 }}</div>
+    <div class="metric-label">Entrevistas</div>
+  </a>
+  <a class="metric-card" href="/talents?band=priority_1">
+    <div class="metric-value accent">{{ talent_stats.shortlist or 0 }}</div>
+    <div class="metric-label">Shortlist</div>
+  </a>
+  <a class="metric-card" href="/talents?status=new">
+    <div class="metric-value">{{ talent_stats.en_revision or 0 }}</div>
+    <div class="metric-label">En revisión</div>
+  </a>
+  <a class="metric-card" href="/talents?status=rejected">
+    <div class="metric-value danger">{{ talent_stats.desertados or 0 }}</div>
+    <div class="metric-label">Desertados</div>
+  </a>
+</div>
+
+<div class="section-title">Búsquedas recientes</div>
+
+{% if searches %}
+<div class="search-list">
+  {% for s in searches[:8] %}
+  <a class="search-card" href="/search/{{ s.search_id }}">
+    <span class="search-role">{{ s.role_target or 'Búsqueda sin nombre' }}</span>
+    <span class="search-meta">
+      <span>{{ (s.created_at or '')[:10] }}</span>
+      {% if s.talent_count %}
+      <span style="color:#94a3b8;font-weight:600;">{{ s.talent_count }} talentos</span>
+      {% endif %}
+    </span>
+    {% if s.status in ('active', 'running') %}
+    <span class="badge badge-active">activa</span>
+    {% else %}
+    <span class="badge badge-closed">{{ s.status or 'cerrada' }}</span>
+    {% endif %}
+  </a>
+  {% endfor %}
+</div>
+{% if searches | length > 8 %}
+<div style="text-align:center; margin-top:8px;">
+  <a href="/searches" style="font-size:.85rem; color:#6366f1; text-decoration:none;">Ver todas las búsquedas →</a>
+</div>
+{% endif %}
+{% else %}
+<div class="empty-searches">
+  <h3>Sin búsquedas aún</h3>
+  <p>Creá tu primera búsqueda para empezar a encontrar talento.</p>
+  <a class="btn-primary" href="/setup">+ Nueva búsqueda</a>
+</div>
+{% endif %}
+
+</div>
+</body>
+</html>

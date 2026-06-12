@@ -1,0 +1,2873 @@
+[
+  {
+    "action_id": "tester_run_20260604_192854842233",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:ceo_is_coordinator",
+    "reason": "",
+    "payload": {
+      "test_name": "ceo_is_coordinator",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:13.904848+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_029428022195",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:qa_read_only",
+    "reason": "",
+    "payload": {
+      "test_name": "qa_read_only",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:13.888377+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_654136153493",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:outreach_never_sends",
+    "reason": "",
+    "payload": {
+      "test_name": "outreach_never_sends",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:13.888356+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_140919691927",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:pending_count_active_only",
+    "reason": "",
+    "payload": {
+      "test_name": "pending_count_active_only",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:13.888326+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_058896786427",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:orchestrator_run_history",
+    "reason": "",
+    "payload": {
+      "test_name": "orchestrator_run_history",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:13.888131+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_969612077219",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:run_id_on_every_action",
+    "reason": "",
+    "payload": {
+      "test_name": "run_id_on_every_action",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:13.887826+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_998598576486",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:dedup_same_action_different_run",
+    "reason": "",
+    "payload": {
+      "test_name": "dedup_same_action_different_run",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.339798+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_393801803154",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:dedup_same_action_same_agent",
+    "reason": "",
+    "payload": {
+      "test_name": "dedup_same_action_same_agent",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.294175+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_118945877596",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:pending_flow",
+    "reason": "",
+    "payload": {
+      "test_name": "pending_flow",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.257258+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_468374521373",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:orchestrator_status",
+    "reason": "",
+    "payload": {
+      "test_name": "orchestrator_status",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.239747+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_125820550252",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:outreach_run",
+    "reason": "",
+    "payload": {
+      "test_name": "outreach_run",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.239536+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "outreach_run_20260604_040292057060",
+    "run_id": "run_20260604_204912_f500ad",
+    "agent_id": "outreach",
+    "action_type": "inmail",
+    "target": "Ana L\u00f3pez \u2014 HR Director FinTechMX",
+    "reason": "Nueva Directora de Talento en FinTechMX \u2014 se\u00f1al de contrataciones entrantes",
+    "payload": {
+      "subject": "Talento para expansi\u00f3n FinTechMX",
+      "message": "Hola Ana,\n\nVi tu nuevo rol como Directora de Talento en FinTechMX. Tenemos un pipeline de perfiles que podr\u00edan encajar con la etapa de crecimiento que est\u00e1n viviendo.\n\n\u00bfTe interesar\u00eda ver algunos perfiles la pr\u00f3xima semana?\n\nSaludos,\nManu",
+      "channel": "linkedin_inmail",
+      "requires_approval": true
+    },
+    "score": 87,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.218831+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "outreach_run_20260604_826813958306",
+    "run_id": "run_20260604_204912_f500ad",
+    "agent_id": "outreach",
+    "action_type": "inmail",
+    "target": "Carlos M\u00e9ndez \u2014 CEO TechMex",
+    "reason": "TechMex en expansi\u00f3n Serie B \u2014 oportunidad de alto score (92)",
+    "payload": {
+      "subject": "Expansi\u00f3n TechMex \u2014 talento clave",
+      "message": "Hola Carlos,\n\nVi que TechMex est\u00e1 en un momento de expansi\u00f3n importante con la Serie B. En Cerno hemos ayudado a empresas en etapa similar a encontrar talento clave para sostener ese crecimiento.\n\n\u00bfTe parece si agendamos 15 min la semana que viene?\n\nSaludos,\nManu",
+      "channel": "linkedin_inmail",
+      "requires_approval": true
+    },
+    "score": 92,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.218792+00:00",
+    "reviewed_at": "2026-06-04T20:49:12.240103+00:00",
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_937105404866",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:fit_scoring_run",
+    "reason": "",
+    "payload": {
+      "test_name": "fit_scoring_run",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.201475+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260604_543551418561",
+    "run_id": "run_20260604_204912_a80b8b",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Carla Ruiz",
+    "reason": "Score total: 76 \u2014 skills 24.5, exp 25.5",
+    "payload": {
+      "name": "Carla Ruiz",
+      "role": "CFO",
+      "skills_score": 70,
+      "experience_score": 85,
+      "mobility_score": 60,
+      "consistency_score": 90,
+      "total_score": 76,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 24.5,
+        "experience": 25.5,
+        "mobility_signals": 12.0,
+        "career_consistency": 13.5
+      }
+    },
+    "score": 76,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.181925+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260604_665019537179",
+    "run_id": "run_20260604_204912_a80b8b",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Luis Mendoza",
+    "reason": "Score total: 77 \u2014 skills 26.2, exp 21.0",
+    "payload": {
+      "name": "Luis Mendoza",
+      "role": "Growth",
+      "skills_score": 75,
+      "experience_score": 70,
+      "mobility_score": 95,
+      "consistency_score": 70,
+      "total_score": 77,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 26.2,
+        "experience": 21.0,
+        "mobility_signals": 19.0,
+        "career_consistency": 10.5
+      }
+    },
+    "score": 77,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.181914+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260604_095755376420",
+    "run_id": "run_20260604_204912_a80b8b",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Ana Torres",
+    "reason": "Score total: 82 \u2014 skills 28.0, exp 25.5",
+    "payload": {
+      "name": "Ana Torres",
+      "role": "HR Dir",
+      "skills_score": 80,
+      "experience_score": 85,
+      "mobility_score": 75,
+      "consistency_score": 90,
+      "total_score": 82,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 28.0,
+        "experience": 25.5,
+        "mobility_signals": 15.0,
+        "career_consistency": 13.5
+      }
+    },
+    "score": 82,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.181903+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260604_196028505505",
+    "run_id": "run_20260604_204912_a80b8b",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Pedro L\u00f3pez",
+    "reason": "Score total: 84 \u2014 skills 30.8, exp 25.5",
+    "payload": {
+      "name": "Pedro L\u00f3pez",
+      "role": "VP Eng",
+      "skills_score": 88,
+      "experience_score": 85,
+      "mobility_score": 80,
+      "consistency_score": 80,
+      "total_score": 84,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 30.8,
+        "experience": 25.5,
+        "mobility_signals": 16.0,
+        "career_consistency": 12.0
+      }
+    },
+    "score": 84,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.181889+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260604_175420963762",
+    "run_id": "run_20260604_204912_a80b8b",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Mar\u00eda Garc\u00eda",
+    "reason": "Score total: 87 \u2014 skills 32.2, exp 28.5",
+    "payload": {
+      "name": "Mar\u00eda Garc\u00eda",
+      "role": "CTO",
+      "skills_score": 92,
+      "experience_score": 95,
+      "mobility_score": 70,
+      "consistency_score": 85,
+      "total_score": 87,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 32.2,
+        "experience": 28.5,
+        "mobility_signals": 14.0,
+        "career_consistency": 12.8
+      }
+    },
+    "score": 87,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.181866+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_240359409567",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:talent_sourcing_run",
+    "reason": "",
+    "payload": {
+      "test_name": "talent_sourcing_run",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:12.167160+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_146298795854",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Stewart Munoz",
+    "reason": "VP of Engineering en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Stewart Munoz",
+      "role": "VP of Engineering",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/smunoz",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Data analytics",
+        "Python",
+        "Java software development",
+        "DevOps",
+        "Linux",
+        "Analysis",
+        "Data science",
+        "PHP"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149383+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_259200805015",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "ATUL SHRIDHAR",
+    "reason": "VP Engineering en AI/ML Platforms | Cloud & Data Architect | Ex-Atlassian, Paytm [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "ATUL SHRIDHAR",
+      "role": "VP Engineering",
+      "company": "AI/ML Platforms | Cloud & Data Architect | Ex-Atlassian, Paytm",
+      "location": "LATAM",
+      "source_url": "https://torre.co/atulshridhar",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Electronic data interchange",
+        "Ruby on Rails",
+        "DevOps",
+        "Micro frontend",
+        "Data structures",
+        "Team leadership",
+        "Cloud-native platforms",
+        "Teradata"
+      ],
+      "confidence": "medium",
+      "summary": "VP Engineering | AI/ML Platforms | Cloud & Data Architect | Ex-Atlassian, Paytm"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149374+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_612165452210",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andr\u00e9 Pinto",
+    "reason": "VP of Front-End & Engineering Leader en 2x Founder | Front-End Architect | Product Development & Developer Experience [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andr\u00e9 Pinto",
+      "role": "VP of Front-End & Engineering Leader",
+      "company": "2x Founder | Front-End Architect | Product Development & Developer Experience",
+      "location": "LATAM",
+      "source_url": "https://torre.co/andrepinto",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Educational technology",
+        "Social media marketing",
+        "Innovation",
+        "Adobe After Effects",
+        "Business development",
+        "GitHub Actions",
+        "Brand ambassador",
+        "JavaScript"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Front-End & Engineering Leader | 2x Founder | Front-End Architect | Produc"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149364+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_601788006291",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Diego Pedroza Rodri\u0301guez",
+    "reason": "Co-Founder and VP Engineeering en Datagran [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Diego Pedroza Rodri\u0301guez",
+      "role": "Co-Founder and VP Engineeering",
+      "company": "Datagran",
+      "location": "LATAM",
+      "source_url": "https://torre.co/diegopedrozar",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Product management",
+        "Flex Builder",
+        "Python",
+        "Business intelligence",
+        "DevOps",
+        "Marketing",
+        "Flex",
+        "Entrepreneurship"
+      ],
+      "confidence": "medium",
+      "summary": "Co-Founder and VP Engineeering en Datagran"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149355+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_051833365192",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "An\u00edbal Rojas",
+    "reason": "VP of Engineering en Platzi [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "An\u00edbal Rojas",
+      "role": "VP of Engineering",
+      "company": "Platzi",
+      "location": "LATAM",
+      "source_url": "https://torre.co/anibalrojas",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Engineering",
+        "Personnel management",
+        "Industrial process control",
+        "Contract management",
+        "Ruby on Rails",
+        "Team leadership",
+        "Technology consulting",
+        "Psychology"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering at Platzi"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149346+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_235855445835",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Pedro Restrepo",
+    "reason": "VP of Engineering en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Pedro Restrepo",
+      "role": "VP of Engineering",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/pedrojrestrepo",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Fullstack development",
+        "Python",
+        "Redux",
+        "TypeScript",
+        "Customer Satisfaction",
+        "AWS Elastic Beanstalk1",
+        "Web development",
+        "Startups"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149337+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_174613241609",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Carlos C\u00e1rdenas",
+    "reason": "VP of Engineering Bimbau en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Carlos C\u00e1rdenas",
+      "role": "VP of Engineering Bimbau",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/carloscardenas",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Agile methodologies",
+        "Engineering",
+        "Python",
+        "Programming languages",
+        "Blockchain",
+        "PHP",
+        "Low level programming",
+        "Machine learning"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering Bimbau"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149329+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_383518354423",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Luciano Bargmann",
+    "reason": "VP Engineering en Director of Engineering | Scrum Master | MBA | Remote Work Expert | Experimentin [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Luciano Bargmann",
+      "role": "VP Engineering",
+      "company": "Director of Engineering | Scrum Master | MBA | Remote Work Expert | Experimentin",
+      "location": "LATAM",
+      "source_url": "https://torre.co/lucianobargmann",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Cybersecurity",
+        "Python",
+        "AWS Cloud",
+        "DevOps",
+        "Driving",
+        "Cloud infrastructure",
+        "Web3.js",
+        "Web3"
+      ],
+      "confidence": "medium",
+      "summary": "VP Engineering | Director of Engineering | Scrum Master | MBA | Remote Work Expe"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149320+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_544446854666",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Leonardo Larrea",
+    "reason": "VP of Software Engineering en Shippify. [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Leonardo Larrea",
+      "role": "VP of Software Engineering",
+      "company": "Shippify.",
+      "location": "LATAM",
+      "source_url": "https://torre.co/leonardolarrea1",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Optimization algorithms",
+        "Engineering",
+        "Desarrollo de aplicaciones",
+        "Science",
+        "DevOps",
+        "Computer science",
+        "Algorithm optimization",
+        "AWS Step Functions"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Software Engineering at Shippify."
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149311+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_788258652145",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Yves Gagnon",
+    "reason": "Global Senior Engineering & Product Development Leader en Director of Engineering | VP Product Development | Head of R&D | Senior Engineer [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Yves Gagnon",
+      "role": "Global Senior Engineering & Product Development Leader",
+      "company": "Director of Engineering | VP Product Development | Head of R&D | Senior Engineer",
+      "location": "LATAM",
+      "source_url": "https://torre.co/yvesgagnon",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "IEC 60601",
+        "Technical maintenance",
+        "Proactivity",
+        "Configuration management",
+        "Systems Integration",
+        "Product lifecycle management (PLM)",
+        "Risk management",
+        "Budget"
+      ],
+      "confidence": "medium",
+      "summary": "Global Senior Engineering & Product Development Leader | Director of Engineering"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149301+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_513948436897",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Orlando Jose Zambrano Smith",
+    "reason": "Chief Information Officer, Transformaci\u00f3n Digital, Estrategia Empresarial y Tecn en TI y Optimizaci\u00f3n Operacional. [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Orlando Jose Zambrano Smith",
+      "role": "Chief Information Officer, Transformaci\u00f3n Digital, Estrategia Empresarial y Tecn",
+      "company": "TI y Optimizaci\u00f3n Operacional.",
+      "location": "LATAM",
+      "source_url": "https://torre.co/ozamsmith",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Business intelligence (BI)",
+        "Servicio al cliente",
+        "Arquitectura de software",
+        "Metodolog\u00edas \u00e1giles",
+        "Analysis",
+        "Energico",
+        "Gobierno",
+        "Communicative competence"
+      ],
+      "confidence": "medium",
+      "summary": "Chief Information Officer, Transformaci\u00f3n Digital, Estrategia Empresarial y Tecn"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149292+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_904743337947",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Wilfredo Gomez",
+    "reason": "Project Manager en Product manager - Data Analyst/BI [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Wilfredo Gomez",
+      "role": "Project Manager",
+      "company": "Product manager - Data Analyst/BI",
+      "location": "LATAM",
+      "source_url": "https://torre.co/wilfredogomez",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Business management",
+        "Arquitectura de software",
+        "Amazon Web Services",
+        "Innovation",
+        "Strategy",
+        "CRM",
+        "Seguridad inform\u00e1tica",
+        "Transformaci\u00f3n digital"
+      ],
+      "confidence": "medium",
+      "summary": "Project Manager - Product manager - Data Analyst/BI"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149283+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_082803625912",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andres Felipe Chaves Rojas",
+    "reason": "Systems and Software Engineer en Data Engineer | Machine Learning | Troubleshooting | Agile | Project Management  [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andres Felipe Chaves Rojas",
+      "role": "Systems and Software Engineer",
+      "company": "Data Engineer | Machine Learning | Troubleshooting | Agile | Project Management ",
+      "location": "LATAM",
+      "source_url": "https://torre.co/Kiscvik",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Unity",
+        "Azure DevOps",
+        "Analista de datos",
+        "Data analytics",
+        "DevOps",
+        "Arquitectura de software",
+        "CentOS",
+        "Software architectural design"
+      ],
+      "confidence": "medium",
+      "summary": "Systems and Software Engineer | Data Engineer | Machine Learning | Troubleshooti"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149273+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_370600822843",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Alejandro Alvarez",
+    "reason": "CTO en Software Engineer - Azure Expert - AWS Expert - FulllStack PHP/Java Developer -  [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Alejandro Alvarez",
+      "role": "CTO",
+      "company": "Software Engineer - Azure Expert - AWS Expert - FulllStack PHP/Java Developer - ",
+      "location": "LATAM",
+      "source_url": "https://torre.co/alejandroalvarez",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Unity",
+        "Azure DevOps",
+        "Arquitectura de software",
+        "Visual FoxPro",
+        "Representational State Transfer (REST)",
+        "Generative AI",
+        "Product owner",
+        "MySQL"
+      ],
+      "confidence": "medium",
+      "summary": "CTO - Software Engineer - Azure Expert - AWS Expert - FulllStack PHP/Java Develo"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149264+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_960500755948",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "C\u00e9sar Adolfo Mauricio Durazno",
+    "reason": "CDO \u00b7 CIO \u00b7 CTO \u00b7 Estrategia de TI y Transformaci\u00f3n Digital \u00b7 Gesti\u00f3n de Proyect en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "C\u00e9sar Adolfo Mauricio Durazno",
+      "role": "CDO \u00b7 CIO \u00b7 CTO \u00b7 Estrategia de TI y Transformaci\u00f3n Digital \u00b7 Gesti\u00f3n de Proyect",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/cesaradolfomauriciodurazno",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Product ownership",
+        "Evaluaci\u00f3n de modelos",
+        "Desarrollo de negocio",
+        "Gesti\u00f3n de proveedores",
+        "Gesti\u00f3n de eventos",
+        "Requirements analysis",
+        "Arquitectura de software",
+        "Visual FoxPro"
+      ],
+      "confidence": "medium",
+      "summary": "CDO \u00b7 CIO \u00b7 CTO \u00b7 Estrategia de TI y Transformaci\u00f3n Digital \u00b7 Gesti\u00f3n de Proyect"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149254+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_280186191133",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andres Suarez",
+    "reason": "CTO en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andres Suarez",
+      "role": "CTO",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/liquean",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Front-end development",
+        "Software development",
+        "Resourceful",
+        "Drums",
+        "Strategy",
+        "Guitar",
+        "JavaScript",
+        "Piano"
+      ],
+      "confidence": "medium",
+      "summary": "CTO"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149243+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_312994931034",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "OSCAR EMILIO MU\u00d1OZ GONZALEZ",
+    "reason": "GERENTE DE TECNOLOGIA / CTO / TRANSFORMACION DIGITAL / INFRAESTRUCTURA / DESARRO en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "OSCAR EMILIO MU\u00d1OZ GONZALEZ",
+      "role": "GERENTE DE TECNOLOGIA / CTO / TRANSFORMACION DIGITAL / INFRAESTRUCTURA / DESARRO",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/omunozgonzalez",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Soporte al cliente",
+        "Telematics",
+        "Implementaci\u00f3n de ERP",
+        "Virtualizaci\u00f3n",
+        "Arquitectura de software",
+        "Organizaci\u00f3n",
+        "Planificaci\u00f3n de proyectos",
+        "ITIL project management"
+      ],
+      "confidence": "medium",
+      "summary": "GERENTE DE TECNOLOGIA / CTO / TRANSFORMACION DIGITAL / INFRAESTRUCTURA / DESARRO"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149232+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_645187177237",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Paulo Madronero",
+    "reason": "CTO Motivy en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Paulo Madronero",
+      "role": "CTO Motivy",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/paulomadronero",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Python",
+        "DevOps",
+        "Data science",
+        "Resilience",
+        "Security",
+        "Web development",
+        "Product owner",
+        "Innovation"
+      ],
+      "confidence": "medium",
+      "summary": "CTO Motivy"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149220+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_676961855834",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "C\u00e9sar Augusto Ram\u00edrez Ram\u00edrez",
+    "reason": "| SENIOR PM IT en MANAGER IT | CTO | TL | SMC\u00ae | [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "C\u00e9sar Augusto Ram\u00edrez Ram\u00edrez",
+      "role": "| SENIOR PM IT",
+      "company": "MANAGER IT | CTO | TL | SMC\u00ae |",
+      "location": "LATAM",
+      "source_url": "https://torre.co/cesaraugusto_81",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Implementaci\u00f3n de proyectos tecnol\u00f3gicos",
+        "Control de versiones",
+        "Gesti\u00f3n de stakeholders",
+        "DevOps",
+        "Risk management",
+        "CRM (Customer relationship management)",
+        "Arquitectura de software",
+        "Team leadership"
+      ],
+      "confidence": "medium",
+      "summary": "| SENIOR PM IT | MANAGER IT | CTO | TL | SMC\u00ae |"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149206+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260604_563530411251",
+    "run_id": "run_20260604_204909_b70e7d",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andres Rojas",
+    "reason": "Senior Software Developer en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andres Rojas",
+      "role": "Senior Software Developer",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/andresrojasisazq",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "DevOps",
+        "Team leadership",
+        "Virtual reality",
+        "Joomla",
+        "Communicative competence",
+        "Programming",
+        "Bootstrap",
+        "Model-view-presenter"
+      ],
+      "confidence": "medium",
+      "summary": "Senior Software Developer"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:12.149174+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_582720930302",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:demand_radar_run",
+    "reason": "",
+    "payload": {
+      "test_name": "demand_radar_run",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:09.896289+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "demand_radar_run_20260604_847552069411",
+    "run_id": "run_20260604_204909_51b430",
+    "agent_id": "demand_radar",
+    "action_type": "opportunity",
+    "target": "SoftCloud LATAM expande operaciones a 3 pa\u00edses",
+    "reason": "se\u00f1al de mercado detectada",
+    "payload": {
+      "company": "SoftCloud LATAM expande operaciones a 3 pa\u00edses",
+      "signal": "se\u00f1al de mercado detectada",
+      "source": "brave_search",
+      "source_type": "real",
+      "detail": "SoftCloud LATAM abre oficinas en Colombia, Per\u00fa y Chile durante 2026.",
+      "url": "https://example.com/softcloud-expansion",
+      "confidence": "media"
+    },
+    "score": 75,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:09.879463+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "demand_radar_run_20260604_085079361037",
+    "run_id": "run_20260604_204909_51b430",
+    "agent_id": "demand_radar",
+    "action_type": "opportunity",
+    "target": "FinTechMX contrata Directora de Talento",
+    "reason": "se\u00f1al de mercado detectada",
+    "payload": {
+      "company": "FinTechMX contrata Directora de Talento",
+      "signal": "se\u00f1al de mercado detectada",
+      "source": "brave_search",
+      "source_type": "real",
+      "detail": "FinTechMX acaba de contratar una Directora de Talento. Hist\u00f3ricamente esta se\u00f1al precede contrataciones masivas.",
+      "url": "https://example.com/fintechmx-hiring",
+      "confidence": "media"
+    },
+    "score": 75,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:09.879453+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "demand_radar_run_20260604_680494050760",
+    "run_id": "run_20260604_204909_51b430",
+    "agent_id": "demand_radar",
+    "action_type": "opportunity",
+    "target": "TechMex cierra ronda Serie B por $12M",
+    "reason": "se\u00f1al de mercado detectada",
+    "payload": {
+      "company": "TechMex cierra ronda Serie B por $12M",
+      "signal": "se\u00f1al de mercado detectada",
+      "source": "brave_search",
+      "source_type": "real",
+      "detail": "TechMex anunci\u00f3 el cierre de su Serie B liderada por Kaszek. Buscan CTO y 5 ingenieros senior para expansi\u00f3n regional.",
+      "url": "https://techcrunch.com/example/techmex-series-b",
+      "confidence": "media"
+    },
+    "score": 75,
+    "state": "pending_review",
+    "created_at": "2026-06-04T20:49:09.879437+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_642687594317",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:knowledge_folders",
+    "reason": "",
+    "payload": {
+      "test_name": "knowledge_folders",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:09.868269+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_140538318212",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:config_load",
+    "reason": "",
+    "payload": {
+      "test_name": "config_load",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:09.868018+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_824182075030",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:agents_import",
+    "reason": "",
+    "payload": {
+      "test_name": "agents_import",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:09.867990+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "tester_run_20260604_188778769061",
+    "run_id": "run_20260604_204909_0f6774",
+    "agent_id": "tester",
+    "action_type": "qa_summary",
+    "target": "test:contracts_import",
+    "reason": "",
+    "payload": {
+      "test_name": "contracts_import",
+      "verdict": "PASS",
+      "detail": "",
+      "fix_applied": null,
+      "attempts": 1
+    },
+    "score": 100,
+    "state": "approved",
+    "created_at": "2026-06-04T20:49:09.867936+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "outreach_run_20260602_655981392455",
+    "run_id": "run_20260602_135659_53152f",
+    "agent_id": "outreach",
+    "action_type": "inmail",
+    "target": "Ana L\u00f3pez \u2014 HR Director FinTechMX",
+    "reason": "Nueva Directora de Talento en FinTechMX \u2014 se\u00f1al de contrataciones entrantes",
+    "payload": {
+      "subject": "Talento para expansi\u00f3n FinTechMX",
+      "message": "Hola Ana,\n\nVi tu nuevo rol como Directora de Talento en FinTechMX. Tenemos un pipeline de perfiles que podr\u00edan encajar con la etapa de crecimiento que est\u00e1n viviendo.\n\n\u00bfTe interesar\u00eda ver algunos perfiles la pr\u00f3xima semana?\n\nSaludos,\nManu",
+      "channel": "linkedin_inmail",
+      "requires_approval": true
+    },
+    "score": 87,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.348031+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "outreach_run_20260602_862445718513",
+    "run_id": "run_20260602_135659_53152f",
+    "agent_id": "outreach",
+    "action_type": "inmail",
+    "target": "Carlos M\u00e9ndez \u2014 CEO TechMex",
+    "reason": "TechMex en expansi\u00f3n Serie B \u2014 oportunidad de alto score (92)",
+    "payload": {
+      "subject": "Expansi\u00f3n TechMex \u2014 talento clave",
+      "message": "Hola Carlos,\n\nVi que TechMex est\u00e1 en un momento de expansi\u00f3n importante con la Serie B. En Cerno hemos ayudado a empresas en etapa similar a encontrar talento clave para sostener ese crecimiento.\n\n\u00bfTe parece si agendamos 15 min la semana que viene?\n\nSaludos,\nManu",
+      "channel": "linkedin_inmail",
+      "requires_approval": true
+    },
+    "score": 92,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.348006+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "qa_run_20260602_544271988000",
+    "run_id": "run_20260602_135659_383da0",
+    "agent_id": "qa",
+    "action_type": "qa_summary",
+    "target": "all",
+    "reason": "Todo en orden",
+    "payload": {
+      "checks_run": 1,
+      "issues_found": 0,
+      "status": "PASS"
+    },
+    "score": 100,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.316945+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "memory_update_run_20260602_925365947591",
+    "run_id": "run_20260602_135659_68727e",
+    "agent_id": "memory_update",
+    "action_type": "note",
+    "target": "memory_summary",
+    "reason": "Guardados: 0, omitidos (no aprobados): 0",
+    "payload": {
+      "saved": 0,
+      "skipped": 0,
+      "pool_after": 28
+    },
+    "score": 0,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.296543+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260602_771188924240",
+    "run_id": "run_20260602_135659_d200f3",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Carla Ruiz",
+    "reason": "Score total: 76 \u2014 skills 24.5, exp 25.5",
+    "payload": {
+      "name": "Carla Ruiz",
+      "role": "CFO",
+      "skills_score": 70,
+      "experience_score": 85,
+      "mobility_score": 60,
+      "consistency_score": 90,
+      "total_score": 76,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 24.5,
+        "experience": 25.5,
+        "mobility_signals": 12.0,
+        "career_consistency": 13.5
+      }
+    },
+    "score": 76,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.213274+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260602_443332952806",
+    "run_id": "run_20260602_135659_d200f3",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Luis Mendoza",
+    "reason": "Score total: 77 \u2014 skills 26.2, exp 21.0",
+    "payload": {
+      "name": "Luis Mendoza",
+      "role": "Growth",
+      "skills_score": 75,
+      "experience_score": 70,
+      "mobility_score": 95,
+      "consistency_score": 70,
+      "total_score": 77,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 26.2,
+        "experience": 21.0,
+        "mobility_signals": 19.0,
+        "career_consistency": 10.5
+      }
+    },
+    "score": 77,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.213266+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260602_169096200770",
+    "run_id": "run_20260602_135659_d200f3",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Ana Torres",
+    "reason": "Score total: 82 \u2014 skills 28.0, exp 25.5",
+    "payload": {
+      "name": "Ana Torres",
+      "role": "HR Dir",
+      "skills_score": 80,
+      "experience_score": 85,
+      "mobility_score": 75,
+      "consistency_score": 90,
+      "total_score": 82,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 28.0,
+        "experience": 25.5,
+        "mobility_signals": 15.0,
+        "career_consistency": 13.5
+      }
+    },
+    "score": 82,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.213257+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260602_132298805720",
+    "run_id": "run_20260602_135659_d200f3",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Pedro L\u00f3pez",
+    "reason": "Score total: 84 \u2014 skills 30.8, exp 25.5",
+    "payload": {
+      "name": "Pedro L\u00f3pez",
+      "role": "VP Eng",
+      "skills_score": 88,
+      "experience_score": 85,
+      "mobility_score": 80,
+      "consistency_score": 80,
+      "total_score": 84,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 30.8,
+        "experience": 25.5,
+        "mobility_signals": 16.0,
+        "career_consistency": 12.0
+      }
+    },
+    "score": 84,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.213246+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "fit_scoring_run_20260602_477214733340",
+    "run_id": "run_20260602_135659_d200f3",
+    "agent_id": "fit_scoring",
+    "action_type": "score",
+    "target": "Mar\u00eda Garc\u00eda",
+    "reason": "Score total: 87 \u2014 skills 32.2, exp 28.5",
+    "payload": {
+      "name": "Mar\u00eda Garc\u00eda",
+      "role": "CTO",
+      "skills_score": 92,
+      "experience_score": 95,
+      "mobility_score": 70,
+      "consistency_score": 85,
+      "total_score": 87,
+      "signals_inferred": false,
+      "breakdown": {
+        "skills": 32.2,
+        "experience": 28.5,
+        "mobility_signals": 14.0,
+        "career_consistency": 12.8
+      }
+    },
+    "score": 87,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.213228+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "career_context_run_20260602_676370916177",
+    "run_id": "run_20260602_135659_74b49e",
+    "agent_id": "career_context",
+    "action_type": "context_signal",
+    "target": "Carlos Ruiz \u2014 CTO",
+    "reason": "Contexto: 2 empresas analizadas. Confianza: alta.",
+    "payload": {
+      "candidate_name": "Carlos Ruiz",
+      "candidate_role": "CTO",
+      "search_role": "CTO / VP Engineering",
+      "seniority": "c-level",
+      "industry": "fintech",
+      "companies_analyzed": [
+        {
+          "company": "FinTechMX",
+          "role": "CTO",
+          "period": "2022\u20132024",
+          "status": "contexto recuperado",
+          "timeline": [
+            {
+              "year": "2019",
+              "event": "Fundaci\u00f3n, equipo fundador de 4 personas",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2021",
+              "event": "Seed round \u2014 $2M",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2022",
+              "event": "Serie A \u2014 $10M liderado por monashees",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2023",
+              "event": "Reestructuraci\u00f3n interna, cambio de CTO",
+              "source": "LinkedIn News"
+            },
+            {
+              "year": "2024",
+              "event": "Adquirida por vertical de banco regional",
+              "source": "Prensa"
+            }
+          ],
+          "signals": [
+            "startup en fase de escalamiento",
+            "reestructuraci\u00f3n t\u00e9cnica 2023",
+            "salida por adquisici\u00f3n 2024"
+          ],
+          "confidence": "alta",
+          "source_type": "mock_fallback"
+        },
+        {
+          "company": "Nubank",
+          "role": "Engineering Manager",
+          "period": "2019\u20132022",
+          "status": "contexto recuperado",
+          "timeline": [
+            {
+              "year": "2013",
+              "event": "Fundaci\u00f3n en Brasil",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2019",
+              "event": "Serie F \u2014 $400M, valoraci\u00f3n $10B",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2021",
+              "event": "IPO en NYSE \u2014 valoraci\u00f3n $45B",
+              "source": "Prensa"
+            },
+            {
+              "year": "2022",
+              "event": "Expansi\u00f3n a Colombia y M\u00e9xico acelerada",
+              "source": "Prensa"
+            },
+            {
+              "year": "2023",
+              "event": "Primer trimestre rentable como p\u00fablico",
+              "source": "Prensa"
+            },
+            {
+              "year": "2024",
+              "event": "Nuevos productos: crypto, cuentas de alto rendimiento",
+              "source": "Prensa"
+            }
+          ],
+          "signals": [
+            "crecimiento explosivo 2019-2021",
+            "madurez como empresa p\u00fablica 2022+",
+            "diversificaci\u00f3n de producto"
+          ],
+          "confidence": "alta",
+          "source_type": "mock_fallback"
+        }
+      ],
+      "hypothesis": "El candidato estuvo en 2 empresas durante periodos con contextos p\u00fablicos relevantes. En FinTechMX (2022\u20132024) se detectaron: startup en fase de escalamiento; reestructuraci\u00f3n t\u00e9cnica 2023. En Nubank (2019\u20132022) se detectaron: crecimiento explosivo 2019-2021; madurez como empresa p\u00fablica 2022+. Estos contextos pueden haber influido en su experiencia, pero no hay evidencia p\u00fablica de su rol directo en esos eventos.",
+      "risk_of_noise": "baja",
+      "validation_questions": [
+        "Durante tu etapa en FinTechMX (2022\u20132024), la empresa atraves\u00f3: startup en fase de escalamiento; reestructuraci\u00f3n t\u00e9cnica 2023. \u00bfQu\u00e9 parte de ese contexto te toc\u00f3 liderar o gestionar directamente?",
+        "Durante tu etapa en Nubank (2019\u20132022), la empresa atraves\u00f3: crecimiento explosivo 2019-2021; madurez como empresa p\u00fablica 2022+. \u00bfQu\u00e9 parte de ese contexto te toc\u00f3 liderar o gestionar directamente?"
+      ],
+      "sources": [
+        "Crunchbase",
+        "LinkedIn News",
+        "Prensa"
+      ],
+      "companies_without_data": 0,
+      "total_companies": 2,
+      "source_type": "mock_fallback"
+    },
+    "score": 85,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.184333+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "career_context_run_20260602_806158561376",
+    "run_id": "run_20260602_135659_74b49e",
+    "agent_id": "career_context",
+    "action_type": "context_signal",
+    "target": "Ana Torres \u2014 HR Director",
+    "reason": "Contexto: 2 empresas analizadas. Confianza: alta.",
+    "payload": {
+      "candidate_name": "Ana Torres",
+      "candidate_role": "HR Director",
+      "search_role": "CHRO",
+      "seniority": "director",
+      "industry": "technology",
+      "companies_analyzed": [
+        {
+          "company": "SoftCloud_LATAM",
+          "role": "HR Director",
+          "period": "2020\u20132024",
+          "status": "contexto recuperado",
+          "timeline": [
+            {
+              "year": "2015",
+              "event": "Fundaci\u00f3n",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2018",
+              "event": "Serie B \u2014 $20M",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2020",
+              "event": "Expansi\u00f3n regional a 5 pa\u00edses LATAM",
+              "source": "Prensa"
+            },
+            {
+              "year": "2022",
+              "event": "IPO en BIVA \u2014 valoraci\u00f3n $400M",
+              "source": "Prensa"
+            },
+            {
+              "year": "2023",
+              "event": "Crisis de retenci\u00f3n, rotaci\u00f3n del 30% en equipos t\u00e9cnicos",
+              "source": "Prensa / Glassdoor"
+            }
+          ],
+          "signals": [
+            "crecimiento sostenido pre-IPO",
+            "salida a bolsa 2022",
+            "crisis de retenci\u00f3n post-IPO"
+          ],
+          "confidence": "alta",
+          "source_type": "mock_fallback"
+        },
+        {
+          "company": "TechMex",
+          "role": "HRBP Sr.",
+          "period": "2017\u20132020",
+          "status": "contexto recuperado",
+          "timeline": [
+            {
+              "year": "2018",
+              "event": "Fundaci\u00f3n",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2020",
+              "event": "Serie A \u2014 $5M liderado por Kaszek Ventures",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2021",
+              "event": "Serie B \u2014 $15M, expansi\u00f3n a 3 pa\u00edses",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2022",
+              "event": "Apertura operaciones en Colombia y Per\u00fa",
+              "source": "Prensa"
+            },
+            {
+              "year": "2023",
+              "event": "Cambio de CEO \u2014 fundador pasa a chairman",
+              "source": "LinkedIn News"
+            },
+            {
+              "year": "2024",
+              "event": "Recorte del 15% del equipo, consolidaci\u00f3n regional",
+              "source": "Prensa"
+            }
+          ],
+          "signals": [
+            "crecimiento acelerado 2020-2022",
+            "cambio de liderazgo 2023",
+            "consolidaci\u00f3n con recorte 2024"
+          ],
+          "confidence": "alta",
+          "source_type": "mock_fallback"
+        }
+      ],
+      "hypothesis": "El candidato estuvo en 2 empresas durante periodos con contextos p\u00fablicos relevantes. En SoftCloud_LATAM (2020\u20132024) se detectaron: crecimiento sostenido pre-IPO; salida a bolsa 2022. En TechMex (2017\u20132020) se detectaron: crecimiento acelerado 2020-2022; cambio de liderazgo 2023. Estos contextos pueden haber influido en su experiencia, pero no hay evidencia p\u00fablica de su rol directo en esos eventos.",
+      "risk_of_noise": "baja",
+      "validation_questions": [
+        "Durante tu etapa en SoftCloud_LATAM (2020\u20132024), la empresa atraves\u00f3: crecimiento sostenido pre-IPO; salida a bolsa 2022. \u00bfQu\u00e9 parte de ese contexto te toc\u00f3 liderar o gestionar directamente?",
+        "Durante tu etapa en TechMex (2017\u20132020), la empresa atraves\u00f3: crecimiento acelerado 2020-2022; cambio de liderazgo 2023. \u00bfQu\u00e9 parte de ese contexto te toc\u00f3 liderar o gestionar directamente?"
+      ],
+      "sources": [
+        "Crunchbase",
+        "LinkedIn News",
+        "Prensa",
+        "Prensa / Glassdoor"
+      ],
+      "companies_without_data": 0,
+      "total_companies": 2,
+      "source_type": "mock_fallback"
+    },
+    "score": 85,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.184161+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "career_context_run_20260602_369829523894",
+    "run_id": "run_20260602_135659_74b49e",
+    "agent_id": "career_context",
+    "action_type": "context_signal",
+    "target": "Luis Mendoza \u2014 Growth Lead",
+    "reason": "Contexto: 2 empresas analizadas. Confianza: alta.",
+    "payload": {
+      "candidate_name": "Luis Mendoza",
+      "candidate_role": "Growth Lead",
+      "search_role": "VP Growth",
+      "seniority": "senior",
+      "industry": "fintech",
+      "companies_analyzed": [
+        {
+          "company": "TechMex",
+          "role": "Growth Lead",
+          "period": "2021\u20132024",
+          "status": "contexto recuperado",
+          "timeline": [
+            {
+              "year": "2018",
+              "event": "Fundaci\u00f3n",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2020",
+              "event": "Serie A \u2014 $5M liderado por Kaszek Ventures",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2021",
+              "event": "Serie B \u2014 $15M, expansi\u00f3n a 3 pa\u00edses",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2022",
+              "event": "Apertura operaciones en Colombia y Per\u00fa",
+              "source": "Prensa"
+            },
+            {
+              "year": "2023",
+              "event": "Cambio de CEO \u2014 fundador pasa a chairman",
+              "source": "LinkedIn News"
+            },
+            {
+              "year": "2024",
+              "event": "Recorte del 15% del equipo, consolidaci\u00f3n regional",
+              "source": "Prensa"
+            }
+          ],
+          "signals": [
+            "crecimiento acelerado 2020-2022",
+            "cambio de liderazgo 2023",
+            "consolidaci\u00f3n con recorte 2024"
+          ],
+          "confidence": "alta",
+          "source_type": "mock_fallback"
+        },
+        {
+          "company": "FinTechMX",
+          "role": "Sr. Analyst",
+          "period": "2019\u20132021",
+          "status": "contexto recuperado",
+          "timeline": [
+            {
+              "year": "2019",
+              "event": "Fundaci\u00f3n, equipo fundador de 4 personas",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2021",
+              "event": "Seed round \u2014 $2M",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2022",
+              "event": "Serie A \u2014 $10M liderado por monashees",
+              "source": "Crunchbase"
+            },
+            {
+              "year": "2023",
+              "event": "Reestructuraci\u00f3n interna, cambio de CTO",
+              "source": "LinkedIn News"
+            },
+            {
+              "year": "2024",
+              "event": "Adquirida por vertical de banco regional",
+              "source": "Prensa"
+            }
+          ],
+          "signals": [
+            "startup en fase de escalamiento",
+            "reestructuraci\u00f3n t\u00e9cnica 2023",
+            "salida por adquisici\u00f3n 2024"
+          ],
+          "confidence": "alta",
+          "source_type": "mock_fallback"
+        }
+      ],
+      "hypothesis": "El candidato estuvo en 2 empresas durante periodos con contextos p\u00fablicos relevantes. En TechMex (2021\u20132024) se detectaron: crecimiento acelerado 2020-2022; cambio de liderazgo 2023. En FinTechMX (2019\u20132021) se detectaron: startup en fase de escalamiento; reestructuraci\u00f3n t\u00e9cnica 2023. Estos contextos pueden haber influido en su experiencia, pero no hay evidencia p\u00fablica de su rol directo en esos eventos.",
+      "risk_of_noise": "baja",
+      "validation_questions": [
+        "Durante tu etapa en TechMex (2021\u20132024), la empresa atraves\u00f3: crecimiento acelerado 2020-2022; cambio de liderazgo 2023. \u00bfQu\u00e9 parte de ese contexto te toc\u00f3 liderar o gestionar directamente?",
+        "Durante tu etapa en FinTechMX (2019\u20132021), la empresa atraves\u00f3: startup en fase de escalamiento; reestructuraci\u00f3n t\u00e9cnica 2023. \u00bfQu\u00e9 parte de ese contexto te toc\u00f3 liderar o gestionar directamente?"
+      ],
+      "sources": [
+        "Crunchbase",
+        "LinkedIn News",
+        "Prensa"
+      ],
+      "companies_without_data": 0,
+      "total_companies": 2,
+      "source_type": "mock_fallback"
+    },
+    "score": 85,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.183968+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_signal_run_20260602_578639975072",
+    "run_id": "run_20260602_135659_3a27f3",
+    "agent_id": "talent_signal",
+    "action_type": "signal",
+    "target": "Carlos Ruiz \u2014 CTO",
+    "reason": "Se\u00f1ales: 1 potencial, 0 riesgo. Hip\u00f3tesis: Se\u00f1ales mixtas. Requiere m\u00e1s datos para formular hip\u00f3tesis s\u00f3lida.",
+    "payload": {
+      "candidate_name": "Carlos Ruiz",
+      "candidate_role": "CTO",
+      "trayectoria": "CTO en 2 startups, sali\u00f3 antes de serie B ambas veces, cargo alto pero equipos chicos (< 5 personas), narrativa centrada en tecnolog\u00eda no en negocio.",
+      "observable_signals": [
+        "Trayectoria en CTO en 2 startups, sali\u00f3 antes de serie B ambas ve...",
+        "Perfil requiere an\u00e1lisis m\u00e1s profundo"
+      ],
+      "hypothesis": "Se\u00f1ales mixtas. Requiere m\u00e1s datos para formular hip\u00f3tesis s\u00f3lida.",
+      "risks": [
+        "Informaci\u00f3n insuficiente para evaluaci\u00f3n completa"
+      ],
+      "validation_questions": [
+        "\u00bfCu\u00e1l fue tu mayor logro medible en tu rol actual?",
+        "\u00bfQu\u00e9 problemas resolviste que otros no pudieron?"
+      ],
+      "recommendation": "Requiere m\u00e1s informaci\u00f3n antes de determinar.",
+      "confidence": "baja",
+      "principles_applied": [
+        "no_confundir_pulido_con_talento",
+        "buscar_ownership_no_cargos",
+        "detectar_subposicionados"
+      ]
+    },
+    "score": 60,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.155486+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_signal_run_20260602_830924611785",
+    "run_id": "run_20260602_135659_3a27f3",
+    "agent_id": "talent_signal",
+    "action_type": "signal",
+    "target": "Ana Torres \u2014 HR Director",
+    "reason": "Se\u00f1ales: 2 potencial, 1 riesgo. Hip\u00f3tesis: Perfil s\u00f3lido pero con narrativa estandarizada. Puede estar ocultando profundidad tras un storytelling gen\u00e9rico.",
+    "payload": {
+      "candidate_name": "Ana Torres",
+      "candidate_role": "HR Director",
+      "trayectoria": "10+ a\u00f1os en RH, cambios de industria cada 3 a\u00f1os, logros descriptivos sin m\u00e9tricas, perfil bien armado pero gen\u00e9rico.",
+      "observable_signals": [
+        "Trayectoria diversa en RH con cambios de industria",
+        "Perfil bien armado pero gen\u00e9rico \u2014 logros sin cuantificar",
+        "Narrativa consistente que no cambia entre roles"
+      ],
+      "hypothesis": "Perfil s\u00f3lido pero con narrativa estandarizada. Puede estar ocultando profundidad tras un storytelling gen\u00e9rico.",
+      "risks": [
+        "Riesgo de que sea m\u00e1s generalista que especialista",
+        "Cambios frecuentes de industria sin hilo conductor claro"
+      ],
+      "validation_questions": [
+        "\u00bfCu\u00e1l fue el proyecto de RH m\u00e1s complejo que lideraste?",
+        "\u00bfC\u00f3mo mediste el impacto de una iniciativa de talento?",
+        "\u00bfQu\u00e9 aprendiste de cada industria y c\u00f3mo lo aplicaste?"
+      ],
+      "recommendation": "Validar profundidad t\u00e9cnica en entrevista. No descartar por formato gen\u00e9rico.",
+      "confidence": "media",
+      "principles_applied": [
+        "no_confundir_pulido_con_talento",
+        "buscar_ownership_no_cargos",
+        "detectar_subposicionados"
+      ]
+    },
+    "score": 72,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.155462+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_signal_run_20260602_244320739768",
+    "run_id": "run_20260602_135659_3a27f3",
+    "agent_id": "talent_signal",
+    "action_type": "signal",
+    "target": "Luis Mendoza \u2014 Growth Lead",
+    "reason": "Se\u00f1ales: 3 potencial, 1 riesgo. Hip\u00f3tesis: Perfil con alta capacidad pr\u00e1ctica pero baja autopresentaci\u00f3n. Puede estar subposicionado respecto a su impacto real.",
+    "payload": {
+      "candidate_name": "Luis Mendoza",
+      "candidate_role": "Growth Lead",
+      "trayectoria": "Expansi\u00f3n regional en 3 pa\u00edses, roles operativos y comerciales, perfil de LinkedIn poco cuantificado, sin logros num\u00e9ricos visibles.",
+      "observable_signals": [
+        "Expansi\u00f3n regional en 3 pa\u00edses muestra capacidad de adaptaci\u00f3n",
+        "Perfil sin logros cuantificados \u2014 posible subcomunicaci\u00f3n",
+        "Roles operativos y comerciales combinados"
+      ],
+      "hypothesis": "Perfil con alta capacidad pr\u00e1ctica pero baja autopresentaci\u00f3n. Puede estar subposicionado respecto a su impacto real.",
+      "risks": [
+        "Podr\u00eda ser subvalorado si se eval\u00faa solo por LinkedIn",
+        "Sin m\u00e9tricas visibles, dif\u00edcil validar alcance real"
+      ],
+      "validation_questions": [
+        "\u00bfQu\u00e9 mercados abriste y cu\u00e1l fue el m\u00e1s complejo?",
+        "\u00bfQu\u00e9 decisiones tomabas sin supervisi\u00f3n?",
+        "\u00bfC\u00f3mo median el \u00e9xito de tu gesti\u00f3n?"
+      ],
+      "recommendation": "No descartar. Requiere entrevista exploratoria para validar alcance real.",
+      "confidence": "media-alta",
+      "principles_applied": [
+        "no_confundir_pulido_con_talento",
+        "buscar_ownership_no_cargos",
+        "detectar_subposicionados"
+      ]
+    },
+    "score": 78,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.155416+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_446534275311",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Stewart Munoz",
+    "reason": "VP of Engineering en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Stewart Munoz",
+      "role": "VP of Engineering",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/smunoz",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Data analytics",
+        "Python",
+        "Java software development",
+        "DevOps",
+        "Linux",
+        "Analysis",
+        "Data science",
+        "PHP"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering"
+    },
+    "score": 70,
+    "state": "shortlisted",
+    "created_at": "2026-06-02T13:56:59.101770+00:00",
+    "reviewed_at": "2026-06-04T05:33:44.402904+00:00",
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_395704711062",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "ATUL SHRIDHAR",
+    "reason": "VP Engineering en AI/ML Platforms | Cloud & Data Architect | Ex-Atlassian, Paytm [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "ATUL SHRIDHAR",
+      "role": "VP Engineering",
+      "company": "AI/ML Platforms | Cloud & Data Architect | Ex-Atlassian, Paytm",
+      "location": "LATAM",
+      "source_url": "https://torre.co/atulshridhar",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Electronic data interchange",
+        "Ruby on Rails",
+        "DevOps",
+        "Micro frontend",
+        "Data structures",
+        "Team leadership",
+        "Cloud-native platforms",
+        "Teradata"
+      ],
+      "confidence": "medium",
+      "summary": "VP Engineering | AI/ML Platforms | Cloud & Data Architect | Ex-Atlassian, Paytm"
+    },
+    "score": 70,
+    "state": "shortlisted",
+    "created_at": "2026-06-02T13:56:59.101763+00:00",
+    "reviewed_at": "2026-06-04T05:35:31.782681+00:00",
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_355301210819",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andr\u00e9 Pinto",
+    "reason": "VP of Front-End & Engineering Leader en 2x Founder | Front-End Architect | Product Development & Developer Experience [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andr\u00e9 Pinto",
+      "role": "VP of Front-End & Engineering Leader",
+      "company": "2x Founder | Front-End Architect | Product Development & Developer Experience",
+      "location": "LATAM",
+      "source_url": "https://torre.co/andrepinto",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Educational technology",
+        "Social media marketing",
+        "Innovation",
+        "Adobe After Effects",
+        "Business development",
+        "GitHub Actions",
+        "Brand ambassador",
+        "JavaScript"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Front-End & Engineering Leader | 2x Founder | Front-End Architect | Produc"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101755+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_970965099813",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Diego Pedroza Rodri\u0301guez",
+    "reason": "Co-Founder and VP Engineeering en Datagran [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Diego Pedroza Rodri\u0301guez",
+      "role": "Co-Founder and VP Engineeering",
+      "company": "Datagran",
+      "location": "LATAM",
+      "source_url": "https://torre.co/diegopedrozar",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Product management",
+        "Flex Builder",
+        "Python",
+        "Business intelligence",
+        "DevOps",
+        "Marketing",
+        "Flex",
+        "Entrepreneurship"
+      ],
+      "confidence": "medium",
+      "summary": "Co-Founder and VP Engineeering en Datagran"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101747+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_670224160372",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "An\u00edbal Rojas",
+    "reason": "VP of Engineering en Platzi [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "An\u00edbal Rojas",
+      "role": "VP of Engineering",
+      "company": "Platzi",
+      "location": "LATAM",
+      "source_url": "https://torre.co/anibalrojas",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Engineering",
+        "Personnel management",
+        "Industrial process control",
+        "Contract management",
+        "Ruby on Rails",
+        "Team leadership",
+        "Technology consulting",
+        "Psychology"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering at Platzi"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101739+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_701985075165",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Pedro Restrepo",
+    "reason": "VP of Engineering en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Pedro Restrepo",
+      "role": "VP of Engineering",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/pedrojrestrepo",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Fullstack development",
+        "Python",
+        "Redux",
+        "TypeScript",
+        "Customer Satisfaction",
+        "AWS Elastic Beanstalk1",
+        "Web development",
+        "Startups"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101732+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_093864547057",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Carlos C\u00e1rdenas",
+    "reason": "VP of Engineering Bimbau en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Carlos C\u00e1rdenas",
+      "role": "VP of Engineering Bimbau",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/carloscardenas",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Agile methodologies",
+        "Engineering",
+        "Python",
+        "Programming languages",
+        "Blockchain",
+        "PHP",
+        "Low level programming",
+        "Machine learning"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Engineering Bimbau"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101725+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_485750747323",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Luciano Bargmann",
+    "reason": "VP Engineering en Director of Engineering | Scrum Master | MBA | Remote Work Expert | Experimentin [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Luciano Bargmann",
+      "role": "VP Engineering",
+      "company": "Director of Engineering | Scrum Master | MBA | Remote Work Expert | Experimentin",
+      "location": "LATAM",
+      "source_url": "https://torre.co/lucianobargmann",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Cybersecurity",
+        "Python",
+        "AWS Cloud",
+        "DevOps",
+        "Driving",
+        "Cloud infrastructure",
+        "Web3.js",
+        "Web3"
+      ],
+      "confidence": "medium",
+      "summary": "VP Engineering | Director of Engineering | Scrum Master | MBA | Remote Work Expe"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101718+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_022784891250",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Leonardo Larrea",
+    "reason": "VP of Software Engineering en Shippify. [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Leonardo Larrea",
+      "role": "VP of Software Engineering",
+      "company": "Shippify.",
+      "location": "LATAM",
+      "source_url": "https://torre.co/leonardolarrea1",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Optimization algorithms",
+        "Engineering",
+        "Desarrollo de aplicaciones",
+        "Science",
+        "DevOps",
+        "Computer science",
+        "Algorithm optimization",
+        "AWS Step Functions"
+      ],
+      "confidence": "medium",
+      "summary": "VP of Software Engineering at Shippify."
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101710+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_933468570398",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Yves Gagnon",
+    "reason": "Global Senior Engineering & Product Development Leader en Director of Engineering | VP Product Development | Head of R&D | Senior Engineer [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Yves Gagnon",
+      "role": "Global Senior Engineering & Product Development Leader",
+      "company": "Director of Engineering | VP Product Development | Head of R&D | Senior Engineer",
+      "location": "LATAM",
+      "source_url": "https://torre.co/yvesgagnon",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "IEC 60601",
+        "Technical maintenance",
+        "Proactivity",
+        "Configuration management",
+        "Systems Integration",
+        "Product lifecycle management (PLM)",
+        "Risk management",
+        "Budget"
+      ],
+      "confidence": "medium",
+      "summary": "Global Senior Engineering & Product Development Leader | Director of Engineering"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101703+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_777776451124",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Orlando Jose Zambrano Smith",
+    "reason": "Chief Information Officer, Transformaci\u00f3n Digital, Estrategia Empresarial y Tecn en TI y Optimizaci\u00f3n Operacional. [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Orlando Jose Zambrano Smith",
+      "role": "Chief Information Officer, Transformaci\u00f3n Digital, Estrategia Empresarial y Tecn",
+      "company": "TI y Optimizaci\u00f3n Operacional.",
+      "location": "LATAM",
+      "source_url": "https://torre.co/ozamsmith",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Business intelligence (BI)",
+        "Servicio al cliente",
+        "Arquitectura de software",
+        "Metodolog\u00edas \u00e1giles",
+        "Analysis",
+        "Energico",
+        "Gobierno",
+        "Communicative competence"
+      ],
+      "confidence": "medium",
+      "summary": "Chief Information Officer, Transformaci\u00f3n Digital, Estrategia Empresarial y Tecn"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101695+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_369007381948",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Wilfredo Gomez",
+    "reason": "Project Manager en Product manager - Data Analyst/BI [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Wilfredo Gomez",
+      "role": "Project Manager",
+      "company": "Product manager - Data Analyst/BI",
+      "location": "LATAM",
+      "source_url": "https://torre.co/wilfredogomez",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Business management",
+        "Arquitectura de software",
+        "Amazon Web Services",
+        "Innovation",
+        "Strategy",
+        "CRM",
+        "Seguridad inform\u00e1tica",
+        "Leadership"
+      ],
+      "confidence": "medium",
+      "summary": "Project Manager - Product manager - Data Analyst/BI"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101687+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_638836570325",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andres Felipe Chaves Rojas",
+    "reason": "Systems and Software Engineer en Data Engineer | Machine Learning | Troubleshooting | Agile | Project Management  [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andres Felipe Chaves Rojas",
+      "role": "Systems and Software Engineer",
+      "company": "Data Engineer | Machine Learning | Troubleshooting | Agile | Project Management ",
+      "location": "LATAM",
+      "source_url": "https://torre.co/Kiscvik",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Unity",
+        "Azure DevOps",
+        "Analista de datos",
+        "Data analytics",
+        "DevOps",
+        "Arquitectura de software",
+        "CentOS",
+        "Software architectural design"
+      ],
+      "confidence": "medium",
+      "summary": "Systems and Software Engineer | Data Engineer | Machine Learning | Troubleshooti"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101679+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_719521105888",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Alejandro Alvarez",
+    "reason": "CTO en Software Engineer - Azure Expert - AWS Expert - FulllStack PHP/Java Developer -  [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Alejandro Alvarez",
+      "role": "CTO",
+      "company": "Software Engineer - Azure Expert - AWS Expert - FulllStack PHP/Java Developer - ",
+      "location": "LATAM",
+      "source_url": "https://torre.co/alejandroalvarez",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Unity",
+        "Azure DevOps",
+        "Arquitectura de software",
+        "Visual FoxPro",
+        "Representational State Transfer (REST)",
+        "Generative AI",
+        "Product owner",
+        "MySQL"
+      ],
+      "confidence": "medium",
+      "summary": "CTO - Software Engineer - Azure Expert - AWS Expert - FulllStack PHP/Java Develo"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101671+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_431814460130",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andres Suarez",
+    "reason": "CTO en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andres Suarez",
+      "role": "CTO",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/liquean",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Front-end development",
+        "Software development",
+        "Resourceful",
+        "Drums",
+        "Strategy",
+        "Guitar",
+        "JavaScript",
+        "Piano"
+      ],
+      "confidence": "medium",
+      "summary": "CTO"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101663+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_938740116189",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "C\u00e9sar Adolfo Mauricio Durazno",
+    "reason": "CDO \u00b7 CIO \u00b7 CTO \u00b7 Estrategia de TI y Transformaci\u00f3n Digital \u00b7 Gesti\u00f3n de Proyect en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "C\u00e9sar Adolfo Mauricio Durazno",
+      "role": "CDO \u00b7 CIO \u00b7 CTO \u00b7 Estrategia de TI y Transformaci\u00f3n Digital \u00b7 Gesti\u00f3n de Proyect",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/cesaradolfomauriciodurazno",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Product ownership",
+        "Evaluaci\u00f3n de modelos",
+        "Desarrollo de negocio",
+        "Gesti\u00f3n de proveedores",
+        "Gesti\u00f3n de eventos",
+        "Requirements analysis",
+        "Arquitectura de software",
+        "Visual FoxPro"
+      ],
+      "confidence": "medium",
+      "summary": "CDO \u00b7 CIO \u00b7 CTO \u00b7 Estrategia de TI y Transformaci\u00f3n Digital \u00b7 Gesti\u00f3n de Proyect"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101655+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_895244797167",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "OSCAR EMILIO MU\u00d1OZ GONZALEZ",
+    "reason": "GERENTE DE TECNOLOGIA / CTO / TRANSFORMACION DIGITAL / INFRAESTRUCTURA / DESARRO en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "OSCAR EMILIO MU\u00d1OZ GONZALEZ",
+      "role": "GERENTE DE TECNOLOGIA / CTO / TRANSFORMACION DIGITAL / INFRAESTRUCTURA / DESARRO",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/omunozgonzalez",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Soporte al cliente",
+        "Telematics",
+        "Implementaci\u00f3n de ERP",
+        "Virtualizaci\u00f3n",
+        "Arquitectura de software",
+        "Organizaci\u00f3n",
+        "Planificaci\u00f3n de proyectos",
+        "ITIL project management"
+      ],
+      "confidence": "medium",
+      "summary": "GERENTE DE TECNOLOGIA / CTO / TRANSFORMACION DIGITAL / INFRAESTRUCTURA / DESARRO"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101646+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_443276709613",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Paulo Madronero",
+    "reason": "CTO Motivy en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Paulo Madronero",
+      "role": "CTO Motivy",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/paulomadronero",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Python",
+        "DevOps",
+        "Data science",
+        "Resilience",
+        "Security",
+        "Web development",
+        "Product owner",
+        "Innovation"
+      ],
+      "confidence": "medium",
+      "summary": "CTO Motivy"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101636+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_943655419960",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "C\u00e9sar Augusto Ram\u00edrez Ram\u00edrez",
+    "reason": "| SENIOR PM IT en MANAGER IT | CTO | TL | SMC\u00ae | [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "C\u00e9sar Augusto Ram\u00edrez Ram\u00edrez",
+      "role": "| SENIOR PM IT",
+      "company": "MANAGER IT | CTO | TL | SMC\u00ae |",
+      "location": "LATAM",
+      "source_url": "https://torre.co/cesaraugusto_81",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Implementaci\u00f3n de proyectos tecnol\u00f3gicos",
+        "Control de versiones",
+        "Gesti\u00f3n de stakeholders",
+        "DevOps",
+        "Risk management",
+        "CRM (Customer relationship management)",
+        "Arquitectura de software",
+        "Team leadership"
+      ],
+      "confidence": "medium",
+      "summary": "| SENIOR PM IT | MANAGER IT | CTO | TL | SMC\u00ae |"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101625+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "talent_sourcing_run_20260602_368565568738",
+    "run_id": "run_20260602_135656_7d3a6e",
+    "agent_id": "talent_sourcing",
+    "action_type": "candidate",
+    "target": "Andres Rojas",
+    "reason": "Senior Software Developer en Por confirmar [torre] \u2014 open_to_work",
+    "payload": {
+      "name": "Andres Rojas",
+      "role": "Senior Software Developer",
+      "company": "Por confirmar",
+      "location": "LATAM",
+      "source_url": "https://torre.co/andresrojasisazq",
+      "source": "torre",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "DevOps",
+        "Team leadership",
+        "Virtual reality",
+        "Joomla",
+        "Communicative competence",
+        "Programming",
+        "Bootstrap",
+        "Model-view-presenter"
+      ],
+      "confidence": "medium",
+      "summary": "Senior Software Developer"
+    },
+    "score": 70,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:59.101598+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "deduplication_run_20260602_473927628443",
+    "run_id": "run_20260602_135656_d89f92",
+    "agent_id": "deduplication",
+    "action_type": "note",
+    "target": "dedup_clean",
+    "reason": "No se detectaron duplicados en esta ronda",
+    "payload": {},
+    "score": 0,
+    "state": "acknowledged",
+    "created_at": "2026-06-02T13:56:56.739429+00:00",
+    "reviewed_at": "2026-06-04T04:25:41.049501+00:00",
+    "review_comment": ""
+  },
+  {
+    "action_id": "criteria_run_20260602_221834196869",
+    "run_id": "run_20260602_135656_93972a",
+    "agent_id": "criteria",
+    "action_type": "note",
+    "target": "criteria_snapshot",
+    "reason": "Criterios activos: CTO / VP engineering en Argentina Uruguay",
+    "payload": {
+      "role_target": "CTO / VP engineering",
+      "markets": [
+        "Argentina Uruguay"
+      ],
+      "industries": [
+        "fintech",
+        "SaaS B2B"
+      ],
+      "positive_signals": [
+        "scaleup",
+        "P&L",
+        "regional expansion",
+        "team scaling",
+        "ownership"
+      ],
+      "negative_signals": [
+        "solo IC",
+        "no team",
+        "pure corporate background",
+        "no LATAM context"
+      ],
+      "preferred_background": "L\u00edder t\u00e9cnico ejecutivo que haya escalado equipos de ingenier\u00eda en fintech o SaaS B2B, idealmente con experiencia regional en\n  LATAM, responsabilidad sobre producto/tecnolog\u00eda y exposici\u00f3n a P&L o crecimiento de negocio.\n\n",
+      "outreach_tone": "  Directo, ejecutivo y respetuoso. Enfatizar oportunidad estrat\u00e9gica, confidencialidad y fit con etapa de crecimiento.",
+      "hard_filters": [
+        "no_contact_without_human_approval",
+        "no_sensitive_inferences",
+        "no_unverified_claims"
+      ],
+      "human_approval_required": true
+    },
+    "score": 0,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:56.603577+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "knowledge_run_20260602_305503381847",
+    "run_id": "run_20260602_135656_87a1c0",
+    "agent_id": "knowledge",
+    "action_type": "folder_structure",
+    "target": "SoftCloud_LATAM",
+    "reason": "0 carpetas creadas de 6",
+    "payload": {
+      "account": "SoftCloud_LATAM",
+      "folders": [
+        "01_Mercado",
+        "02_Oportunidades",
+        "03_Candidatos",
+        "04_Contactos_y_Seguimiento",
+        "05_Insights_Semanales",
+        "06_Riesgos_y_Bloqueos"
+      ],
+      "created": [],
+      "path": "data/knowledge/SoftCloud_LATAM"
+    },
+    "score": 100,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:56.567366+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "knowledge_run_20260602_660502186480",
+    "run_id": "run_20260602_135656_87a1c0",
+    "agent_id": "knowledge",
+    "action_type": "folder_structure",
+    "target": "FinTechMX",
+    "reason": "0 carpetas creadas de 6",
+    "payload": {
+      "account": "FinTechMX",
+      "folders": [
+        "01_Mercado",
+        "02_Oportunidades",
+        "03_Candidatos",
+        "04_Contactos_y_Seguimiento",
+        "05_Insights_Semanales",
+        "06_Riesgos_y_Bloqueos"
+      ],
+      "created": [],
+      "path": "data/knowledge/FinTechMX"
+    },
+    "score": 100,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:56.567256+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "knowledge_run_20260602_059003472113",
+    "run_id": "run_20260602_135656_87a1c0",
+    "agent_id": "knowledge",
+    "action_type": "folder_structure",
+    "target": "TechMex",
+    "reason": "0 carpetas creadas de 6",
+    "payload": {
+      "account": "TechMex",
+      "folders": [
+        "01_Mercado",
+        "02_Oportunidades",
+        "03_Candidatos",
+        "04_Contactos_y_Seguimiento",
+        "05_Insights_Semanales",
+        "06_Riesgos_y_Bloqueos"
+      ],
+      "created": [],
+      "path": "data/knowledge/TechMex"
+    },
+    "score": 100,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:56.567130+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "demand_radar_run_20260602_087121274101",
+    "run_id": "run_20260602_135656_0722e0",
+    "agent_id": "demand_radar",
+    "action_type": "opportunity",
+    "target": "SoftCloud LATAM expande operaciones a 3 pa\u00edses",
+    "reason": "se\u00f1al de mercado detectada",
+    "payload": {
+      "company": "SoftCloud LATAM expande operaciones a 3 pa\u00edses",
+      "signal": "se\u00f1al de mercado detectada",
+      "source": "brave_search",
+      "source_type": "real",
+      "detail": "SoftCloud LATAM abre oficinas en Colombia, Per\u00fa y Chile durante 2026.",
+      "url": "https://example.com/softcloud-expansion",
+      "confidence": "media"
+    },
+    "score": 75,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:56.528375+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "demand_radar_run_20260602_564221071903",
+    "run_id": "run_20260602_135656_0722e0",
+    "agent_id": "demand_radar",
+    "action_type": "opportunity",
+    "target": "FinTechMX contrata Directora de Talento",
+    "reason": "se\u00f1al de mercado detectada",
+    "payload": {
+      "company": "FinTechMX contrata Directora de Talento",
+      "signal": "se\u00f1al de mercado detectada",
+      "source": "brave_search",
+      "source_type": "real",
+      "detail": "FinTechMX acaba de contratar una Directora de Talento. Hist\u00f3ricamente esta se\u00f1al precede contrataciones masivas.",
+      "url": "https://example.com/fintechmx-hiring",
+      "confidence": "media"
+    },
+    "score": 75,
+    "state": "pending_review",
+    "created_at": "2026-06-02T13:56:56.528351+00:00",
+    "reviewed_at": null,
+    "review_comment": ""
+  },
+  {
+    "action_id": "demand_radar_run_20260602_907916649116",
+    "run_id": "run_20260602_135656_0722e0",
+    "agent_id": "demand_radar",
+    "action_type": "opportunity",
+    "target": "TechMex cierra ronda Serie B por $12M",
+    "reason": "se\u00f1al de mercado detectada",
+    "payload": {
+      "company": "TechMex cierra ronda Serie B por $12M",
+      "signal": "se\u00f1al de mercado detectada",
+      "source": "brave_search",
+      "source_type": "real",
+      "detail": "TechMex anunci\u00f3 el cierre de su Serie B liderada por Kaszek. Buscan CTO y 5 ingenieros senior para expansi\u00f3n regional.",
+      "url": "https://techcrunch.com/example/techmex-series-b",
+      "confidence": "media"
+    },
+    "score": 75,
+    "state": "qualified",
+    "created_at": "2026-06-02T13:56:56.528320+00:00",
+    "reviewed_at": "2026-06-04T03:55:08.300222+00:00",
+    "review_comment": ""
+  }
+]

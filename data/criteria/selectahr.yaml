@@ -1,0 +1,27 @@
+client: empresa de logistica b2b mexico
+hard_filters:
+- no_contact_without_human_approval
+- no_sensitive_inferences
+- no_unverified_claims
+human_approval_required: true
+industries:
+- logistica
+- supply chain
+- saas b2b
+markets:
+- mexico
+- colombia
+max_candidates: 50
+negative_signals:
+- solo ventas transaccionales
+- sin experiencia enterprise
+outreach_tone: consultivo enfocado en el impacto comercial y la vision regional
+owner: manu
+philosophy: ''
+positive_signals:
+- regional expansion
+- P&L
+- ownership
+preferred_background: ''
+role_target: chief revenue officer
+sources: torre,brave

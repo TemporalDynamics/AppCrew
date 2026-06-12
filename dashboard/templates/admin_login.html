@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acceso Interno | Talo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4ec;
+  --ink: #13201c;
+  --muted: #4f5f58;
+  --card: #fbfaf3;
+  --line: #d6d3c1;
+  --accent: #136f63;
+  --accent-soft: rgba(19, 111, 99, 0.08);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+  --shadow: 0 20px 60px rgba(19, 32, 28, 0.12);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font);
+  background: radial-gradient(ellipse at 50% 30%, rgba(19, 111, 99, 0.08) 0%, transparent 50%), var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+.login-box {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 48px 40px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+.login-logo {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.login-box h2 {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 20px 0 6px;
+}
+.login-box p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.login-box input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: #fffdf6;
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 16px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.login-box input:focus {
+  border-color: var(--accent);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  width: 100%;
+  justify-content: center;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--line);
+  margin-top: 12px;
+  font-size: 0.8rem;
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.msg-error {
+  color: #c0392b;
+  font-size: 0.82rem;
+  margin-bottom: 12px;
+  display: none;
+}
+@media (max-width: 480px) {
+  .login-box { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+  <div class="login-logo">Talo</div>
+  <h2>Acceso Interno</h2>
+  <p>Ingresá el código de administrador para acceder al sistema.</p>
+  <form id="adminForm">
+    <div class="msg-error" id="msgError">Código incorrecto. Intentá de nuevo.</div>
+    <input type="password" name="code" placeholder="Código de acceso" required autofocus>
+    <button type="submit" class="btn btn-primary">Ingresar →</button>
+  </form>
+  <a href="/" class="btn btn-ghost">Ir al sistema</a>
+</div>
+
+<script>
+document.getElementById("adminForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const code = e.target.querySelector("[name=code]").value;
+  const msgError = document.getElementById("msgError");
+  try {
+    const res = await fetch("/admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "code=" + encodeURIComponent(code)
+    });
+    if (res.redirected) {
+      window.location.href = res.url;
+    } else {
+      msgError.style.display = "block";
+    }
+  } catch (err) {
+    msgError.style.display = "block";
+  }
+});
+</script>
+</body>
+</html>

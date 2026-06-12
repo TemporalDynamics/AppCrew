@@ -4,6 +4,9 @@ from datetime import datetime, timezone
 from typing import Any
 
 from contracts import AgentAction, AgentState, InvariantViolation
+from core.logger import get_logger
+
+logger = get_logger("agents.base")
 
 
 class BaseAgent:
@@ -41,6 +44,128 @@ class BaseAgent:
             "authority": "worker",
         }
 
+    def resolve_context(self) -> dict:
+        workspace_id = self.config.get("workspace_id", "default")
+        logger.info("[%s HOOK] 1. resolve_context: Resolving context for workspace '%s'", self.id.upper(), workspace_id)
+        
+        # Load workspace settings (demo_mode)
+        import yaml
+        from pathlib import Path
+        ROOT = Path(__file__).resolve().parent.parent
+        settings_path = ROOT / "data" / "criteria" / f"settings_{workspace_id}.yaml"
+        demo_mode = True
+        if settings_path.exists():
+            try:
+                with open(settings_path, "r", encoding="utf-8") as f:
+                    s_data = yaml.safe_load(f) or {}
+                    demo_mode = s_data.get("demo_mode", True)
+            except Exception:
+                logger.warning("[%s HOOK] Could not load settings for workspace '%s'", self.id.upper(), workspace_id)
+                
+        # Load active criteria / mission
+        if workspace_id == "default":
+            criteria_path = ROOT / "data" / "demo_rodri_criteria.yaml"
+        else:
+            criteria_path = ROOT / "data" / "criteria" / f"{workspace_id}.yaml"
+            
+        criteria = {}
+        if criteria_path.exists():
+            try:
+                with open(criteria_path, "r", encoding="utf-8") as f:
+                    criteria = yaml.safe_load(f) or {}
+            except Exception:
+                logger.warning("[%s HOOK] Could not load criteria from '%s'", self.id.upper(), criteria_path)
+                
+        role_target = criteria.get("role_target", criteria.get("role", "Candidato Talo"))
+        
+        # Fail closed check: if workspace_id is empty, fail immediately
+        if not workspace_id:
+            raise ValueError(f"Freno de seguridad [Fail-Closed]: Workspace ID no resuelto en el agente {self.id}.")
+            
+        self.config["workspace_id"] = workspace_id
+        self.config["demo_mode"] = demo_mode
+        self.config["criteria"] = criteria
+        
+        logger.info("[%s HOOK] Context resolved: Mode=%s, Role='%s'", self.id.upper(), "Demo" if demo_mode else "Real", role_target)
+        return {
+            "workspace_id": workspace_id,
+            "demo_mode": demo_mode,
+            "role_target": role_target,
+            "criteria": criteria
+        }
+
+    def verify_memory_scope(self) -> None:
+        logger.info("[%s HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...", self.id.upper())
+        try:
+            from scripts.demo_verify import verify_chain, _ledger_db_path
+            db_path = _ledger_db_path()
+            if db_path.exists():
+                ok, message = verify_chain(db_path)
+                if not ok:
+                    logger.error("[%s HOOK] MEMORY INTEGRITY FAILURE: %s", self.id.upper(), message)
+                    raise ValueError(f"Freno de seguridad: Tamper detectado en el ledger de memoria de Talo. {message}")
+                else:
+                    logger.info("[%s HOOK] Memory integrity OK: %s", self.id.upper(), message)
+            else:
+                logger.info("[%s HOOK] Memory ledger not found at %s. Skipping verification.", self.id.upper(), db_path)
+        except ImportError:
+            logger.warning("[%s HOOK] demo_verify script not importable. Skipping verification.", self.id.upper())
+
+    def load_recent_audit_context(self) -> list:
+        logger.info("[%s HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...", self.id.upper())
+        import sqlite3
+        import json
+        from pathlib import Path
+        ROOT = Path(__file__).resolve().parent.parent
+        entries = []
+        try:
+            from scripts.demo_verify import _ledger_db_path
+            db_path = _ledger_db_path()
+            if db_path.exists():
+                conn = sqlite3.connect(str(db_path))
+                rows = conn.execute(
+                    "SELECT id, created_at, content, tags FROM entries ORDER BY created_epoch DESC"
+                ).fetchall()
+                conn.close()
+                
+                for r in rows:
+                    entry_id, created_at, content, tags_json = r
+                    try:
+                        tags = json.loads(tags_json)
+                    except Exception:
+                        tags = []
+                    # Filter: relevant if tag matches agent_id or general system events
+                    if not tags or self.id in tags or "startup" in tags:
+                        entries.append({
+                            "id": entry_id,
+                            "created_at": created_at,
+                            "content": json.loads(content) if content.startswith("{") else content,
+                            "tags": tags
+                        })
+                    if len(entries) >= 5:
+                        break
+                logger.info("[%s HOOK] Loaded %d relevant audit entries.", self.id.upper(), len(entries))
+        except Exception as e:
+            logger.warning("[%s HOOK] Could not load audit context: %s", self.id.upper(), e)
+        return entries
+
+    def append_task_start(self, run_id: str) -> None:
+        logger.info("[%s HOOK] 4. append_task_start: Registering task start in ledger...", self.id.upper())
+        try:
+            from core.demo_notifiers import safe_record_ledger
+            safe_record_ledger(
+                event_type="agent_run_started",
+                summary=f"El agente {self.name or self.id} inició la ejecución",
+                evidence={
+                    "agent_id": self.id,
+                    "run_id": run_id,
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                },
+                tags=["startup", self.id]
+            )
+        except Exception as e:
+            logger.warning("[%s HOOK] safe_record_ledger failed: %s", self.id.upper(), e)
+
     def reset_state(self):
         self.pending_actions = []
         self.history = []
@@ -52,6 +177,20 @@ class BaseAgent:
     async def run(self, run_id: str) -> list[AgentAction]:
         self.state = AgentState.WORKING
         self.last_run_id = run_id
+
+        # Run startup hooks
+        self.resolve_context()
+        try:
+            self.verify_memory_scope()
+        except ValueError as e:
+            self.state = AgentState.ERROR
+            self.last_action = str(e)
+            logger.error("[%s RUN] Stopped due to memory verification failure: %s", self.id.upper(), e)
+            raise
+
+        self.load_recent_audit_context()
+        self.append_task_start(run_id)
+
         violations = self._check_preconditions()
         if violations:
             self.state = AgentState.ERROR

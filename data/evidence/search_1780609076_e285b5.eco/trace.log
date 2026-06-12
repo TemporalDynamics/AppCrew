@@ -1,0 +1,4 @@
+[2026-06-04T21:38:00.615463+00:00] INFO: Pipeline started for search_id=search_1780609076_e285b5
+[2026-06-04T21:38:00.615484+00:00] INFO: Hook resolve_context completed successfully
+[2026-06-04T21:38:00.615491+00:00] INFO: Hook verify_memory_scope checked ledger. Status: Cadena verificada. 300 entradas íntegras.
+[2026-06-04T21:38:00.615500+00:00] INFO: Run completed. Evidence pack generated.

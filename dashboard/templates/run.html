@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — Activar Agentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4ec;
+  --surface: #fffdf6;
+  --card: #fbfaf3;
+  --card-hover: #f7f6ed;
+  --line: #d6d3c1;
+  --border: #d6d3c1;
+  --ink: #13201c;
+  --text: #13201c;
+  --muted: #4f5f58;
+  --dim: rgba(79, 95, 88, 0.6);
+  --accent: #136f63;
+  --accent-dim: rgba(19, 111, 99, 0.08);
+  --success: #1d7c5a;
+  --success-dim: #cfefc4;
+  --warning: #c1572a;
+  --warning-dim: rgba(193, 87, 42, 0.08);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 10px 24px rgba(19, 32, 28, 0.08);
+  --shadow-sm: 0 2px 8px rgba(19, 32, 28, 0.06);
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { 
+  font-family:var(--font); 
+  color:var(--text); 
+  background: radial-gradient(circle at 80% 12%, rgba(19, 111, 99, 0.12) 0%, rgba(19, 111, 99, 0) 30%), radial-gradient(circle at 20% 90%, rgba(193, 87, 42, 0.10) 0%, rgba(193, 87, 42, 0) 24%), var(--bg);
+  min-height:100vh; 
+  -webkit-font-smoothing:antialiased; 
+}
+
+.topbar {
+  padding:14px 28px; border-bottom:1px solid var(--border);
+  background:var(--surface); position:sticky; top:0; z-index:10;
+}
+.topbar-row {
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+}
+.brand { font-family:var(--font-heading); font-weight:800; font-size:1.05rem; letter-spacing:-0.03em; text-decoration:none; color:var(--ink); }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.topbar-ops { display: flex; gap: 4px; align-items: center; justify-content: flex-end; font-size: .75rem; color: var(--muted); margin-top: 4px; }
+.topbar-ops a { color: var(--muted); text-decoration: none; padding: 2px 6px; border-radius: 4px; transition: color .12s; }
+.topbar-ops a:hover { color: var(--accent); }
+.ops-sep { opacity: .4; }
+.btn {
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 10px 16px; font-size: 0.9rem; font-family: var(--font);
+  text-decoration: none; color: var(--ink); background: #fffdf6;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.btn:hover { background: var(--card-hover); border-color: var(--accent); }
+.btn.primary {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff; font-weight: 600;
+}
+.btn.primary:hover { opacity: 0.9; }
+
+.page { max-width:900px; margin:0 auto; padding:40px 24px 80px; }
+.page-header { margin-bottom:28px; }
+.search-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.flow-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fffdf6;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.flow-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.flow-step.active {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+.flow-step.active .flow-step-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.flow-step.complete {
+  border-color: rgba(19, 111, 99, 0.22);
+  color: var(--text);
+}
+.flow-step.complete .flow-step-num {
+  background: var(--success);
+  border-color: var(--success);
+  color: #fff;
+}
+.flow-arrow {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.step-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--accent-dim); color:var(--accent);
+  border:1px solid rgba(19, 111, 99, 0.25); border-radius:999px;
+  padding:4px 12px; font-size:0.75rem; font-weight:600;
+  letter-spacing:0.05em; text-transform:uppercase; margin-bottom:12px;
+}
+.page-title { font-family:var(--font-heading); font-size:1.8rem; font-weight:800; letter-spacing:-0.04em; margin-bottom:6px; }
+
+/* Criteria summary */
+.criteria-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px; margin-bottom:20px;
+  box-shadow:var(--shadow-sm);
+}
+.criteria-header {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;
+}
+.criteria-label { font-size:0.75rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); }
+.criteria-edit { font-size:0.8rem; color:var(--accent); text-decoration:none; font-weight:500; }
+.criteria-edit:hover { text-decoration:underline; }
+.criteria-role { font-family:var(--font-heading); font-size:1.2rem; font-weight:700; margin-bottom:6px; letter-spacing:-0.02em; }
+.criteria-meta { font-size:0.85rem; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; }
+.criteria-meta span { display:flex; align-items:center; gap:4px; }
+.signals-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; }
+.sig-tag {
+  padding:2px 8px; border-radius:5px; font-size:0.75rem; font-weight:500;
+  background:var(--accent-dim); color:var(--accent); border:1px solid rgba(19, 111, 99, 0.2);
+}
+.sig-tag.neg { background:var(--warning-dim); color:var(--warning); border-color:rgba(193, 87, 42, 0.18); }
+
+{% if not criteria %}
+.no-criteria {
+  background:var(--card); border:1px solid var(--warning);
+  border-radius:var(--radius); padding:20px; margin-bottom:20px; text-align:center;
+  box-shadow:var(--shadow-sm);
+}
+{% endif %}
+
+/* Agent phases */
+.phases { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; }
+.phase-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm);
+}
+.phase-header {
+  padding:12px 18px; display:flex; align-items:center; gap:10px;
+  border-bottom:1px solid var(--border); background:var(--surface);
+}
+.phase-num {
+  width:22px; height:22px; border-radius:50%; background:var(--bg);
+  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:0.7rem; font-weight:700; color:var(--muted);
+}
+.phase-name { font-size:0.88rem; font-weight:600; flex:1; }
+.phase-status { font-size:0.75rem; color:var(--dim); }
+
+.agents-grid { display:flex; flex-wrap:wrap; gap:0; }
+.agent-row {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 18px; flex:1; min-width:200px;
+  border-right:1px solid var(--border); cursor:pointer;
+  transition:background 0.1s; background:var(--card);
+}
+.agent-row:hover { background:var(--card-hover); }
+.agent-row:last-child { border-right:none; }
+.agent-check {
+  width:16px; height:16px; border-radius:4px; border:1px solid var(--border);
+  background:var(--surface); flex-shrink:0; display:flex; align-items:center;
+  justify-content:center; transition:all 0.15s;
+}
+.agent-check.checked { background:var(--accent); border-color:var(--accent); }
+.agent-check.checked::after { content:'✓'; font-size:0.65rem; color:#fff; font-weight:700; }
+.agent-label { font-size:0.85rem; color:var(--muted); transition:color 0.15s; }
+.agent-row.checked .agent-label { color:var(--text); }
+
+/* Agent run states */
+.agent-row.running .agent-label { color:var(--accent); font-weight:500; }
+.agent-row.done .agent-check { background:var(--success); border-color:var(--success); }
+.agent-row.done .agent-check::after { content:'✓'; font-size:0.65rem; color:#fff; font-weight:700; }
+.agent-row.done .agent-label { color:var(--success); }
+.agent-row.running .agent-check { border-color:var(--accent); animation:pulse 1s infinite; }
+.spinner { width:10px; height:10px; border:2px solid var(--accent); border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite; }
+
+@keyframes spin { to { transform:rotate(360deg); } }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* Launch button */
+.launch-zone { display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:8px; }
+.btn-launch {
+  padding:14px 40px; border:none; border-radius:999px;
+  background:var(--accent); color:#fff; font-size:1rem; font-weight:600;
+  font-family:var(--font); cursor:pointer; transition:all 0.2s;
+  letter-spacing:-0.01em; box-shadow:0 4px 12px rgba(19, 111, 99, 0.2);
+}
+.btn-launch:hover:not(:disabled) { background:#0f5a50; transform:translateY(-1px); box-shadow:0 6px 16px rgba(19, 111, 99, 0.3); }
+.btn-launch:disabled { opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+.launch-hint { font-size:0.82rem; color:var(--dim); }
+
+/* Progress */
+#progress-zone { display:none; margin-top:24px; }
+#progress-zone.visible { display:block; }
+
+.progress-header { font-size:0.85rem; font-weight:600; color:var(--muted); margin-bottom:12px; }
+.progress-bar-wrap { height:4px; background:var(--border); border-radius:2px; margin-bottom:20px; overflow:hidden; }
+.progress-bar { height:100%; background:var(--accent); border-radius:2px; width:0%; transition:width 0.4s ease; }
+
+.result-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+.result-card {
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm);
+  padding:14px; opacity:0; transform:translateY(8px); box-shadow:var(--shadow-sm);
+  transition:all 0.3s ease; display:none;
+}
+.result-card.appear { opacity:1; transform:translateY(0); display:block; }
+.result-card-label { font-size:0.75rem; color:var(--muted); margin-bottom:4px; font-weight:500; }
+.result-card-name { font-size:0.9rem; font-weight:600; margin-bottom:4px; }
+.result-card-count {
+  font-family:var(--font-heading); font-size:1.4rem; font-weight:800; color:var(--success);
+  line-height:1.1; margin-bottom:2px; letter-spacing:-0.03em;
+}
+.result-card-sub { font-size:0.72rem; color:var(--dim); }
+
+/* Final summary */
+.summary-box {
+  display:none; background:var(--success-dim); border:1px solid var(--success);
+  border-radius:var(--radius); padding:20px; margin-top:20px; text-align:center;
+}
+.summary-box.show { display:block; }
+.summary-box h2 { font-family:var(--font-heading); font-size:1.3rem; font-weight:800; color:var(--success); margin-bottom:6px; letter-spacing:-0.03em;}
+.summary-box p { color:var(--text); font-size:0.9rem; margin-bottom:16px; font-weight:500; }
+.summary-actions { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+.btn-goto {
+  padding:9px 20px; border-radius:999px; font-size:0.88rem; font-weight:600;
+  text-decoration:none; font-family:var(--font); border:none; cursor:pointer;
+  transition:all 0.15s;
+}
+.btn-goto.primary { background:var(--accent); color:#fff; }
+.btn-goto.primary:hover { background:#0f5a50; }
+.btn-goto.secondary { background:#fffdf6; color:var(--text); border:1px solid var(--border); }
+.btn-goto.secondary:hover { background:var(--card-hover); border-color:var(--accent); }
+</style>
+</head>
+<body>
+
+{% set active_page = "ejecutar" %}{% include "_nav.html" %}
+
+<div class="page">
+  <div class="page-header">
+    <div class="search-flow" aria-label="Flujo de búsqueda">
+      <div class="flow-step complete">
+        <span class="flow-step-num">1</span>
+        <span>Definir criterio</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step active">
+        <span class="flow-step-num">2</span>
+        <span>Activar agentes</span>
+      </div>
+    </div>
+    <h1 class="page-title">Activá los agentes.</h1>
+    <p style="color:var(--muted);font-size:0.95rem;line-height:1.6;max-width:720px;">Con el criterio listo, elegí qué agentes corren para esta búsqueda y lanzá el proceso.</p>
+  </div>
+
+  {% if criteria %}
+  <div class="criteria-card">
+    <div class="criteria-header">
+      <span class="criteria-label">Criterio activo</span>
+      <a class="criteria-edit" href="/setup">Editar criterio</a>
+    </div>
+    <div class="criteria-role">{{ criteria.role_target or 'Sin rol definido' }}</div>
+    <div class="criteria-meta">
+      {% if criteria.markets %}<span>📍 {{ criteria.markets | join(' · ') }}</span>{% endif %}
+      {% if criteria.industries %}<span>🏢 {{ criteria.industries | join(' · ') }}</span>{% endif %}
+      {% if criteria.outreach_tone %}<span>✉️ {{ criteria.outreach_tone }}</span>{% endif %}
+    </div>
+    {% if criteria.positive_signals or criteria.negative_signals %}
+    <div class="signals-row">
+      {% for s in (criteria.positive_signals or [])[:5] %}
+      <span class="sig-tag">{{ s }}</span>
+      {% endfor %}
+      {% for s in (criteria.negative_signals or [])[:3] %}
+      <span class="sig-tag neg">{{ s }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="no-criteria" style="background:var(--card);border:1px solid var(--warning);border-radius:var(--radius);padding:20px;margin-bottom:20px;text-align:center;">
+    <p style="color:var(--warning);margin-bottom:10px;">⚠️ No hay criterio definido</p>
+    <a href="/setup" style="color:var(--accent);font-size:0.9rem;">Definir criterio de búsqueda →</a>
+  </div>
+  {% endif %}
+
+  <div class="phases" id="phases">
+    {% for phase in phases %}
+    <div class="phase-card" data-phase="{{ phase.name }}">
+      <div class="phase-header">
+        <div class="phase-num">{{ loop.index }}</div>
+        <div class="phase-name">{{ phase.name }}</div>
+        <div class="phase-status" id="phase-status-{{ loop.index }}"></div>
+      </div>
+      <div class="agents-grid">
+        {% for agent in phase.agents %}
+        <div class="agent-row checked" id="agent-{{ agent.id }}" onclick="toggleAgent('{{ agent.id }}', this)">
+          <div class="agent-check checked" id="check-{{ agent.id }}"></div>
+          <div class="agent-label">{{ agent.label }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="launch-zone">
+    <button class="btn-launch" id="launchBtn" {% if not criteria %}disabled{% endif %} onclick="launchPipeline()">
+      ▶ Buscar candidatos
+    </button>
+    <span class="launch-hint">
+      {% if criteria %}Los agentes van a buscar según tu criterio. La revisión es tuya.
+      {% else %}Definí el criterio antes de activar.{% endif %}
+    </span>
+  </div>
+
+  <div id="progress-zone">
+    <div class="progress-header" id="progress-label">Iniciando…</div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="result-cards" id="result-cards"></div>
+  </div>
+
+  <div class="summary-box" id="summary-box">
+    <h2 id="summary-title">Pipeline completo</h2>
+    <p id="summary-desc"></p>
+    <div class="summary-actions">
+      <a class="btn-goto primary" href="/talents">Revisar talentos →</a>
+      <a class="btn-goto secondary" id="eco-download-btn" href="#" style="display:none;" download>Descargar evidencia (.eco)</a>
+      <a class="btn-goto secondary" href="/coverage">Ver cobertura</a>
+      <a class="btn-goto secondary" href="/talents">Ver Talentos</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const PHASES = {{ phases | tojson }};
+const totalAgents = PHASES.reduce((n, p) => n + p.agents.length, 0);
+let doneCount = 0;
+
+function toggleAgent(id, row) {
+  if (row.classList.contains('done') || row.classList.contains('running')) return;
+  const isChecked = row.classList.toggle('checked');
+  document.getElementById('check-' + id).classList.toggle('checked', isChecked);
+}
+
+function setAgentRunning(agentId) {
+  const row = document.getElementById('agent-' + agentId);
+  if (!row) return;
+  row.classList.add('running');
+  row.classList.remove('checked');
+  const check = document.getElementById('check-' + agentId);
+  check.innerHTML = '<div class="spinner"></div>';
+  check.classList.remove('checked');
+}
+
+function setAgentDone(agentId, actions) {
+  const row = document.getElementById('agent-' + agentId);
+  if (!row) return;
+  row.classList.remove('running', 'checked');
+  row.classList.add('done');
+  const check = document.getElementById('check-' + agentId);
+  check.innerHTML = '';
+  check.classList.remove('checked');
+
+  // Add result card
+  if (actions > 0) {
+    const label = row.querySelector('.agent-label').textContent;
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `<div class="result-card-label">${label}</div>
+      <div class="result-card-count">${actions}</div>
+      <div class="result-card-sub">accion${actions !== 1 ? 'es' : ''} generada${actions !== 1 ? 's' : ''}</div>`;
+    document.getElementById('result-cards').appendChild(card);
+    requestAnimationFrame(() => card.classList.add('appear'));
+  }
+
+  doneCount++;
+  const pct = Math.round((doneCount / totalAgents) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+async function launchPipeline() {
+  const btn = document.getElementById('launchBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Ejecutando…';
+
+  // Mark all checked agents as running
+  PHASES.forEach(phase => {
+    phase.agents.forEach(a => {
+      const row = document.getElementById('agent-' + a.id);
+      if (row && row.classList.contains('checked')) setAgentRunning(a.id);
+    });
+  });
+
+  document.getElementById('progress-zone').classList.add('visible');
+  document.getElementById('progress-label').textContent = 'Pipeline en ejecución…';
+
+  try {
+    const evtSource = new EventSource('/api/run-stream');
+
+    evtSource.onmessage = (e) => {
+      const msg = JSON.parse(e.data);
+
+      if (msg.type === 'tamper_alert') {
+        evtSource.close();
+        btn.disabled = false;
+        btn.textContent = '🚨 Freno por Seguridad';
+        document.getElementById('progress-label').textContent = msg.message;
+        document.getElementById('progress-bar').style.backgroundColor = '#b33a2b';
+        document.querySelectorAll('.agent-row.running').forEach(row => {
+          row.classList.remove('running');
+          row.classList.add('done'); // stop spinner
+          const check = document.getElementById('check-' + row.id.replace('agent-', ''));
+          if (check) check.innerHTML = '<span style="color:#b33a2b;">✕</span>';
+        });
+        return;
+      }
+
+      if (msg.type === 'phase_start') {
+        document.getElementById('progress-label').textContent = 'Fase activa: ' + msg.phase;
+      }
+
+      if (msg.type === 'agent_done') {
+        setAgentDone(msg.agent, msg.actions);
+        document.getElementById('progress-label').textContent = msg.label + ' completado';
+      }
+
+      if (msg.type === 'complete') {
+        evtSource.close();
+        document.getElementById('progress-bar').style.width = '100%';
+        document.getElementById('progress-label').textContent = 'Búsqueda completa — evidencia generada.';
+        btn.textContent = '✓ Completado';
+
+        const box = document.getElementById('summary-box');
+        const total = msg.total_actions;
+        const pending = msg.pending_count;
+        document.getElementById('summary-title').textContent = total + ' accion' + (total !== 1 ? 'es' : '') + ' generada' + (total !== 1 ? 's' : '');
+        document.getElementById('summary-desc').textContent = pending + ' candidato' + (pending !== 1 ? 's' : '') + ' esperan revisión. El Evidence Pack (.eco) ya está disponible para descargar.';
+        
+        const dlBtn = document.getElementById('eco-download-btn');
+        if (dlBtn && msg.search_id) {
+          dlBtn.href = `/api/evidence/${msg.search_id}/download`;
+          dlBtn.style.display = 'inline-block';
+        }
+        
+        box.classList.add('show');
+        // Auto-redirect to blind review after 12s
+        setTimeout(() => { window.location.href = '/talents'; }, 12000);
+      }
+    };
+
+    evtSource.onerror = () => {
+      evtSource.close();
+      btn.disabled = false;
+      btn.textContent = '▶ Reintentar';
+      document.getElementById('progress-label').textContent = 'Error en la conexión. Intentá nuevamente.';
+    };
+
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = '▶ Reintentar';
+  }
+}
+</script>
+</body>
+</html>

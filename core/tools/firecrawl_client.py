@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
+from core.logger import get_logger
+
+logger = get_logger("core.tools.firecrawl_client")
+
 MOCK_COMPANIES = [
     {
         "company": "TechMex",
@@ -111,7 +115,8 @@ class FirecrawlClient:
 
         try:
             return await self._real_scan(query, limit)
-        except Exception:
+        except Exception as e:
+            logger.warning("Firecrawl real_scan failed, falling back to mock: %s", e)
             return self._mock_opportunities()
 
     async def get_company_context(self, company_name: str) -> dict | None:
@@ -124,8 +129,8 @@ class FirecrawlClient:
             real = await self._real_company_context(company_name)
             if real and real.get("timeline"):
                 return real
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("Firecrawl get_company_context failed, using mock: %s", e)
 
         return mock
 
@@ -158,7 +163,8 @@ class FirecrawlClient:
             if isinstance(result, dict):
                 return result
             return None
-        except Exception:
+        except Exception as e:
+            logger.warning("Firecrawl scrape_url failed: %s", e)
             return None
 
     async def _extract_items(self, result) -> list:

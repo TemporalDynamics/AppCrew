@@ -26,3 +26,60 @@ Mostrar que Global Executive no opera agentes sueltos: opera una Talent Mission 
 ## Frase de demo
 
 "Antes de buscar, el sistema captura como piensa Rodri. Despues calibra contra cuatro perfiles: uno obvio, uno fino, uno dudoso y uno que parece bueno pero no lo es. Recién despues busca como Global Executive."
+
+## Runbook de manana
+
+### Arranque limpio
+
+```bash
+bash scripts/demo_reset.sh
+python dashboard/server.py
+```
+
+Qué tiene que verse:
+
+- criterion intake cargado
+- Talent Mission Capsule generada
+- 4/4 calibracion visibles
+- shortlist con 4 candidatos
+- verify OK del ledger
+
+### Momento 1: criterio + shortlist
+
+```bash
+python3 scripts/demo_criterion_intake.py --demo
+python3 scripts/demo_talent_mission.py
+```
+
+Qué tiene que verse:
+
+- golden set cargado: 4
+- obvio / fino / dudoso / falso positivo
+- comportamiento esperado
+- comportamiento observado
+- cierre: "El sistema no solo encontró perfiles; mostró si entiende el criterio de Rodri."
+
+### Momento 2: integridad verificable
+
+```bash
+bash scripts/demo_tamper.sh
+```
+
+Qué tiene que verse:
+
+- verify OK antes del tamper
+- modificación directa en SQLite
+- verify FAIL después del tamper
+- `[TELEGRAM MOCK]` con alerta
+
+### Restauración después del show
+
+```bash
+bash scripts/demo_reset.sh
+```
+
+## Contingencias
+
+- Si `demo_tamper.sh` dice que el ledger no existe o ya está roto: correr `bash scripts/demo_reset.sh`.
+- Si Telegram no está configurado: el mock en consola es comportamiento esperado.
+- Si MCP no puede escribir en SQLite: el fallback JSONL es comportamiento esperado.

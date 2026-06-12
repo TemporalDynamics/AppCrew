@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — {{ candidate.name or 'Candidato' }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4ec;--bg-surface:#fffdf6;--bg-card:#fbfaf3;--bg-card-hover:#f7f6ed;--line:#d6d3c1;--border:#d6d3c1;--border-active:#136f63;--ink:#13201c;--muted:#4f5f58;--dim:rgba(79,95,88,.65);--accent:#136f63;--accent-soft:rgba(19,111,99,.08);--success:#1d7c5a;--success-bg:#cfefc4;--warning:#c1572a;--warning-bg:rgba(193,87,42,.08);--error:#b33;--error-bg:rgba(179,51,51,.08);--radius:14px;--radius-sm:8px;--shadow:0 10px 24px rgba(19,32,28,.08);--shadow-sm:0 2px 8px rgba(19,32,28,.06);--font:'Plus Jakarta Sans',system-ui,sans-serif;--font-heading:'Plus Jakarta Sans',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:radial-gradient(circle at 80% 12%,rgba(19,111,99,.1) 0%,transparent 30%),radial-gradient(circle at 20% 90%,rgba(193,87,42,.08) 0%,transparent 24%),var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px;}
+.topbar{margin-bottom:32px;}
+.topbar-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.brand{font-family:var(--font-heading);font-weight:800;letter-spacing:-.03em;font-size:1.05rem;text-decoration:none;color:var(--ink);}
+.nav{display:flex;gap:8px;flex-wrap:wrap;}
+.topbar-ops{display:flex;gap:4px;align-items:center;justify-content:flex-end;font-size:.75rem;color:var(--muted);margin-top:6px;}
+.topbar-ops a{color:var(--muted);text-decoration:none;padding:2px 6px;border-radius:4px;transition:color .12s;}
+.topbar-ops a:hover{color:var(--accent);}
+.ops-sep{opacity:.4;}
+.btn{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:.83rem;font-family:var(--font);text-decoration:none;color:var(--ink);background:#fffdf6;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn:hover{background:var(--bg-card-hover);border-color:var(--accent);}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.btn.primary:hover{opacity:.9;}
+.btn-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--dim);margin-bottom:20px;}
+.breadcrumb a{color:var(--accent);} .breadcrumb a:hover{text-decoration:underline;}
+.breadcrumb span{color:var(--dim);}
+
+.hero-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px;}
+.hero-row{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+.hero-avatar{width:56px;height:56px;border-radius:14px;background:var(--accent-soft);border:1px solid rgba(19,111,99,.2);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:1.3rem;font-weight:700;color:var(--accent);flex-shrink:0;}
+.hero-info{flex:1;min-width:200px;}
+.hero-name{font-family:var(--font-heading);font-size:1.4rem;font-weight:800;letter-spacing:-.03em;margin-bottom:2px;}
+.hero-role{font-size:.95rem;color:var(--muted);margin-bottom:6px;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem;color:var(--dim);}
+.hero-meta span{display:flex;align-items:center;gap:4px;}
+.hero-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+
+.band-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.band-priority_1{background:var(--success-bg);color:var(--success);}
+.band-priority_2{background:var(--accent-soft);color:var(--accent);}
+.band-review_needed{background:var(--warning-bg);color:var(--warning);}
+.band-discard{background:var(--error-bg);color:var(--error);}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:.7rem;font-weight:600;}
+.status-active{background:var(--accent-soft);color:var(--accent);}
+
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:680px){.section-grid{grid-template-columns:1fr;}}
+.section-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);}
+.section-card.full{grid-column:1/-1;}
+.card-label{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{padding:3px 9px;border-radius:6px;font-size:.75rem;font-weight:500;}
+.tag-match{background:var(--success-bg);color:var(--success);border:1px solid rgba(31,138,91,.15);}
+.tag-risk{background:var(--error-bg);color:var(--error);border:1px solid rgba(179,51,51,.18);}
+.tag-neutral{background:var(--border);color:var(--muted);}
+
+.evidence-list{display:flex;flex-direction:column;gap:8px;}
+.evidence-item{font-size:.84rem;color:var(--muted);line-height:1.55;padding:10px 14px;background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border);}
+.evidence-item strong{color:var(--ink);}
+.evidence-count{font-size:.72rem;color:var(--dim);display:block;margin-top:4px;}
+
+.match-row{padding:10px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;}
+.match-row:last-child{border-bottom:none;}
+.match-score{font-family:var(--font-heading);font-size:1.2rem;font-weight:800;min-width:36px;text-align:center;}
+.match-body{flex:1;}
+.match-role{font-weight:600;font-size:.88rem;margin-bottom:2px;}
+.match-meta{font-size:.74rem;color:var(--dim);margin-bottom:4px;}
+.match-criteria{font-size:.72rem;color:var(--muted);}
+
+.note-list{display:flex;flex-direction:column;gap:6px;}
+.note-item{padding:10px 12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);}
+.note-text{font-size:.84rem;color:var(--ink);margin-bottom:4px;}
+.note-meta{font-size:.7rem;color:var(--dim);}
+.note-type{display:inline-block;padding:1px 6px;border-radius:4px;font-size:.62rem;font-weight:600;text-transform:uppercase;background:var(--accent-soft);color:var(--accent);margin-right:4px;}
+.source-link{display:inline-flex;align-items:center;gap:4px;font-size:.8rem;color:var(--accent);border:1px solid rgba(19,111,99,.25);border-radius:999px;padding:3px 10px;transition:background .15s;}
+.source-link:hover{background:var(--accent-soft);}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(19,32,28,.4);z-index:100;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fbfaf3;border:1px solid var(--line);border-radius:var(--radius);padding:24px;max-width:480px;width:90%;box-shadow:var(--shadow);max-height:80vh;overflow-y:auto;}
+.modal-box h3{font-family:var(--font-heading);font-size:1rem;margin-bottom:14px;}
+.modal-box label{display:block;font-size:.8rem;font-weight:600;margin-bottom:3px;margin-top:10px;}
+.modal-box input,.modal-box select,.modal-box textarea{width:100%;background:#fffdf6;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-family:var(--font);font-size:.85rem;color:var(--ink);}
+.modal-box textarea{min-height:70px;resize:vertical;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+{% set active_page = "talentos" %}{% include "_nav.html" %}
+
+<div class="breadcrumb">
+  <a href="/talents">Talentos</a>
+  <span>›</span>
+  <span>{{ candidate.name or dedup_key }}</span>
+</div>
+
+<div class="hero-card">
+  <div class="hero-row">
+    <div class="hero-avatar">{{ (candidate.name or '?')[0].upper() }}</div>
+    <div class="hero-info">
+      <div class="hero-name">{{ candidate.name or '[Identidad oculta]' }}</div>
+      <div class="hero-role">{{ candidate.current_role or '—' }}{% if candidate.company %} · {{ candidate.company }}{% endif %}</div>
+      <div class="hero-meta">
+        {% if candidate.location %}<span>{{ candidate.location }}</span>{% endif %}
+        {% if candidate.source %}<span>Fuente: {{ candidate.source }}</span>{% endif %}
+        {% if candidate.times_surfaced %}<span>Visto {{ candidate.times_surfaced }}x</span>{% endif %}
+        {% if candidate.status %}<span class="status-badge status-active">{{ candidate.status }}</span>{% endif %}
+      </div>
+      <div class="btn-actions">
+        <button class="btn" onclick="openNote('{{ dedup_key }}')">+ Agregar nota</button>
+        <button class="btn" onclick="openInterview('{{ dedup_key }}')">Registrar entrevista</button>
+        <button class="btn" onclick="openStatus('{{ dedup_key }}')">Cambiar estado</button>
+        <button class="btn" onclick="openLinkSearch('{{ dedup_key }}')">Asociar a búsqueda</button>
+        {% if candidate.source_url %}
+        <a class="btn" href="{{ candidate.source_url }}" target="_blank">Ver perfil original ↗</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-right">
+      {% set top = candidate.matches[0] if candidate.matches else None %}
+      {% if top %}
+        <span class="band-badge band-{{ top.band or '' }}">
+          {% if top.band == 'priority_1' %}Shortlist{% elif top.band == 'priority_2' %}Alto{% elif top.band == 'review_needed' %}Revisar{% elif top.band == 'discard' %}Descartado{% else %}{{ top.band or '—' }}{% endif %}
+        </span>
+        {% if top.score %}<span style="font-family:var(--font-heading);font-size:1.6rem;font-weight:800;color:var(--accent);">{{ top.score }}</span>{% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% if candidate.matches %}
+{% set top = candidate.matches[0] %}
+<div class="section-grid">
+  <div class="section-card">
+    <div class="card-label">Señales positivas</div>
+    {% if top.matched_criteria %}
+      <div class="tag-row">
+        {% for s in top.matched_criteria %}
+          <span class="tag tag-match">✓ {{ s }}</span>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="font-size:.85rem;color:var(--dim);">Sin señales registradas.</p>
+    {% endif %}
+  </div>
+  <div class="section-card">
+    <div class="card-label">Riesgos / Señales negativas</div>
+    {% if top.risks %}
+      <div class="tag-row">
+        {% for r in top.risks %}
+          <span class="tag tag-risk">⚠ {{ r }}</span>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="font-size:.85rem;color:var(--dim);">Sin riesgos registrados.</p>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<div class="section-card full" style="margin-bottom:14px;">
+  <div class="card-label">Evidencia del perfil</div>
+  {% if candidate.evidence %}
+    <div class="evidence-list">
+      {% for ev in candidate.evidence %}
+        {% if ev.label not in ('note','interview') %}
+        <div class="evidence-item">
+          {% if ev.label %}<strong>{{ ev.label }}:</strong> {% endif %}
+          {{ ev.value }}
+          {% if ev.url %}<a href="{{ ev.url }}" target="_blank" style="color:var(--accent);font-size:.75rem;margin-left:6px;">↗</a>{% endif %}
+          {% if ev.count and ev.count > 1 %}<span class="evidence-count">Visto {{ ev.count }} veces · última detección {{ (ev.added_at or '')[:10] }}</span>{% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="font-size:.85rem;color:var(--dim);font-style:italic;">Sin evidencia registrada.</p>
+  {% endif %}
+</div>
+
+<div class="section-grid">
+  <div class="section-card">
+    <div class="card-label">Historial de búsquedas ({{ candidate.matches|length }})</div>
+    {% if candidate.matches %}
+      {% for m in candidate.matches %}
+      <div class="match-row">
+        <div class="match-score" style="color:{% if m.score >= 80 %}var(--success){% elif m.score >= 50 %}var(--warning){% else %}var(--error){% endif %}">
+          {{ m.score or '—' }}
+        </div>
+        <div class="match-body">
+          <div class="match-role">{{ m.role_target or 'Búsqueda sin título' }}</div>
+          <div class="match-meta">
+            {{ (m.created_at or '')[:10] }}
+            · <span class="band-badge band-{{ m.band or '' }}" style="font-size:.62rem;padding:1px 6px;">{{ m.band or '—' }}</span>
+            {% if m.status %} · {{ m.status }}{% endif %}
+          </div>
+          {% if m.matched_criteria %}
+          <div class="match-criteria">
+            Match: {% for s in m.matched_criteria %}<span style="color:var(--success);">{{ s }}</span>{% if not loop.last %}, {% endif %}{% endfor %}
+          </div>
+          {% endif %}
+          {% if m.risks %}
+          <div class="match-criteria">
+            Riesgos: {% for r in m.risks %}<span style="color:var(--error);">{{ r }}</span>{% if not loop.last %}, {% endif %}{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p style="font-size:.85rem;color:var(--dim);font-style:italic;">Sin búsquedas registradas.</p>
+    {% endif %}
+  </div>
+
+  <div class="section-card">
+    <div class="card-label">Actividad reciente</div>
+    {% set notes = candidate.evidence | selectattr("label", "in", ["note", "interview"]) | list %}
+    {% if notes %}
+    <div class="note-list">
+      {% for ev in notes[:10] %}
+      <div class="note-item">
+        <div class="note-text">{{ ev.value[:300] }}</div>
+        <div class="note-meta">
+          <span class="note-type">{{ ev.label }}</span>
+          · {{ (ev.added_at or '')[:10] }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p style="font-size:.85rem;color:var(--dim);font-style:italic;">Sin actividad registrada todavía.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% if candidate.skills %}
+<div class="section-card full" style="margin-bottom:14px;">
+  <div class="card-label">Skills</div>
+  <div class="tag-row">
+    {% for sk in candidate.skills %}
+      {% if sk %}<span class="tag tag-neutral">{{ sk }}</span>{% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div style="margin-top:8px;">
+  <a href="/talents" style="font-size:.82rem;color:var(--accent);">← Volver a Talentos</a>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<script>
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function openNote(key) {
+  const box = document.getElementById('modal-box');
+  box.innerHTML = '<h3>Agregar nota</h3>' +
+    '<label>Nota</label><textarea id="note-text" rows="3" placeholder="Ej: Buena impresión en la llamada inicial. Pasa a técnica."></textarea>' +
+    '<label>Tipo</label><select id="note-type"><option value="general">General</option><option value="entrevista">Entrevista</option><option value="cliente">Cliente</option><option value="riesgo">Riesgo</option><option value="oportunidad">Oportunidad</option></select>' +
+    '<label>Búsqueda asociada (opcional)</label><input id="note-search" placeholder="ID de búsqueda">' +
+    '<div class="modal-actions"><button class="btn" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveNote(\'' + key + '\')">Guardar</button></div>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function saveNote(key) {
+  const text = document.getElementById('note-text').value.trim();
+  if (!text) return;
+  fetch('/api/talents/' + encodeURIComponent(key) + '/note', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      text: text,
+      note_type: document.getElementById('note-type').value,
+      search_id: document.getElementById('note-search').value
+    })
+  }).then(r => r.json()).then(d => {
+    if (d.success) { location.reload(); }
+  });
+}
+
+function openInterview(key) {
+  const box = document.getElementById('modal-box');
+  box.innerHTML = '<h3>Registrar entrevista</h3>' +
+    '<label>Fecha</label><input type="date" id="int-date" value="' + new Date().toISOString().slice(0,10) + '">' +
+    '<label>Entrevistador</label><input id="int-interviewer" placeholder="Quién entrevistó">' +
+    '<label>Búsqueda asociada</label><input id="int-search" placeholder="ID de búsqueda">' +
+    '<label>Tipo</label><select id="int-type"><option value="screening">Screening</option><option value="technical">Técnica</option><option value="client">Cliente</option><option value="final">Final</option></select>' +
+    '<label>Notas</label><textarea id="int-notes" rows="3" placeholder="¿Qué pasó en la entrevista?"></textarea>' +
+    '<label>Señales positivas</label><input id="int-pos" placeholder="Ej: domina el dominio técnico">' +
+    '<label>Señales negativas</label><input id="int-neg" placeholder="Ej: carece de experiencia en equipos grandes">' +
+    '<label>Próximo paso</label><input id="int-next" placeholder="Ej: pasar a entrevista técnica con el CTO">' +
+    '<label>Estado resultante</label><select id="int-status"><option value="">Sin cambio</option><option value="shortlist">Shortlist</option><option value="contacted">Contactado</option><option value="interview_scheduled">Entrevista agendada</option><option value="interviewed">Entrevistado</option><option value="rejected">Rechazado</option><option value="placed">Colocado</option></select>' +
+    '<div class="modal-actions"><button class="btn" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveInterview(\'' + key + '\')">Guardar entrevista</button></div>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function saveInterview(key) {
+  fetch('/api/talents/' + encodeURIComponent(key) + '/interview', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      date: document.getElementById('int-date').value,
+      interviewer: document.getElementById('int-interviewer').value,
+      search_id: document.getElementById('int-search').value,
+      interview_type: document.getElementById('int-type').value,
+      notes: document.getElementById('int-notes').value,
+      positive_signals: document.getElementById('int-pos').value,
+      negative_signals: document.getElementById('int-neg').value,
+      next_step: document.getElementById('int-next').value,
+      resulting_status: document.getElementById('int-status').value
+    })
+  }).then(r => r.json()).then(d => {
+    if (d.success) { location.reload(); }
+  });
+}
+
+function openStatus(key) {
+  const box = document.getElementById('modal-box');
+  const states = ['new','shortlist','contacted','interview_scheduled','interviewed','rejected','placed','archived'];
+  box.innerHTML = '<h3>Cambiar estado</h3>' +
+    '<label>Nuevo estado</label><select id="new-status">' + states.map(s => '<option value="' + s + '">' + s.replace(/_/g,' ') + '</option>').join('') + '</select>' +
+    '<div class="modal-actions"><button class="btn" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveStatus(\'' + key + '\')">Cambiar</button></div>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function saveStatus(key) {
+  fetch('/api/talents/' + encodeURIComponent(key) + '/status', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({status: document.getElementById('new-status').value})
+  }).then(r => r.json()).then(d => {
+    if (d.success) { location.reload(); }
+  });
+}
+
+function openLinkSearch(key) {
+  const box = document.getElementById('modal-box');
+  box.innerHTML = '<h3>Asociar a búsqueda</h3>' +
+    '<label>ID de búsqueda</label><input id="link-search-id" placeholder="Ej: search_1780408616_5c9401">' +
+    '<label>Banda en esta búsqueda</label><select id="link-band"><option value="review_needed">En revisión</option><option value="priority_2">Alto</option><option value="priority_1">Shortlist</option><option value="discard">Descartado</option></select>' +
+    '<div class="modal-actions"><button class="btn" onclick="closeModal()">Cancelar</button><button class="btn primary" onclick="saveLinkSearch(\'' + key + '\')">Asociar</button></div>';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function saveLinkSearch(key) {
+  const searchId = document.getElementById('link-search-id').value.trim();
+  if (!searchId) return;
+  fetch('/api/talents/' + encodeURIComponent(key) + '/link', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({search_id: searchId, band: document.getElementById('link-band').value})
+  }).then(r => r.json()).then(d => {
+    if (d.success) { location.reload(); }
+  });
+}
+</script>
+</body>
+</html>

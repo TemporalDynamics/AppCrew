@@ -1,20 +1,39 @@
-# Global Executive — Proposal Pack (Versión Final)
+# Talo
 
-Este directorio contiene la versión consolidada y profesional de la propuesta.
+Sistema operativo de búsquedas ejecutivas asistidas por agentes: definís un criterio, corrés una búsqueda, revisás talento, tomás decisiones y guardás evidencia.
 
-## Documentos oficiales
+## Estado
 
-1. `propuesta_comercial_global_executive_agentes.md`
-   - Documento comercial final (contexto, alcance, inversión, ROI, supuestos).
+MVP funcional con pipeline de agentes, dashboard web, 3 fuentes de talento (Torre.co, Brave Search, Firecrawl), persistencia SQLite, notificaciones Telegram y ledger verificable.
 
-2. `arquitectura_tecnica.md`
-   - Arquitectura operativa y técnica alineada a gobierno, seguridad y escalabilidad.
+## Stack
 
-3. `prototipo_interfaz_v2.md`
-   - Prototipo funcional de interfaz para presentación ejecutiva.
+- Python 3.11+ / FastAPI
+- SQLite (WAL mode)
+- Pipeline de agentes con ciclo de aprobación humana
+- Dashboard web (Jinja2 + Jinja)
 
-## Estado de versión
+## Arranque rápido
 
-- Fecha de consolidación: 13 de mayo de 2026.
-- Estado: listo para presentación a socios.
-- Nota: las métricas numéricas de prototipo son datos simulados para demo.
+```bash
+pip install -r requirements.txt
+playwright install chromium
+python run.py
+# Dashboard en http://127.0.0.1:8080
+```
+
+Sin API keys el sistema opera en modo demo con datos de semilla.
+
+## Flujo principal
+
+1. **Definir criterio** (`/setup`) — describís el perfil que buscás en lenguaje humano
+2. **Ejecutar agentes** (`/run`) — activás el pipeline de búsqueda
+3. **Revisar talentos** (`/talents`) — revisás los perfiles encontrados y clasificás
+4. **Perfil de candidato** (`/candidate/{id}`) — profundizás, agregás notas, evidencia, entrevistas
+5. **Decidir** — shortlist, contacto, contratación
+
+## Superficie de producto
+
+- **Principal**: Inicio, Búsquedas, Nueva Búsqueda, Ejecutar, Talentos
+- **Operaciones**: Command Room, Blind Review, Coverage, Shortlist, CEO, Settings
+- **Aislado**: Carga de CV (`/cargar-cv`)

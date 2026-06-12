@@ -1,0 +1,43 @@
+workspaces:
+  - id: default
+    name: "Dev Local"
+    token: ""
+    owner: "dev"
+    status: active
+    limits:
+      max_candidates_per_search: 200
+      max_searches_per_day: 999
+      contact_approval_required: true
+    allowed_sources:
+      - torre
+      - brave_search
+      - demo_seed
+    features:
+      blind_review: true
+      coverage_report: true
+      talent_pool: true
+      outreach_drafts: true
+
+  - id: selectahr
+    name: "SelectaHR — Piloto Rodrigo"
+    token: "selec-pilot-2026"
+    owner: "Rodrigo Saenz"
+    status: pilot
+    created_at: "2026-05-28"
+    limits:
+      max_candidates_per_search: 50
+      max_searches_per_day: 10
+      contact_approval_required: true
+    allowed_sources:
+      - torre
+      - brave_search
+      - demo_seed
+    blocked_actions:
+      - contact_without_approval
+      - access_other_workspaces
+      - edit_system_config
+    features:
+      blind_review: true
+      coverage_report: true
+      talent_pool: true
+      outreach_drafts: true

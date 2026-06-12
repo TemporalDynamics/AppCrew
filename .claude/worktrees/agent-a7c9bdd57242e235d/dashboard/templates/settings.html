@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+
+.page-header { margin-bottom: 32px; }
+.page-header h1 { font-size: 1.5rem; font-weight: 700; color: #f1f5f9; letter-spacing: -.02em; margin-bottom: 4px; }
+.page-header p { font-size: .9rem; color: #64748b; }
+
+.card {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: #64748b;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.field { margin-bottom: 18px; }
+.field:last-child { margin-bottom: 0; }
+label {
+  display: block;
+  font-size: .84rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+label .hint {
+  font-weight: 400;
+  color: #64748b;
+  font-size: .78rem;
+  margin-left: 6px;
+}
+input[type=text], input[type=password] {
+  width: 100%;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #e2e8f0;
+  font-family: inherit;
+  font-size: .875rem;
+  outline: none;
+  transition: border-color .15s;
+}
+input[type=text]:focus, input[type=password]:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.1);
+}
+input::placeholder { color: #475569; }
+
+.actions { display: flex; gap: 10px; align-items: center; justify-content: flex-end; margin-top: 24px; }
+.btn-primary {
+  background: #6366f1;
+  color: #fff;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .15s;
+}
+.btn-primary:hover { opacity: .85; }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: .875rem;
+  font-weight: 500;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.toast.show { display: flex; }
+</style>
+</head>
+<body>
+{% set active_page = "settings" %}{% include "_nav.html" %}
+<div class="wrap">
+
+<div class="page-header">
+  <h1>Settings</h1>
+  <p>Configuración de APIs y conexiones del sistema</p>
+</div>
+
+<div class="card">
+  <div class="card-title">Claves de API</div>
+
+  <div class="field">
+    <label for="openrouter_api_key">
+      OpenRouter API Key
+      <span class="hint">Para el modelo de lenguaje (LLM)</span>
+    </label>
+    <input
+      type="password"
+      id="openrouter_api_key"
+      name="openrouter_api_key"
+      placeholder="sk-or-…"
+      value="{% if workspace_settings.get('openrouter_api_key') %}••••••••••••••••{% endif %}"
+    >
+  </div>
+
+  <div class="field">
+    <label for="brave_search_api_key">
+      Brave Search API Key
+      <span class="hint">Para búsquedas OSINT y sourcing</span>
+    </label>
+    <input
+      type="password"
+      id="brave_search_api_key"
+      name="brave_search_api_key"
+      placeholder="BSA…"
+      value="{% if workspace_settings.get('brave_search_api_key') %}••••••••••••••••{% endif %}"
+    >
+  </div>
+
+  <div class="field">
+    <label for="firecrawl_api_key">
+      Firecrawl API Key
+      <span class="hint">Para scraping de perfiles y páginas web</span>
+    </label>
+    <input
+      type="password"
+      id="firecrawl_api_key"
+      name="firecrawl_api_key"
+      placeholder="fc-…"
+      value="{% if workspace_settings.get('firecrawl_api_key') %}••••••••••••••••{% endif %}"
+    >
+  </div>
+</div>
+
+<div class="actions">
+  <button class="btn-primary" id="save-btn" onclick="saveSettings()">Guardar cambios</button>
+</div>
+
+</div>
+
+<div class="toast" id="toast">✓ Configuración guardada</div>
+
+<script>
+async function saveSettings() {
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+
+  const body = {
+    openrouter_api_key: document.getElementById('openrouter_api_key').value,
+    brave_search_api_key: document.getElementById('brave_search_api_key').value,
+    firecrawl_api_key: document.getElementById('firecrawl_api_key').value,
+  };
+
+  try {
+    const r = await fetch('/api/settings', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body),
+    });
+    const data = await r.json();
+    if (r.ok && data.success) {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    } else {
+      alert('Error al guardar: ' + (data.detail || 'desconocido'));
+    }
+  } catch(err) {
+    alert('Error al guardar: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Guardar cambios';
+  }
+}
+</script>
+</body>
+</html>

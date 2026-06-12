@@ -3,83 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blind Review</title>
+<title>Talo — Blind Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-deep: #080B12;
-  --bg-surface: #0F172A;
-  --bg-card: #111827;
-  --bg-card-hover: #1a2332;
-  --border: #1F2937;
-  --border-active: #2a3a4f;
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --accent: #38BDF8;
-  --accent-dim: #0EA5E9;
-  --accent-glow: rgba(56,189,248,0.08);
-  --success: #22C55E;
-  --success-bg: rgba(34,197,94,0.08);
-  --warning: #F59E0B;
-  --warning-bg: rgba(245,158,11,0.08);
-  --error: #EF4444;
-  --error-bg: rgba(239,68,68,0.08);
-  --radius: 16px;
+  --bg-deep: #f5f4ec;
+  --bg-surface: #fffdf6;
+  --bg-card: #fbfaf3;
+  --bg-card-hover: #fffaf0;
+  --line: #d6d3c1;
+  --border: #d6d3c1;
+  --border-active: #b7b39f;
+  --ink: #13201c;
+  --text-primary: #13201c;
+  --card-hover: #fffaf0;
+  --text-secondary: #31443d;
+  --text-muted: #66756f;
+  --accent: #136f63;
+  --accent-dim: #0f5d53;
+  --success: #1f8a5b;
+  --success-bg: rgba(31,138,91,0.10);
+  --warning: #b97812;
+  --warning-bg: rgba(185,120,18,0.12);
+  --error: #b33a2b;
+  --error-bg: rgba(179,58,43,0.10);
+  --radius: 14px;
   --radius-sm: 8px;
-  --radius-lg: 20px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.3);
-  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --shadow: 0 10px 24px rgba(19,32,28,0.08);
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --display: 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: var(--font);
-  background: var(--bg-deep);
+  background:
+    radial-gradient(circle at 85% 8%, rgba(19,111,99,0.10) 0%, rgba(19,111,99,0) 28%),
+    radial-gradient(circle at 12% 82%, rgba(193,87,42,0.08) 0%, rgba(193,87,42,0) 24%),
+    var(--bg-deep);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-.header {
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 0.75rem 1.5rem;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
-  position: sticky; top:0; z-index:10;
-}
-.header h1 { font-size:0.85rem; font-weight:700; letter-spacing:-0.02em; }
-.header .sub { font-size:0.6rem; color:var(--text-muted); }
-.header-actions { display:flex; gap:0.5rem; align-items:center; }
-.header-btn {
-  padding:0.35rem 0.85rem; border-radius:var(--radius-sm);
-  font-size:0.72rem; font-weight:500; cursor:pointer;
-  border:1px solid var(--border); background:var(--bg-surface);
-  color:var(--text-secondary); transition:all 0.15s; text-decoration:none;
-}
-.header-btn:hover { background:var(--bg-card-hover); color:var(--text-primary); }
-.header-btn.primary { background:var(--accent); color:#000; border-color:var(--accent); font-weight:600; }
-.header-btn.primary:hover { filter:brightness(1.15); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 48px; }
 
-.container { max-width: 800px; margin: 0 auto; padding: 1.5rem; }
+.topbar { margin-bottom: 40px; }
+.topbar-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.brand {
+  font-family: var(--font-heading);
+  font-weight: 800; letter-spacing: -0.03em; font-size: 1.05rem;
+  text-decoration: none; color: var(--ink);
+}
+.nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.topbar-ops { display: flex; gap: 4px; align-items: center; justify-content: flex-end; font-size: .75rem; color: var(--muted); margin-top: 6px; }
+.topbar-ops a { color: var(--muted); text-decoration: none; padding: 2px 6px; border-radius: 4px; transition: color .12s; }
+.topbar-ops a:hover { color: var(--accent); }
+.ops-sep { opacity: .4; }
+.btn {
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 10px 16px; font-size: 0.9rem; font-family: var(--font);
+  text-decoration: none; color: var(--ink); background: #fffdf6;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.btn:hover { background: var(--card-hover); border-color: var(--accent); }
+.btn.primary {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff; font-weight: 600;
+}
+.btn.primary:hover { opacity: 0.9; }
+
+.page-hero { margin-bottom: 32px; }
+.eyebrow {
+  font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:12px; font-weight:600;
+}
+.page-hero h2 {
+  font-family:var(--display); letter-spacing:-0.04em;
+  line-height:1.05; font-size:clamp(1.8rem, 4vw, 2.8rem);
+  margin-bottom:10px;
+}
+.page-hero .subtitle {
+  font-size:clamp(0.95rem, 2vw, 1.1rem); color:var(--text-muted);
+  max-width:680px; margin-bottom:20px;
+}
+
+.container { max-width: 100%; }
 
 .intro {
-  text-align:center; margin-bottom:1.5rem;
-  padding:1rem; border-radius:var(--radius);
-  background:linear-gradient(135deg, var(--bg-card), rgba(56,189,248,0.04));
-  border:1px solid rgba(56,189,248,0.15);
+  display:none;
 }
-.intro h2 { font-size:0.8rem; font-weight:600; color:var(--accent); letter-spacing:0.04em; text-transform:uppercase; margin-bottom:0.3rem; }
-.intro p { font-size:0.7rem; color:var(--text-muted); max-width:500px; margin:0 auto; }
 .intro strong { color:var(--text-secondary); }
+.criteria-brief, .decision-summary {
+  margin-bottom:0.75rem; padding:0.85rem 1rem; border-radius:var(--radius-sm);
+  background:var(--bg-surface); border:1px solid var(--border);
+}
+.criteria-brief h3, .decision-summary h3 {
+  font-family:var(--display); font-size:0.82rem; letter-spacing:-0.02em; margin-bottom:0.45rem;
+}
+.criteria-line { font-size:0.74rem; color:var(--text-secondary); margin-bottom:0.35rem; }
+.criteria-tags { display:flex; flex-wrap:wrap; gap:0.35rem; }
+.criterion-tag {
+  font-size:0.66rem; padding:0.18rem 0.45rem; border-radius:999px;
+  background:rgba(19,111,99,0.08); color:var(--accent); border:1px solid rgba(19,111,99,0.18);
+}
+.criterion-tag.neg { background:var(--error-bg); color:var(--error); border-color:rgba(179,58,43,0.16); }
+.decision-summary { display:none; }
+.decision-summary.visible { display:block; }
+.summary-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:0.5rem; }
+.summary-tile { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.6rem; }
+.summary-tile .num { font-family:var(--display); font-size:1.15rem; font-weight:800; }
+.summary-tile .label { font-size:0.62rem; color:var(--text-muted); }
+.bulk-bar {
+  display:flex; align-items:center; justify-content:space-between; gap:0.75rem;
+  margin-bottom:0.75rem; padding:0.65rem 0.85rem;
+  background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:0 2px 8px rgba(19,32,28,0.06);
+}
+.bulk-left, .bulk-actions { display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+.bulk-bar label { font-size:0.68rem; color:var(--text-secondary); cursor:pointer; }
+.bulk-bar button {
+  padding:0.32rem 0.75rem; border-radius:6px; font-size:0.66rem; font-weight:600;
+  border:1px solid var(--border); cursor:pointer; background:var(--bg-card); color:var(--text-secondary);
+}
+.bulk-bar button.primary { background:var(--success); border-color:var(--success); color:#fff; }
+.bulk-bar button.danger { background:var(--error-bg); border-color:var(--error-bg); color:var(--error); }
 
 .card {
   background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius); padding:1.25rem; margin-bottom:0.75rem;
-  transition:all 0.15s;
+  border-radius:var(--radius); padding:1rem; margin-bottom:0.75rem;
+  transition:all 0.18s;
+  box-shadow:var(--shadow);
 }
 .card:hover { border-color:var(--border-active); }
 .card.revealed { border-color:var(--success); background:linear-gradient(135deg, var(--bg-card), rgba(34,197,94,0.04)); }
+.card.selected { border-color:var(--accent); box-shadow:0 0 0 1px rgba(56,189,248,0.2); }
 
 .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; }
 .card-band {
@@ -93,6 +153,14 @@ body {
   font-size:0.55rem; color:var(--text-muted);
   text-transform:uppercase; letter-spacing:0.04em;
 }
+.select-row { display:flex; align-items:center; gap:0.45rem; }
+.select-row input { accent-color:var(--accent); }
+.blind-profile {
+  padding:0.75rem; border:1px solid var(--border);
+  border-radius:var(--radius-sm); background:var(--bg-surface); margin-bottom:0.65rem;
+}
+.blind-role { font-family:var(--display); font-size:0.95rem; font-weight:800; color:var(--text-primary); letter-spacing:-0.02em; }
+.blind-meta { font-size:0.63rem; color:var(--text-muted); margin-top:0.15rem; }
 .card-identity {
   display:none; margin-bottom:0.5rem; padding:0.5rem 0.75rem;
   background:var(--bg-surface); border-radius:var(--radius-sm);
@@ -106,8 +174,9 @@ body {
 
 .card-evidence { margin:0.5rem 0; }
 .evidence-item {
-  font-size:0.7rem; padding:0.25rem 0; color:var(--text-secondary);
-  display:flex; gap:0.4rem;
+  font-size:0.73rem; padding:0.45rem 0; color:var(--text-secondary);
+  display:grid; grid-template-columns:minmax(84px, 0.34fr) 1fr; gap:0.55rem;
+  border-top:1px solid rgba(214,211,193,0.7);
 }
 .evidence-signal { color:var(--accent); font-weight:500; min-width:8em; }
 .evidence-source { color:var(--text-muted); font-size:0.6rem; }
@@ -129,9 +198,9 @@ body {
   padding:0.35rem 0.85rem; border-radius:6px; font-size:0.68rem;
   font-weight:500; cursor:pointer; border:none; transition:all 0.15s;
 }
-.btn-reveal { background:var(--accent); color:#000; }
+.btn-reveal { background:rgba(19,111,99,0.09); color:var(--accent); border:1px solid rgba(19,111,99,0.18) !important; }
 .btn-reveal:hover { filter:brightness(1.15); }
-.btn-shortlist { background:var(--success); color:#000; }
+.btn-shortlist { background:var(--success); color:#fff; }
 .btn-shortlist:hover { filter:brightness(1.15); }
 .btn-dismiss { background:var(--error-bg); color:var(--error); }
 .btn-dismiss:hover { background:rgba(239,68,68,0.2); }
@@ -141,38 +210,90 @@ body {
 }
 .empty-state h3 { font-size:1rem; margin-bottom:0.5rem; color:var(--text-secondary); }
 .empty-state p { font-size:0.78rem; }
+@media (max-width: 640px) {
+  .container { padding:0.9rem; }
+  .bulk-bar { position:static; align-items:flex-start; }
+  .bulk-actions, .bulk-actions button { width:100%; }
+  .card-actions { flex-direction:column; }
+  .card-actions button { width:100%; padding:0.7rem 0.85rem; font-size:0.78rem; }
+  .evidence-item { grid-template-columns:1fr; gap:0.15rem; }
+  .summary-grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div>
-    <h1>Blind Review</h1>
-    <span class="sub">Revisión anonimizada — sin sesgo de identidad</span>
-  </div>
-  <div class="header-actions">
-    <span style="font-size:0.65rem;color:var(--text-muted);">{{ candidates|length }} candidatos</span>
-    <a class="header-btn" href="/">Command Room</a>
-  </div>
-</div>
+<div class="wrap">
+
+{% set active_page = "bandeja" %}{% include "_nav.html" %}
+
+<section class="page-hero">
+  <div class="eyebrow">Revisión sin sesgo</div>
+  <h2>Decidí por evidencia,<br>no por nombre.</h2>
+  <p class="subtitle">
+    Los perfiles se muestran sin identidad para reducir el sesgo temprano.
+    {{ candidates|length }} candidatos por revisar.
+    {% if not include_demo %}Solo fuentes reales.{% endif %}
+  </p>
+</section>
 
 <div class="container">
 
-  <div class="intro">
-    <h2>Evaluación a ciegas</h2>
-    <p>
-      Estos perfiles se muestran <strong>sin nombre ni datos identificatorios</strong>
-      para reducir el sesgo temprano. Podés revelar la identidad cuando quieras.
-      Tu decisión se registra junto con la señal que la motivó.
-    </p>
+  <div class="criteria-brief">
+    <h3>Criterio que está usando esta revisión</h3>
+    <div class="criteria-line">
+      <strong>{{ criteria.role_target or 'Rol no definido' }}</strong>
+      {% if criteria.markets %} · {{ criteria.markets | join(' / ') }}{% endif %}
+      {% if criteria.industries %} · {{ criteria.industries | join(' / ') }}{% endif %}
+    </div>
+    <div class="criteria-tags">
+      {% for s in criteria.positive_signals or [] %}
+      <span class="criterion-tag">{{ s }}</span>
+      {% endfor %}
+      {% for s in criteria.negative_signals or [] %}
+      <span class="criterion-tag neg">evitar: {{ s }}</span>
+      {% endfor %}
+    </div>
+    {% if criteria.philosophy %}
+    <div class="criteria-line" style="margin-top:0.55rem;">{{ criteria.philosophy }}</div>
+    {% endif %}
+  </div>
+
+  <div class="decision-summary" id="decision-summary">
+    <h3>Resumen de decisiones y memoria</h3>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="num" id="sum-shortlist">0</div><div class="label">movidos a shortlist</div></div>
+      <div class="summary-tile"><div class="num" id="sum-dismissed">0</div><div class="label">movidos a descartados</div></div>
+      <div class="summary-tile"><div class="num" id="sum-remaining">{{ candidates|length }}</div><div class="label">por revisar</div></div>
+    </div>
   </div>
 
   {% if candidates %}
+    <div class="bulk-bar">
+      <div class="bulk-left">
+        <label><input type="checkbox" id="select-all" onchange="toggleAll(this.checked)"> Seleccionar todos</label>
+        <span style="font-size:0.62rem;color:var(--text-muted);"><span id="selected-count">0</span> seleccionados</span>
+      </div>
+      <div class="bulk-actions">
+        <button class="primary" onclick="bulkShortlist()">★ Mover a shortlist</button>
+        <button class="danger" onclick="bulkDismiss()">✕ Mover a descartados</button>
+      </div>
+    </div>
     {% for c in candidates %}
     <div class="card" id="card-{{ c.candidate_id }}">
       <div class="card-header">
-        <span class="card-band band-{{ c.band or 'medium' }}">{{ c.band_label or 'Media prioridad' }}</span>
-        <span class="card-source">{{ c.source_label or c.source or '—' }}</span>
+        <div class="select-row">
+          <input type="checkbox" class="candidate-check" value="{{ c.candidate_id }}" onchange="updateSelection()">
+          <span class="card-band band-{{ c.band or 'medium' }}">{{ c.band_label or 'Media prioridad' }}</span>
+        </div>
+        <span class="card-source">
+          <span style="background: var(--success-bg); color: var(--success); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(31,138,91,0.25); font-size: 0.65rem; font-weight: 600;">{{ c.source_label or c.source }}</span>
+        </span>
+      </div>
+
+      <div class="blind-profile">
+        <div class="blind-role">{{ c.current_role or 'Rol por confirmar' }}</div>
+        <div class="blind-meta">Empresa oculta · {{ c.reason or 'sin resumen de disponibilidad' }}</div>
       </div>
 
       <div class="card-identity" id="identity-{{ c.candidate_id }}">
@@ -187,10 +308,14 @@ body {
         {% for ev in c.evidence %}
         <div class="evidence-item">
           <span class="evidence-signal">{{ ev.signal_name }}</span>
-          <span>{{ ev.keyword_triggered or '' }}</span>
-          {% if ev.confidence_impact == 'inferred' %}
-          <span class="evidence-inferred">📡 inferido</span>
-          {% endif %}
+          <span style="display: flex; align-items: center; gap: 6px;">
+            <span>{{ ev.keyword_triggered or '' }}</span>
+            {% if ev.confidence_impact == 'inferred' or 'infer' in ev.signal_name.lower() or 'estim' in ev.signal_name.lower() %}
+            <span class="evidence-inferred" style="background: var(--warning-bg); color: var(--warning); padding: 1px 5px; border-radius: 3px; font-size: 0.6rem; font-weight: 600; white-space: nowrap;">📡 Inferido (AI)</span>
+            {% else %}
+            <span class="evidence-verified" style="background: var(--success-bg); color: var(--success); padding: 1px 5px; border-radius: 3px; font-size: 0.6rem; font-weight: 600; white-space: nowrap;">✓ Directo</span>
+            {% endif %}
+          </span>
         </div>
         {% endfor %}
       </div>
@@ -211,11 +336,11 @@ body {
       {% endif %}
 
       <div class="card-actions">
-        <button class="btn-shortlist" onclick="shortlist('{{ c.candidate_id }}')">★ Shortlist</button>
-        <button class="btn-dismiss" onclick="dismiss('{{ c.candidate_id }}')">✕ Descartar</button>
+        <button class="btn-shortlist" onclick="shortlist('{{ c.candidate_id }}')">★ Mover a shortlist</button>
+        <button class="btn-dismiss" onclick="dismiss('{{ c.candidate_id }}')">✕ Mover a descartados</button>
         <button class="btn-reveal" id="reveal-btn-{{ c.candidate_id }}"
           {% if c.revealed %}style="display:none"{% endif %}
-          onclick="revealIdentity('{{ c.candidate_id }}')">👁 Revelar identidad</button>
+          onclick="revealIdentity('{{ c.candidate_id }}')">👁 Revelar para auditar</button>
       </div>
     </div>
     {% endfor %}
@@ -223,17 +348,66 @@ body {
     <div class="empty-state">
       <h3>No hay candidatos pendientes</h3>
       <p>Los candidatos aparecen aquí después de una búsqueda, sin datos identificatorios.</p>
-      <p style="margin-top:0.5rem;"><a href="/" style="color:var(--accent);">Volver a Command Room</a></p>
+      <p style="margin-top:0.5rem;"><a href="/setup" style="color:var(--accent);">Ir a Setup</a></p>
     </div>
   {% endif %}
-</div>
+</div><!-- /container -->
+</div><!-- /wrap -->
 
 <script>
 async function api(method, url, body) {
   const opts = { method, headers: {'Content-Type':'application/json'} };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(url, opts);
-  return res.json();
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || data.error || `HTTP ${res.status}`);
+  return data;
+}
+
+function selectedCandidateIds() {
+  return [...document.querySelectorAll('.candidate-check:checked')].map(el => el.value);
+}
+
+function updateSelection() {
+  const selected = selectedCandidateIds();
+  document.getElementById('selected-count').textContent = selected.length;
+  document.querySelectorAll('.candidate-check').forEach(el => {
+    document.getElementById('card-' + el.value)?.classList.toggle('selected', el.checked);
+  });
+}
+
+const decisionCounts = { shortlisted: 0, dismissed: 0 };
+
+function updateDecisionSummary() {
+  const remaining = document.querySelectorAll('.card:not(.decided)').length;
+  document.getElementById('sum-shortlist').textContent = decisionCounts.shortlisted;
+  document.getElementById('sum-dismissed').textContent = decisionCounts.dismissed;
+  document.getElementById('sum-remaining').textContent = remaining;
+  if (decisionCounts.shortlisted || decisionCounts.dismissed) {
+    document.getElementById('decision-summary').classList.add('visible');
+  }
+}
+
+function toggleAll(checked) {
+  document.querySelectorAll('.candidate-check:not(:disabled)').forEach(el => { el.checked = checked; });
+  updateSelection();
+}
+
+function markDecided(candidateId, decision) {
+  const card = document.getElementById('card-' + candidateId);
+  if (!card) return;
+  if (decision && decisionCounts[decision] !== undefined) decisionCounts[decision] += 1;
+  card.classList.add('decided');
+  card.style.transform = 'translateX(12px)';
+  card.style.opacity = '0';
+  card.querySelectorAll('.card-actions button, .candidate-check').forEach(b => b.disabled = true);
+  const check = card.querySelector('.candidate-check');
+  if (check) check.checked = false;
+  updateSelection();
+  setTimeout(() => {
+    card.remove();
+    updateDecisionSummary();
+  }, 220);
 }
 
 function revealIdentity(candidateId) {
@@ -250,9 +424,7 @@ function revealIdentity(candidateId) {
 function shortlist(candidateId) {
   api('POST', '/api/blind/shortlist/' + candidateId, {action: 'shortlisted', stage: 'blind'}).then(r => {
     if (r.success) {
-      const card = document.getElementById('card-' + candidateId);
-      card.style.opacity = '0.3';
-      card.querySelectorAll('.card-actions button').forEach(b => b.disabled = true);
+      markDecided(candidateId, 'shortlisted');
     }
   });
 }
@@ -260,11 +432,23 @@ function shortlist(candidateId) {
 function dismiss(candidateId) {
   api('POST', '/api/blind/dismiss/' + candidateId, {action: 'dismissed', stage: 'blind'}).then(r => {
     if (r.success) {
-      const card = document.getElementById('card-' + candidateId);
-      card.style.opacity = '0.3';
-      card.querySelectorAll('.card-actions button').forEach(b => b.disabled = true);
+      markDecided(candidateId, 'dismissed');
     }
   });
+}
+
+async function bulkShortlist() {
+  const ids = selectedCandidateIds();
+  for (const id of ids) await api('POST', '/api/blind/shortlist/' + id, {action: 'shortlisted', stage: 'blind_bulk'});
+  ids.forEach(id => markDecided(id, 'shortlisted'));
+}
+
+async function bulkDismiss() {
+  const ids = selectedCandidateIds();
+  if (!ids.length) return;
+  if (!confirm(`Descartar ${ids.length} candidato(s) seleccionados?`)) return;
+  for (const id of ids) await api('POST', '/api/blind/dismiss/' + id, {action: 'dismissed', stage: 'blind_bulk'});
+  ids.forEach(id => markDecided(id, 'dismissed'));
 }
 </script>
 </body>

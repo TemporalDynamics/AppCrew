@@ -1,0 +1,7 @@
+{
+  "ledger_type": "verifiable-memory-mcp-sqlite",
+  "ledger_db": "/home/manu/dev/Talo/data/state/verifiable-memory-mcp/memory.db",
+  "verified": true,
+  "reason": "Cadena verificada. 286 entradas \u00edntegras.",
+  "checked_at": "2026-06-04T21:33:37.001240+00:00"
+}

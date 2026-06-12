@@ -4,6 +4,9 @@ from urllib.parse import urlparse
 
 from agents.base import BaseAgent
 from contracts import AgentAction
+from core.logger import get_logger
+
+logger = get_logger("agents.browser_agent")
 
 
 ALLOWED_DOMAINS = frozenset([
@@ -75,9 +78,10 @@ class BrowserAgent(BaseAgent):
                 if host == domain or host.endswith("." + domain):
                     return True
             return False
-        except Exception:
+        except Exception as e:
+            logger.warning("BrowserAgent URL validation error for %s: %s", url, e)
             return False
 
     async def work(self) -> list[AgentAction]:
-        print("[BROWSER] Sandboxed browser not yet active")
+        logger.info("[BROWSER] Sandboxed browser not yet active")
         return []

@@ -20,7 +20,7 @@ router = APIRouter()
 
 @router.get("/health")
 async def health():
-    return {"status": "ok", "product": "Cerno", "version": "0.1"}
+    return {"status": "ok", "product": "Talo", "version": "0.1"}
 
 
 # ── Searches ──────────────────────────────────────────────────────────────────

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — Talo</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+.page { max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+.page-header { margin-bottom: 32px; }
+.page-header h1 { font-size: 22px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+.page-header p { font-size: 13px; color: #64748b; }
+
+.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #475569; margin-bottom: 12px; margin-top: 28px; }
+
+.api-card { background: #1e293b; border: 1px solid rgba(255,255,255,.07); border-radius: 12px; overflow: hidden; }
+.api-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,.05); gap: 12px; }
+.api-row:last-child { border-bottom: none; }
+.api-info { flex: 1; min-width: 0; }
+.api-name { font-size: 14px; font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
+.api-desc { font-size: 12px; color: #64748b; }
+.api-status { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-ok { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,.5); }
+.dot-missing { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,.4); }
+.status-text { font-size: 12px; font-weight: 600; }
+.text-ok { color: #4ade80; }
+.text-missing { color: #f87171; }
+.key-preview { font-size: 11px; color: #475569; font-family: monospace; margin-top: 2px; }
+
+.info-card { background: rgba(99,102,241,.08); border: 1px solid rgba(99,102,241,.15); border-radius: 10px; padding: 14px 18px; margin-top: 28px; font-size: 13px; color: #94a3b8; line-height: 1.6; }
+.info-card strong { color: #a5b4fc; }
+
+.system-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,.05); }
+.system-row:last-child { border-bottom: none; }
+.sys-label { font-size: 13px; color: #94a3b8; }
+.sys-value { font-size: 13px; font-weight: 600; color: #e2e8f0; font-family: monospace; }
+</style>
+</head>
+<body>
+
+{% set active_page = "settings" %}{% include "_nav.html" %}
+
+<div class="page">
+
+  <div class="page-header">
+    <h1>Settings</h1>
+    <p>Estado de las integraciones y APIs del sistema.</p>
+  </div>
+
+  <div class="section-label">APIs de búsqueda y LLM</div>
+  <div class="api-card">
+    {% set or_key = workspace_settings.get('openrouter_api_key','') %}
+    <div class="api-row">
+      <div class="api-info">
+        <div class="api-name">OpenRouter</div>
+        <div class="api-desc">Modelo de lenguaje — FitReason, ConversationAgent, clasificación</div>
+        {% if or_key %}<div class="key-preview">{{ or_key[:8] }}••••••••</div>{% endif %}
+      </div>
+      <div class="api-status">
+        <div class="dot {{ 'dot-ok' if or_key else 'dot-missing' }}"></div>
+        <span class="status-text {{ 'text-ok' if or_key else 'text-missing' }}">{{ 'Configurada' if or_key else 'Falta' }}</span>
+      </div>
+    </div>
+
+    {% set brave_key = workspace_settings.get('brave_search_api_key','') %}
+    <div class="api-row">
+      <div class="api-info">
+        <div class="api-name">Brave Search</div>
+        <div class="api-desc">Búsqueda OSINT y sourcing de candidatos en la web pública</div>
+        {% if brave_key %}<div class="key-preview">{{ brave_key[:8] }}••••••••</div>{% endif %}
+      </div>
+      <div class="api-status">
+        <div class="dot {{ 'dot-ok' if brave_key else 'dot-missing' }}"></div>
+        <span class="status-text {{ 'text-ok' if brave_key else 'text-missing' }}">{{ 'Configurada' if brave_key else 'Falta' }}</span>
+      </div>
+    </div>
+
+    {% set fc_key = workspace_settings.get('firecrawl_api_key','') %}
+    <div class="api-row">
+      <div class="api-info">
+        <div class="api-name">Firecrawl</div>
+        <div class="api-desc">Scraping de perfiles y páginas web para evidencia de candidatos</div>
+        {% if fc_key %}<div class="key-preview">{{ fc_key[:8] }}••••••••</div>{% endif %}
+      </div>
+      <div class="api-status">
+        <div class="dot {{ 'dot-ok' if fc_key else 'dot-missing' }}"></div>
+        <span class="status-text {{ 'text-ok' if fc_key else 'text-missing' }}">{{ 'Configurada' if fc_key else 'Falta' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Email y comunicación</div>
+  <div class="api-card">
+    <div class="api-row">
+      <div class="api-info">
+        <div class="api-name">Resend</div>
+        <div class="api-desc">Envío de emails a candidatos desde talo@email.ecosign.app</div>
+      </div>
+      <div class="api-status">
+        <div class="dot dot-ok" id="dot-resend"></div>
+        <span class="status-text text-ok" id="text-resend">Verificando...</span>
+      </div>
+    </div>
+    <div class="api-row">
+      <div class="api-info">
+        <div class="api-name">Telegram Bot</div>
+        <div class="api-desc">Bot @Nexuspety_bot — notificaciones al recruiter y conversaciones con candidatos</div>
+      </div>
+      <div class="api-status">
+        <div class="dot dot-ok" id="dot-telegram"></div>
+        <span class="status-text text-ok" id="text-telegram">Verificando...</span>
+      </div>
+    </div>
+    <div class="api-row">
+      <div class="api-info">
+        <div class="api-name">Calendly</div>
+        <div class="api-desc">Link de agendamiento enviado automáticamente al final de la conversación</div>
+      </div>
+      <div class="api-status">
+        <div class="dot dot-ok" id="dot-calendly"></div>
+        <span class="status-text text-ok" id="text-calendly">Verificando...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Sistema</div>
+  <div class="api-card">
+    <div class="system-row">
+      <span class="sys-label">Recruiter email</span>
+      <span class="sys-value" id="val-recruiter">—</span>
+    </div>
+    <div class="system-row">
+      <span class="sys-label">Modelo LLM</span>
+      <span class="sys-value" id="val-model">—</span>
+    </div>
+    <div class="system-row">
+      <span class="sys-label">Log level</span>
+      <span class="sys-value" id="val-loglevel">—</span>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <strong>Las API keys se configuran en el archivo <code>.env</code></strong> del servidor.<br>
+    Todos los motores de búsqueda activos (Torre.co, Brave Search, Firecrawl) corren automáticamente en cada búsqueda cuando tienen key configurada.
+  </div>
+
+</div>
+
+<script>
+fetch('/api/settings/status')
+  .then(r => r.json())
+  .then(d => {
+    set('resend', d.resend);
+    set('telegram', d.telegram);
+    set('calendly', d.calendly);
+    if (d.recruiter_email) document.getElementById('val-recruiter').textContent = d.recruiter_email;
+    if (d.model) document.getElementById('val-model').textContent = d.model;
+    if (d.log_level) document.getElementById('val-loglevel').textContent = d.log_level;
+  })
+  .catch(() => {});
+
+function set(key, ok) {
+  const dot = document.getElementById('dot-' + key);
+  const txt = document.getElementById('text-' + key);
+  if (!dot || !txt) return;
+  dot.className = 'dot ' + (ok ? 'dot-ok' : 'dot-missing');
+  txt.className = 'status-text ' + (ok ? 'text-ok' : 'text-missing');
+  txt.textContent = ok ? 'Configurada' : 'Falta';
+}
+</script>
+</body>
+</html>

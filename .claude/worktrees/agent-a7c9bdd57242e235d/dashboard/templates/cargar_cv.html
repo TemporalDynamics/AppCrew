@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mejorá tu CV | SelectaHR Solutions</title>
+<meta name="description" content="Subí tu CV y recibí un análisis estructurado. Si estás listo para el siguiente nivel ejecutivo, te decimos qué señales tenés y cuáles faltan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #6652A3;
+  --purple-dark: #4A3A82;
+  --purple-deeper: #2E2260;
+  --purple-light: #8B7BBF;
+  --purple-dim: rgba(102, 82, 163, 0.10);
+  --purple-glow: rgba(102, 82, 163, 0.22);
+  --gold: #C9A227;
+  --gold-dim: rgba(201, 162, 39, 0.12);
+  --bg: #FAFAF9;
+  --bg-2: #F3F1F9;
+  --surface: #EDE9F7;
+  --border: rgba(102, 82, 163, 0.12);
+  --border-mid: rgba(102, 82, 163, 0.22);
+  --ink: #1A1530;
+  --ink-2: #4A3F6B;
+  --ink-3: #9488B5;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+  --font: "Inter", system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', Georgia, serif;
+  --font-script: "Great Vibes", cursive;
+  --shadow: 0 20px 60px rgba(74, 58, 130, 0.18);
+  --shadow-sm: 0 4px 16px rgba(74, 58, 130, 0.10);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+a { text-decoration: none; color: inherit; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-primary {
+  background: var(--purple);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--purple-glow);
+}
+.btn-primary:hover {
+  background: var(--purple-dark);
+  box-shadow: 0 8px 32px var(--purple-glow);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1.5px solid var(--border-mid);
+}
+.btn-ghost:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+  background: var(--purple-dim);
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 32px;
+  background: rgba(250, 250, 249, 0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 66px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 8px;
+  color: var(--ink);
+}
+
+.brand-lockup {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.brand-hr {
+  font-family: var(--font-display);
+  font-size: 2.05rem;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  color: var(--purple);
+}
+
+.brand-script {
+  position: absolute;
+  left: 52%;
+  top: 50%;
+  transform: translate(-50%, -47%);
+  font-family: var(--font-script);
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(46, 34, 96, 0.18);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.brand-solutions {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 8px;
+  color: var(--ink);
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover { color: var(--purple); }
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+}
+
+.cv-hero {
+  flex: 1;
+  padding: 80px 32px 100px;
+  background:
+    radial-gradient(ellipse at 72% 18%, rgba(102, 82, 163, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 80%, rgba(201, 162, 39, 0.08) 0%, transparent 40%),
+    var(--bg);
+  display: flex;
+  align-items: center;
+}
+
+.cv-hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cv-hero h1 {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.cv-hero h1 em {
+  font-style: italic;
+  color: var(--purple);
+}
+
+.cv-hero > p {
+  font-size: 1.05rem;
+  color: var(--ink-2);
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.upload-zone {
+  background: #fff;
+  border: 2px dashed var(--border-mid);
+  border-radius: var(--radius);
+  padding: 48px 32px;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+  border-color: var(--purple);
+  background: var(--purple-dim);
+}
+
+.upload-zone-icon {
+  margin-bottom: 12px;
+  color: var(--ink-3);
+}
+
+.upload-zone h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.upload-zone p {
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
+
+.upload-zone input[type="file"] {
+  display: none;
+}
+
+.entry-modes {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.mode-card {
+  flex: 1 1 240px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+
+.mode-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--purple);
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-card.active {
+  border-color: var(--purple);
+  background: var(--purple-dim);
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-card strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+
+.mode-card span {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.entry-panel {
+  display: none;
+}
+
+.entry-panel.visible {
+  display: block;
+}
+
+.cv-form {
+  margin-top: 28px;
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cv-form.visible {
+  display: flex;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-row input:focus {
+  border-color: var(--purple);
+}
+
+.form-row textarea,
+.form-row select {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-row textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-row textarea:focus,
+.form-row select:focus {
+  border-color: var(--purple);
+}
+
+.manual-fields {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.manual-fields.visible {
+  display: flex;
+}
+
+.manual-note {
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  margin-top: -4px;
+}
+
+.msg-success {
+  text-align: center;
+  padding: 24px;
+  background: var(--gold-dim);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-weight: 500;
+  display: none;
+}
+
+.msg-success strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 6px;
+}
+
+.cv-form-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+}
+
+.step {
+  text-align: center;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--purple-dim);
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.step h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.step p {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .cv-hero h1 { font-size: 1.8rem; }
+  .cv-hero { padding: 48px 20px 60px; }
+  .upload-zone { padding: 32px 20px; }
+  .form-row { flex-direction: column; }
+  .steps { grid-template-columns: 1fr; gap: 20px; }
+}
+
+footer {
+  padding: 24px 32px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  font-size: 0.8rem;
+  color: var(--ink-3);
+  transition: color 0.15s;
+}
+
+.footer-links a:hover { color: var(--purple); }
+
+.footer-copy {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+
+@media (max-width: 640px) {
+  .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+}
+
+.file-name {
+  font-size: 0.85rem;
+  color: var(--purple);
+  font-weight: 500;
+  margin-top: 8px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/admin" class="brand" aria-label="Talo">
+      <span class="brand-lockup">
+        <span class="brand-hr">HR</span>
+        <span class="brand-script">Selecta</span>
+      </span>
+      <span class="brand-solutions">Solutions</span>
+    </a>
+    <div class="nav-links">
+      <a href="/admin">Acceso interno</a>
+      <a href="/cargar-cv">Sumá tu perfil</a>
+    </div>
+  </div>
+</nav>
+
+<section class="cv-hero">
+  <div class="cv-hero-inner">
+    <h1 class="reveal">Subí tu CV o armá tu <em>perfil profesional</em></h1>
+    <p class="reveal">
+      Si ya tenés CV, cargalo y analizamos tu perfil. Si todavía no lo tenés
+      bien armado, te ayudamos a ordenar tu experiencia y presentarte mejor
+      para oportunidades reales, hoy o más adelante.
+    </p>
+
+    <div class="reveal">
+      <div class="entry-modes">
+        <button type="button" class="mode-card active" data-mode="upload">
+          <strong>Ya tengo CV</strong>
+          <span>Subilo en PDF o Word y arrancamos desde ahí.</span>
+        </button>
+        <button type="button" class="mode-card" data-mode="manual">
+          <strong>No tengo CV</strong>
+          <span>Cargá tu perfil campo a campo y te ayudamos a ordenarlo.</span>
+        </button>
+      </div>
+
+      <div class="entry-panel visible" id="uploadPanel">
+        <div class="upload-zone" id="dropZone">
+          <div class="upload-zone-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <h3>Subí tu CV</h3>
+          <p>PDF o Word, hasta 10 MB. Si ya lo tenés, empezamos por ahí y completamos lo que falte.</p>
+          <input type="file" id="cvFile" accept=".pdf,.doc,.docx">
+        </div>
+      </div>
+      <div class="entry-panel" id="manualPanel">
+        <div class="upload-zone" style="cursor:default;">
+          <h3>Armá tu perfil paso a paso</h3>
+          <p>No necesitás tener un CV listo. Empezá con lo básico y después lo ordenamos con vos.</p>
+        </div>
+      </div>
+      <div id="fileName" class="file-name"></div>
+
+      <form class="cv-form" id="cvForm">
+        <div class="form-row">
+          <input type="text" name="nombre" placeholder="Nombre completo" required>
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="manual-fields" id="manualFields">
+          <div class="form-row">
+            <input type="text" name="linkedin" placeholder="LinkedIn o portfolio">
+            <input type="text" name="ubicacion" placeholder="Ubicación o mercado">
+          </div>
+          <div class="form-row">
+            <input type="text" name="rol_actual" placeholder="Rol actual, área o tipo de perfil">
+            <select name="anios_experiencia">
+              <option value="">Años de experiencia</option>
+              <option value="0-2">0 a 2 años</option>
+              <option value="3-5">3 a 5 años</option>
+              <option value="6-9">6 a 9 años</option>
+              <option value="10+">10+ años</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <textarea name="resumen" placeholder="Contanos brevemente tu experiencia, estudios o el tipo de roles que te interesan."></textarea>
+          </div>
+          <p class="manual-note">Con esto ya podemos empezar. Después te pedimos solo lo que haga falta.</p>
+        </div>
+        <div class="cv-form-actions">
+          <button type="submit" class="btn btn-primary">Sumar mi perfil →</button>
+          <a href="/admin" class="btn btn-ghost">Ir al sistema</a>
+        </div>
+      </form>
+
+      <div class="msg-success" id="msgOk">
+        <strong>¡Perfil recibido!</strong>
+        Ya tenemos tu información para analizarla mejor.
+        Si falta algo clave, te lo vamos a pedir de forma simple.
+        Si tu perfil encaja con una búsqueda, te contactamos.
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Subí tu CV o tu experiencia</h3>
+        <p>Podés cargar tu archivo o empezar con la información que ya tengas sobre tu recorrido profesional.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <h3>Ordenamos tu perfil</h3>
+        <p>Leemos lo que subiste, detectamos señales importantes y completamos lo que falte en lenguaje simple.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <h3>Quedás mejor preparado</h3>
+        <p>Tu perfil queda más claro, más profesional y más listo para oportunidades actuales o futuras.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-brand" aria-label="SelectaHR Solutions">
+      <span class="brand-lockup">
+        <span class="brand-hr">HR</span>
+        <span class="brand-script">Selecta</span>
+      </span>
+      <span class="brand-solutions">Solutions</span>
+    </a>
+    <div class="footer-links">
+      <a href="/admin">Acceso interno</a>
+      <a href="/cargar-cv">Sumá tu perfil</a>
+      <a href="/admin" style="opacity:0.35;font-size:0.75rem">Acceso interno</a>
+    </div>
+    <span class="footer-copy">© 2026 SelectaHR Solutions</span>
+  </div>
+</footer>
+
+<script>
+const dropZone = document.getElementById("dropZone");
+const fileInput = document.getElementById("cvFile");
+const fileName = document.getElementById("fileName");
+const cvForm = document.getElementById("cvForm");
+const msgOk = document.getElementById("msgOk");
+const modeCards = document.querySelectorAll("[data-mode]");
+const uploadPanel = document.getElementById("uploadPanel");
+const manualPanel = document.getElementById("manualPanel");
+const manualFields = document.getElementById("manualFields");
+let currentMode = "upload";
+
+dropZone.addEventListener("click", () => fileInput.click());
+
+dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropZone.classList.add("dragover");
+});
+
+dropZone.addEventListener("dragleave", () => {
+  dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropZone.classList.remove("dragover");
+  if (e.dataTransfer.files.length) {
+    fileInput.files = e.dataTransfer.files;
+    onFileSelected();
+  }
+});
+
+fileInput.addEventListener("change", onFileSelected);
+
+modeCards.forEach((card) => {
+  card.addEventListener("click", () => setMode(card.dataset.mode));
+});
+
+function setMode(mode) {
+  currentMode = mode;
+  modeCards.forEach((card) => {
+    card.classList.toggle("active", card.dataset.mode === mode);
+  });
+  uploadPanel.classList.toggle("visible", mode === "upload");
+  manualPanel.classList.toggle("visible", mode === "manual");
+  manualFields.classList.toggle("visible", mode === "manual");
+
+  if (mode === "manual") {
+    cvForm.classList.add("visible");
+    fileName.textContent = "";
+  } else {
+    manualFields.querySelectorAll("input, select, textarea").forEach((field) => {
+      if (field.tagName === "SELECT") {
+        field.selectedIndex = 0;
+      } else {
+        field.value = "";
+      }
+    });
+    cvForm.classList.toggle("visible", Boolean(fileInput.files[0]));
+  }
+}
+
+function onFileSelected() {
+  const file = fileInput.files[0];
+  if (file && currentMode === "upload") {
+    fileName.textContent = "📄 " + file.name;
+    cvForm.classList.add("visible");
+  }
+}
+
+cvForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const file = fileInput.files[0];
+  if (currentMode === "upload" && !file) return;
+
+  const formData = new FormData();
+  formData.append("mode", currentMode);
+  if (file && currentMode === "upload") {
+    formData.append("file", file);
+  }
+  [
+    "nombre",
+    "email",
+    "linkedin",
+    "ubicacion",
+    "rol_actual",
+    "anios_experiencia",
+    "resumen",
+  ].forEach((name) => {
+    const field = cvForm.querySelector(`[name="${name}"]`);
+    if (field && field.value) formData.append(name, field.value);
+  });
+
+  try {
+    const res = await fetch("/candidate/upload_cv", { method: "POST", body: formData });
+    const data = await res.json();
+    if (data.success) {
+      cvForm.style.display = "none";
+      dropZone.style.display = "none";
+      fileName.style.display = "none";
+      msgOk.style.display = "block";
+    }
+  } catch (err) {
+    alert("Error al subir el CV. Intentá de nuevo.");
+  }
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("visible");
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+hard_filters:
+- no_contact_without_human_approval
+human_approval_required: true
+markets:
+- Argentina
+max_candidates: 8
+positive_signals:
+- liderazgo de equipo
+- experiencia en ventas
+role_target: Gerente de Ventas

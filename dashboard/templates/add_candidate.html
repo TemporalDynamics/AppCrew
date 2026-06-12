@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agregar candidato — Talo</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+a { color: inherit; text-decoration: none; }
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  height: 56px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  background: #0f172a;
+}
+.nav-brand { font-weight: 700; font-size: 15px; color: #f1f5f9; letter-spacing: -.3px; }
+.nav-sep { color: #475569; }
+.nav-title { font-size: 14px; color: #94a3b8; }
+.nav-back {
+  margin-left: auto;
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .15s;
+}
+.nav-back:hover { color: #94a3b8; }
+
+/* Layout */
+.page { flex: 1; padding: 32px 24px; max-width: 680px; margin: 0 auto; width: 100%; }
+.page-header { margin-bottom: 28px; }
+.page-header h1 { font-size: 20px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+.page-header p { font-size: 14px; color: #64748b; }
+
+/* Card */
+.card {
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 28px;
+}
+
+/* Form */
+.form-section { margin-bottom: 24px; }
+.form-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #475569;
+  margin-bottom: 14px;
+}
+.form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+.form-group label { font-size: 12px; font-weight: 500; color: #94a3b8; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #e2e8f0;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: #475569; }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: #6366f1; }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-group select option { background: #1e293b; }
+
+/* PDF Drop zone */
+.drop-zone {
+  border: 2px dashed rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  background: #0f172a;
+  position: relative;
+}
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: #6366f1;
+  background: rgba(99,102,241,.06);
+}
+.drop-zone input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.drop-zone-icon { color: #475569; margin-bottom: 8px; }
+.drop-zone h3 { font-size: 14px; font-weight: 600; color: #94a3b8; margin-bottom: 4px; }
+.drop-zone p { font-size: 12px; color: #475569; }
+.file-chosen {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #6366f1;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* Pipeline toggle */
+.pipeline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(99,102,241,.12);
+  border: 1px solid rgba(99,102,241,.25);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #a5b4fc;
+  font-weight: 500;
+}
+.pipeline-steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.step-pill {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #64748b;
+}
+.step-arrow { color: #334155; font-size: 12px; }
+
+/* Actions */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  margin-top: 8px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s, opacity .15s;
+}
+.btn-primary { background: #6366f1; color: #fff; }
+.btn-primary:hover { background: #4f46e5; }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.btn-ghost {
+  background: transparent;
+  color: #64748b;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.btn-ghost:hover { color: #94a3b8; border-color: rgba(255,255,255,.2); }
+
+/* Status */
+.status-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-top: 16px;
+}
+.status-bar.loading { background: rgba(99,102,241,.1); color: #a5b4fc; display: flex; }
+.status-bar.success { background: rgba(34,197,94,.1); color: #86efac; display: flex; }
+.status-bar.error { background: rgba(239,68,68,.1); color: #fca5a5; display: flex; }
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(165,180,252,.3);
+  border-top-color: #a5b4fc;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Progress steps */
+.progress-log {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 14px;
+  background: #0f172a;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #64748b;
+  font-family: monospace;
+  max-height: 160px;
+  overflow-y: auto;
+}
+.progress-log.visible { display: flex; }
+.log-line { opacity: 0; animation: fadeIn .3s ease forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+.log-line.done { color: #86efac; }
+.log-line.active { color: #a5b4fc; }
+
+@media (max-width: 560px) {
+  .form-row { flex-direction: column; }
+  .page { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Talo</span>
+  <span class="nav-sep">›</span>
+  <span class="nav-title">Agregar candidato</span>
+  <a href="/shortlist" class="nav-back">
+    ← Volver al pool
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <h1>Agregar candidato manualmente</h1>
+    <p>El candidato entra al pipeline igual que los encontrados automáticamente — FitScoring, OutreachAgent, Decision Inbox.</p>
+  </div>
+
+  <div class="card">
+    {% if search_id %}
+    <div style="margin-bottom:18px;padding:10px 14px;background:rgba(99,102,241,.1);border-radius:8px;font-size:13px;color:#a5b4fc;">
+      Agregando a búsqueda <strong>{{ search_id }}</strong>
+    </div>
+    {% endif %}
+    <form id="addForm" autocomplete="off">
+      <input type="hidden" name="search_id" value="{{ search_id or '' }}">
+
+      <!-- Datos básicos -->
+      <div class="form-section">
+        <div class="form-section-title">Datos del candidato</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input id="nombre" name="nombre" type="text" placeholder="ej. Ana García" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="ana@email.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rol_actual">Rol actual *</label>
+            <input id="rol_actual" name="rol_actual" type="text" placeholder="ej. Senior Backend Engineer" required>
+          </div>
+          <div class="form-group">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" name="empresa" type="text" placeholder="ej. Mercado Libre">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ubicacion">Ubicación</label>
+            <input id="ubicacion" name="ubicacion" type="text" placeholder="ej. Buenos Aires, Argentina">
+          </div>
+          <div class="form-group">
+            <label for="source_url">Perfil público (URL)</label>
+            <input id="source_url" name="source_url" type="url" placeholder="LinkedIn, GitHub, Torre...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="skills">Skills (separados por coma)</label>
+            <input id="skills" name="skills" type="text" placeholder="ej. Python, FastAPI, PostgreSQL, AWS">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="notas">Notas adicionales</label>
+            <textarea id="notas" name="notas" placeholder="Contexto relevante sobre el candidato, cómo llegó, etc."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF -->
+      <div class="form-section">
+        <div class="form-section-title">CV (opcional)</div>
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="cvFile" accept=".pdf">
+          <div class="drop-zone-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="12" x2="12" y2="18"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <h3>Subir CV en PDF</h3>
+          <p>El texto del CV se usa para generar el FIT_REASON y enriquecer el perfil</p>
+        </div>
+        <div class="file-chosen" id="fileChosen">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="fileName">archivo.pdf</span>
+        </div>
+      </div>
+
+      <!-- Pipeline info -->
+      <div class="form-section">
+        <div class="form-section-title">Pipeline de procesamiento</div>
+        <div class="pipeline-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Procesamiento automático al guardar
+        </div>
+        <div class="pipeline-steps">
+          <span class="step-pill">TalentPool.upsert</span>
+          <span class="step-arrow">›</span>
+          <span class="step-pill">PDF parse (si hay)</span>
+          <span class="step-arrow">›</span>
+          <span class="step-pill">FitScoring</span>
+          <span class="step-arrow">›</span>
+          <span class="step-pill">OutreachAgent draft</span>
+          <span class="step-arrow">›</span>
+          <span class="step-pill">Decision Inbox</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          Agregar al pipeline →
+        </button>
+        <a href="/shortlist" class="btn btn-ghost">Cancelar</a>
+      </div>
+    </form>
+
+    <div class="status-bar" id="statusBar">
+      <div class="spinner" id="spinner" style="display:none"></div>
+      <span id="statusText"></span>
+    </div>
+    <div class="progress-log" id="progressLog"></div>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById('addForm');
+const dropZone = document.getElementById('dropZone');
+const cvFile = document.getElementById('cvFile');
+const fileChosen = document.getElementById('fileChosen');
+const fileName = document.getElementById('fileName');
+const statusBar = document.getElementById('statusBar');
+const statusText = document.getElementById('statusText');
+const spinner = document.getElementById('spinner');
+const progressLog = document.getElementById('progressLog');
+const submitBtn = document.getElementById('submitBtn');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) { cvFile.files = e.dataTransfer.files; showFile(); }
+});
+cvFile.addEventListener('change', showFile);
+
+function showFile() {
+  const f = cvFile.files[0];
+  if (f) {
+    fileName.textContent = f.name;
+    fileChosen.style.display = 'flex';
+  }
+}
+
+function setStatus(type, text) {
+  statusBar.className = `status-bar ${type}`;
+  statusText.textContent = text;
+  spinner.style.display = type === 'loading' ? 'block' : 'none';
+}
+
+function addLog(text, done = false) {
+  progressLog.classList.add('visible');
+  const line = document.createElement('div');
+  line.className = `log-line ${done ? 'done' : 'active'}`;
+  line.textContent = text;
+  progressLog.appendChild(line);
+  progressLog.scrollTop = progressLog.scrollHeight;
+}
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  progressLog.innerHTML = '';
+  progressLog.classList.remove('visible');
+
+  const fd = new FormData();
+  ['nombre', 'email', 'rol_actual', 'empresa', 'ubicacion', 'source_url', 'skills', 'notas', 'search_id'].forEach(name => {
+    const el = form.querySelector(`[name="${name}"]`);
+    if (el && el.value.trim()) fd.append(name, el.value.trim());
+  });
+  if (cvFile.files[0]) fd.append('cv_pdf', cvFile.files[0]);
+
+  setStatus('loading', 'Guardando candidato...');
+  addLog('→ Ingresando al TalentPool...');
+
+  try {
+    const res = await fetch('/api/candidates/add', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if (!data.success) {
+      setStatus('error', data.detail || 'Error al guardar el candidato.');
+      submitBtn.disabled = false;
+      return;
+    }
+
+    addLog('✓ Candidato guardado en TalentPool', true);
+    if (data.pdf_extracted) addLog('✓ CV parseado y evidencia extraída', true);
+    if (data.fit_score !== undefined) addLog(`✓ FitScoring: ${data.fit_score}/100`, true);
+    if (data.outreach_draft) addLog('✓ Draft de outreach listo en Decision Inbox', true);
+
+    setStatus('success', `${data.name || 'Candidato'} agregado al pipeline. Revisá el Decision Inbox.`);
+
+    const sid = form.querySelector('[name="search_id"]')?.value;
+    setTimeout(() => {
+      window.location.href = sid ? `/search/${sid}` : '/shortlist';
+    }, 2000);
+
+  } catch (err) {
+    setStatus('error', 'Error de conexión. Intentá de nuevo.');
+    submitBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

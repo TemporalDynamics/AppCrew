@@ -173,15 +173,6 @@ class CareerContextAgent(BaseAgent):
                     f"la empresa atravesó: {'; '.join(c['signals'][:2])}. "
                     f"¿Qué parte de ese contexto te tocó liderar o gestionar directamente?"
                 )
-                validation_questions.append(
-                    f"En {c['company']}, ¿hubo alguna decisión crítica que tomaras "
-                    f"durante ese periodo sin supervisión directa?"
-                )
-
-        context_summary = "; ".join(
-            f"{c['company']}: {', '.join(c['signals'][:2]) if c['signals'] else 'sin datos'}"
-            for c in companies_analyzed
-        )
 
         hypothesis = (
             f"El candidato estuvo en {len(companies_analyzed)} empresas durante periodos con "
@@ -195,8 +186,7 @@ class CareerContextAgent(BaseAgent):
                 )
         hypothesis += (
             f"Estos contextos pueden haber influido en su experiencia, "
-            f"pero no hay evidencia pública de su rol directo en esos eventos. "
-            f"Validation_questions permitirán separar contexto de contribución real."
+            f"pero no hay evidencia pública de su rol directo en esos eventos."
         )
 
         return AgentAction(
@@ -204,7 +194,7 @@ class CareerContextAgent(BaseAgent):
             action_type=ActionType.CONTEXT_SIGNAL.value,
             target=f"{name} — {role}",
             reason=f"Contexto: {len(companies_analyzed)} empresas analizadas. "
-                   f"Confianza: {total_confidence}. Señales: {context_summary[:100]}",
+                   f"Confianza: {total_confidence}.",
             payload={
                 "candidate_name": name,
                 "candidate_role": role,

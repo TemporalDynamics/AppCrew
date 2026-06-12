@@ -1,0 +1,66 @@
+============================================================
+GLOBAL EXECUTIVE — Demo Evidence
+Generated: 2026-05-14T06:40:23.039410
+Run ID: run_20260514_124022_189742
+============================================================
+
+AGENT FLEET STATUS
+----------------------------------------
+🧠 CEO                  state=idle            pending=  0 tools=3 invariants=5
+🔬 Tester               state=pending_review  pending= 18 tools=1 invariants=5
+🛰️ Demand Radar         state=idle            pending=  3 tools=4 invariants=6
+🎯 Talent Sourcing      state=idle            pending=  5 tools=4 invariants=5
+📊 Fit Scoring          state=idle            pending=  5 tools=2 invariants=6
+✉️ Outreach             state=idle            pending=  2 tools=2 invariants=6
+🗂️ Knowledge            state=pending_review  pending=  2 tools=1 invariants=5
+✅ Delivery QA          state=pending_review  pending= 19 tools=1 invariants=7
+
+Total pending: 54
+Total history: 55
+Total runs: 14
+
+LAST RUNS
+----------------------------------------
+run_20260514_124022_f5cbd6     outreach             0 actions  12:40:22
+run_20260514_124022_0589df     demand_radar         0 actions  12:40:22
+run_20260514_124022_a34dd4     demand_radar         0 actions  12:40:22
+run_20260514_124023_11cd76     talent_sourcing      0 actions  12:40:23
+run_20260514_124022_189742     tester              18 actions  12:40:22
+
+SAMPLE PENDING ACTIONS
+----------------------------------------
+  [100] tester             qa_summary           → test:contracts_import
+        
+  [100] tester             qa_summary           → test:agents_import
+        
+  [100] tester             qa_summary           → test:orchestrator_status
+        
+  [100] tester             qa_summary           → test:pending_flow
+        
+  [100] tester             qa_summary           → test:dedup_same_action_same_agent
+        
+
+SYSTEM INTEGRITY
+----------------------------------------
+✓ Run ID required
+✓ Dedup active (cross-run + same-run)
+✓ External sends blocked
+✓ CEO never works (pure coordinator)
+✓ QA read-only
+✓ Outreach never sends (draft-only)
+✓ pytest suite (18 tests, 8 invariants)
+
+CONTRACTS ACTIVE
+----------------------------------------
+  ceo                  authority=coordinator mem=memory/ceo/*
+  tester               authority=validator mem=N/A (cada ejecución de tests e
+  demand_radar         authority=scanner mem=memory/demand_radar/*
+  talent_sourcing      authority=researcher mem=memory/talent_sourcing/*
+  fit_scoring          authority=analyzer mem=N/A (determinístico)
+  outreach             authority=draft-only mem=memory/outreach/*
+  knowledge            authority=memory mem=N/A (idempotente, no necesita 
+  qa                   authority=inspector mem=N/A (cada inspección es fresca
+
+============================================================
+READY FOR MONDAY DEMO
+============================================================

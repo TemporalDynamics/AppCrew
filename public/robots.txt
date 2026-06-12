@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /ops
+Disallow: /setup
+Disallow: /run
+Disallow: /blind
+Disallow: /pool
+Disallow: /coverage
+Disallow: /settings
+Disallow: /candidate
+Disallow: /shortlist
+Disallow: /ceo
+
+Sitemap: https://selectahrsolutions.com/sitemap.xml

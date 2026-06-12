@@ -1,0 +1,15 @@
+[Unit]
+Description=Sourcing Platform
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/platform
+ExecStart=/opt/platform/.venv/bin/python run.py dashboard
+Restart=always
+RestartSec=10
+EnvironmentFile=/opt/platform/.env
+
+[Install]
+WantedBy=multi-user.target

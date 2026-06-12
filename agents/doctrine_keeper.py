@@ -2,6 +2,9 @@ from pathlib import Path
 
 from agents.base import BaseAgent
 from contracts import AgentAction, ActionType
+from core.logger import get_logger
+
+logger = get_logger("agents.doctrine_keeper")
 
 DOCTRINE_PATH = Path(__file__).resolve().parent.parent / "doctrine" / "philosophy.yaml"
 
@@ -24,8 +27,8 @@ class DoctrineKeeperAgent(BaseAgent):
             if DOCTRINE_PATH.exists():
                 with open(DOCTRINE_PATH) as f:
                     return yaml.safe_load(f) or {}
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("Could not load doctrine from %s: %s", DOCTRINE_PATH, e)
         return {
             "firm": "Cerno",
             "version": 0,

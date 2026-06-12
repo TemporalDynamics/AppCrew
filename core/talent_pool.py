@@ -17,12 +17,19 @@ STATE_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = STATE_DIR / "talent_pool.db"
 
 
-def _get_db() -> sqlite3.Connection:
+import contextlib
+
+@contextlib.contextmanager
+def _get_db():
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
-    return conn
+    try:
+        with conn:
+            yield conn
+    finally:
+        conn.close()
 
 
 def _ensure_tables() -> None:
@@ -158,15 +165,16 @@ class TalentPool:
             ).fetchone()
 
             if existing:
-                # Bump surface counter and freshen availability/confidence
+                # Bump surface counter, freshen availability/confidence, and claim for this workspace
                 conn.execute(
                     """UPDATE candidates
                        SET times_surfaced = times_surfaced + 1,
                            last_seen_at = ?,
                            availability_signal = ?,
-                           confidence = ?
+                           confidence = ?,
+                           workspace_id = ?
                        WHERE dedup_key = ?""",
-                    (now, signal.availability_signal, signal.confidence, key),
+                    (now, signal.availability_signal, signal.confidence, signal.workspace_id, key),
                 )
                 # Refresh identity fields (role/company may have changed)
                 conn.execute(
@@ -205,7 +213,13 @@ class TalentPool:
                 conn.execute(
                     """INSERT INTO candidate_identities
                        (dedup_key, name, current_role, company, location, skills)
-                       VALUES (?,?,?,?,?,?)""",
+                       VALUES (?,?,?,?,?,?)
+                       ON CONFLICT(dedup_key) DO UPDATE SET
+                           name = excluded.name,
+                           current_role = excluded.current_role,
+                           company = excluded.company,
+                           location = excluded.location,
+                           skills = excluded.skills""",
                     (
                         key,
                         signal.name,
@@ -375,10 +389,11 @@ class TalentPool:
             "approved": "approved",
             "rejected": "rejected",
             "shortlisted": "shortlisted",
+            "dismissed": "dismissed",
             "contacted": "contacted",
             "on_hold": "on_hold",
         }
-        new_status = status_map.get(decision, "reviewed")
+        new_status = status_map.get(decision)
 
         with _get_db() as conn:
             conn.execute(
@@ -387,27 +402,29 @@ class TalentPool:
                    VALUES (?,?,?,?,?,?)""",
                 (dedup_key, search_id, decision, comment, reviewer, now),
             )
-            conn.execute(
-                "UPDATE candidates SET status = ? WHERE dedup_key = ?",
-                (new_status, dedup_key),
-            )
+            if new_status:
+                conn.execute(
+                    "UPDATE candidates SET status = ? WHERE dedup_key = ?",
+                    (new_status, dedup_key),
+                )
 
     @staticmethod
     def get_search_coverage(search_id: str, workspace_id: str = "default") -> dict:
         """Return coverage stats for a given search_id, optionally filtered by workspace."""
         with _get_db() as conn:
-            workspace_join = ""
-            workspace_param: list = []
+            params: list = []
             if workspace_id != "default":
-                workspace_join = "JOIN candidates c ON sm.dedup_key = c.dedup_key AND c.workspace_id = ?"
-                workspace_param.append(workspace_id)
+                candidates_join = "JOIN candidates c ON sm.dedup_key = c.dedup_key AND c.workspace_id = ?"
+                params.append(workspace_id)
+            else:
+                candidates_join = "JOIN candidates c ON sm.dedup_key = c.dedup_key"
 
             total_row = conn.execute(
                 f"""SELECT COUNT(*) as cnt
                     FROM search_matches sm
-                    {workspace_join}
+                    {candidates_join}
                     WHERE sm.search_id = ?""",
-                workspace_param + [search_id],
+                params + [search_id],
             ).fetchone()
             total_matches = total_row["cnt"] if total_row else 0
 
@@ -415,10 +432,10 @@ class TalentPool:
             band_rows = conn.execute(
                 f"""SELECT sm.band, COUNT(*) as cnt
                     FROM search_matches sm
-                    {workspace_join}
+                    {candidates_join}
                     WHERE sm.search_id = ?
                     GROUP BY sm.band""",
-                workspace_param + [search_id],
+                params + [search_id],
             ).fetchall()
             by_band: dict[str, int] = {
                 "priority_1": 0,
@@ -429,27 +446,25 @@ class TalentPool:
             for r in band_rows:
                 by_band[r["band"]] = r["cnt"]
 
-            # By source — join through candidates
+            # By source
             source_rows = conn.execute(
                 f"""SELECT c.source, COUNT(*) as cnt
                     FROM search_matches sm
-                    JOIN candidates c ON sm.dedup_key = c.dedup_key
-                    {workspace_join}
+                    {candidates_join}
                     WHERE sm.search_id = ?
                     GROUP BY c.source""",
-                workspace_param + [search_id],
+                params + [search_id],
             ).fetchall()
             by_source: dict[str, int] = {r["source"]: r["cnt"] for r in source_rows}
 
-            # By candidate status — join through candidates
+            # By candidate status
             status_rows = conn.execute(
                 f"""SELECT c.status, COUNT(*) as cnt
                     FROM search_matches sm
-                    JOIN candidates c ON sm.dedup_key = c.dedup_key
-                    {workspace_join}
+                    {candidates_join}
                     WHERE sm.search_id = ?
                     GROUP BY c.status""",
-                workspace_param + [search_id],
+                params + [search_id],
             ).fetchall()
             by_status: dict[str, int] = {r["status"]: r["cnt"] for r in status_rows}
 
@@ -462,14 +477,28 @@ class TalentPool:
         }
 
     @staticmethod
-    def _get_candidates_with_evidence(workspace_id: str = "default") -> list[dict]:
+    def _get_candidates_with_evidence(workspace_id: str = "default", include_demo: bool = False) -> list[dict]:
         """Return candidates formatted for blind review, filtered by workspace."""
+        def _redact(text: str, name: str, company: str) -> str:
+            value = text or ""
+            for raw, replacement in (
+                (name, "[identidad oculta]"),
+                (company, "[empresa oculta]"),
+            ):
+                if raw:
+                    value = value.replace(raw, replacement)
+            return value
+
         with _get_db() as conn:
-            where_clause = ""
+            clauses = []
             params: list = []
             if workspace_id != "default":
-                where_clause = "WHERE c.workspace_id = ?"
+                clauses.append("c.workspace_id = ?")
                 params.append(workspace_id)
+            if not include_demo:
+                clauses.append("c.source NOT IN ('demo_seed', 'golden_seed')")
+            clauses.append("c.status NOT IN ('shortlisted', 'dismissed', 'rejected', 'approved', 'contacted', 'on_hold')")
+            where_clause = f"WHERE {' AND '.join(clauses)}" if clauses else ""
 
             rows = conn.execute(
                 f"""SELECT c.dedup_key, c.source, c.source_url, c.confidence,
@@ -483,6 +512,20 @@ class TalentPool:
                 params,
             ).fetchall()
 
+            evidence_by_key: dict[str, list[dict]] = {}
+            if rows:
+                keys = [r["dedup_key"] for r in rows]
+                placeholders = ",".join("?" for _ in keys)
+                ev_rows = conn.execute(
+                    f"""SELECT dedup_key, label, value, url
+                        FROM candidate_evidence
+                        WHERE dedup_key IN ({placeholders})
+                        ORDER BY id DESC""",
+                    keys,
+                ).fetchall()
+                for ev in ev_rows:
+                    evidence_by_key.setdefault(ev["dedup_key"], []).append(dict(ev))
+
         results = []
         for row in rows:
             d = dict(row)
@@ -490,6 +533,20 @@ class TalentPool:
                 d["skills"] = json.loads(d.get("skills") or "[]")
             except (json.JSONDecodeError, TypeError):
                 d["skills"] = []
+
+            evidence = []
+            for ev in evidence_by_key.get(d["dedup_key"], [])[:4]:
+                evidence.append({
+                    "signal_name": ev.get("label") or "Evidencia",
+                    "keyword_triggered": _redact(ev.get("value") or "", d.get("name", ""), d.get("company", ""))[:180],
+                    "confidence_impact": "source",
+                })
+            if not evidence and d.get("current_role"):
+                evidence.append({
+                    "signal_name": "Rol actual",
+                    "keyword_triggered": _redact(d.get("current_role", ""), d.get("name", ""), d.get("company", "")),
+                    "confidence_impact": "source",
+                })
 
             blind_id = f"cand_{abs(hash(d['dedup_key'])) % 99999:05d}"
             results.append({
@@ -504,8 +561,8 @@ class TalentPool:
                 "band": "medium",
                 "band_label": "Review needed",
                 "skills": d.get("skills", []),
-                "evidence": [],
-                "reason": "",
+                "evidence": evidence,
+                "reason": f"{d.get('availability_signal', 'sin señal')} · {d.get('confidence', 'sin confianza')}",
                 "revealed": False,
             })
         return results
@@ -522,6 +579,18 @@ class TalentPool:
             else:
                 row = conn.execute("SELECT COUNT(*) as cnt FROM candidates").fetchone()
             return row["cnt"] if row else 0
+
+    @staticmethod
+    def blind_id_to_dedup_key(blind_id: str) -> str | None:
+        """Resolve blind_id (e.g. 'cand_12345') to the actual dedup_key."""
+        with _get_db() as conn:
+            rows = conn.execute("SELECT dedup_key FROM candidates").fetchall()
+        for r in rows:
+            dk = r["dedup_key"]
+            computed = f"cand_{abs(hash(dk)) % 99999:05d}"
+            if computed == blind_id:
+                return dk
+        return None
 
     @staticmethod
     def get_full_candidate(dedup_key: str) -> dict | None:

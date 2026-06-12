@@ -1,0 +1,148 @@
+[2026-06-08 06:54:14][cli][INFO] Dashboard: http://127.0.0.1:8080
+INFO:     Started server process [1880993]
+INFO:     Waiting for application startup.
+[2026-06-08 06:54:14][core.tools.telegram_bot][INFO] Telegram bot polling iniciado
+[2026-06-08 06:54:14][dashboard.server][INFO] Bot de Telegram para candidatos iniciado
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8080 (Press CTRL+C to quit)
+[2026-06-08 09:59:01][core.tools.telegram_bot][ERROR] Error en polling loop: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8137398848:AAFHUkjzjp2oZ9qQw1Yu20D0C4sca9gsyXs/getUpdates?offset=0&timeout=20 (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.telegram.org', port=443) at 0x7f5838cf3390>, 'Connection to api.telegram.org timed out. (connect timeout=25)'))
+INFO:     127.0.0.1:60588 - "GET / HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:60588 - "GET /admin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55248 - "POST /admin HTTP/1.1" 303 See Other
+INFO:     127.0.0.1:55248 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55248 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55248 - "GET /setup HTTP/1.1" 200 OK
+[2026-06-08 13:18:19][agents.base][INFO] [DEMAND_RADAR HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:19][agents.base][INFO] [DEMAND_RADAR HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:19][agents.base][INFO] [DEMAND_RADAR HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:19][agents.base][INFO] [DEMAND_RADAR HOOK] Memory integrity OK: Cadena verificada. 438 entradas íntegras.
+[2026-06-08 13:18:19][agents.base][INFO] [DEMAND_RADAR HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:19][agents.base][INFO] [DEMAND_RADAR HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:19][agents.base][INFO] [DEMAND_RADAR HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:19][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_1477a06a56e9 (fb9a2e4e7294)
+[2026-06-08 13:18:19][agents.base][INFO] [KNOWLEDGE HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:19][agents.base][INFO] [KNOWLEDGE HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:19][agents.base][INFO] [KNOWLEDGE HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:19][agents.base][INFO] [KNOWLEDGE HOOK] Memory integrity OK: Cadena verificada. 439 entradas íntegras.
+[2026-06-08 13:18:19][agents.base][INFO] [KNOWLEDGE HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:19][agents.base][INFO] [KNOWLEDGE HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:19][agents.base][INFO] [KNOWLEDGE HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:19][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_1decffd19b4f (20d2c0da5900)
+[2026-06-08 13:18:19][agents.base][INFO] [CRITERIA HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:19][agents.base][INFO] [CRITERIA HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:19][agents.base][INFO] [CRITERIA HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:19][agents.base][INFO] [CRITERIA HOOK] Memory integrity OK: Cadena verificada. 440 entradas íntegras.
+[2026-06-08 13:18:19][agents.base][INFO] [CRITERIA HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:19][agents.base][INFO] [CRITERIA HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:19][agents.base][INFO] [CRITERIA HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:19][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_3b3444c094f0 (94c9c697ddd7)
+INFO:     127.0.0.1:51508 - "POST /api/criteria HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51508 - "GET /searches HTTP/1.1" 200 OK
+[2026-06-08 13:18:20][core.tools.firecrawl_client][WARNING] Firecrawl scrape_url failed: No module named 'firecrawl'
+[2026-06-08 13:18:20][core.tools.firecrawl_client][WARNING] Firecrawl scrape_url failed: No module named 'firecrawl'
+[2026-06-08 13:18:20][core.tools.firecrawl_client][WARNING] Firecrawl scrape_url failed: No module named 'firecrawl'
+[2026-06-08 13:18:20][core.tools.firecrawl_client][WARNING] Firecrawl scrape_url failed: No module named 'firecrawl'
+[2026-06-08 13:18:20][core.tools.firecrawl_client][WARNING] Firecrawl scrape_url failed: No module named 'firecrawl'
+[2026-06-08 13:18:20][agents.base][INFO] [TALENT_SOURCING HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:21][agents.base][INFO] [TALENT_SOURCING HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:21][agents.base][INFO] [TALENT_SOURCING HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:21][agents.base][INFO] [TALENT_SOURCING HOOK] Memory integrity OK: Cadena verificada. 441 entradas íntegras.
+[2026-06-08 13:18:21][agents.base][INFO] [TALENT_SOURCING HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:21][agents.base][INFO] [TALENT_SOURCING HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:21][agents.base][INFO] [TALENT_SOURCING HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:21][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_5378bffe0287 (bfa1ace6839c)
+[2026-06-08 13:18:21][agents.base][INFO] [INTAKE HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:21][agents.base][INFO] [INTAKE HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:21][agents.base][INFO] [INTAKE HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:21][agents.base][INFO] [INTAKE HOOK] Memory integrity OK: Cadena verificada. 442 entradas íntegras.
+[2026-06-08 13:18:21][agents.base][INFO] [INTAKE HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:21][agents.base][INFO] [INTAKE HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:21][agents.base][INFO] [INTAKE HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:21][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_aea07d7adb63 (b85559f1a796)
+[2026-06-08 13:18:21][agents.base][INFO] [NORMALIZATION HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:21][agents.base][INFO] [NORMALIZATION HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:21][agents.base][INFO] [NORMALIZATION HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:21][agents.base][INFO] [NORMALIZATION HOOK] Memory integrity OK: Cadena verificada. 443 entradas íntegras.
+[2026-06-08 13:18:21][agents.base][INFO] [NORMALIZATION HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:21][agents.base][INFO] [NORMALIZATION HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:21][agents.base][INFO] [NORMALIZATION HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:21][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_637178c36247 (826a0eb603a3)
+[2026-06-08 13:18:21][agents.base][INFO] [DEDUPLICATION HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:21][agents.base][INFO] [DEDUPLICATION HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:21][agents.base][INFO] [DEDUPLICATION HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:21][agents.base][INFO] [DEDUPLICATION HOOK] Memory integrity OK: Cadena verificada. 444 entradas íntegras.
+[2026-06-08 13:18:21][agents.base][INFO] [DEDUPLICATION HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:21][agents.base][INFO] [DEDUPLICATION HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:21][agents.base][INFO] [DEDUPLICATION HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:21][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_3fd2a25b7a19 (94c88e9a5e51)
+INFO:     127.0.0.1:51516 - "GET /search/1780946299_ea90d1 HTTP/1.1" 200 OK
+[2026-06-08 13:18:31][agents.base][INFO] [TALENT_SIGNAL HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:31][agents.base][INFO] [TALENT_SIGNAL HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:31][agents.base][INFO] [TALENT_SIGNAL HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:31][agents.base][INFO] [TALENT_SIGNAL HOOK] Memory integrity OK: Cadena verificada. 445 entradas íntegras.
+[2026-06-08 13:18:31][agents.base][INFO] [TALENT_SIGNAL HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:31][agents.base][INFO] [TALENT_SIGNAL HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:31][agents.base][INFO] [TALENT_SIGNAL HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:31][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_8609b095e2a9 (917cb493eada)
+[2026-06-08 13:18:31][agents.base][INFO] [CAREER_CONTEXT HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:31][agents.base][INFO] [CAREER_CONTEXT HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:31][agents.base][INFO] [CAREER_CONTEXT HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:31][agents.base][INFO] [CAREER_CONTEXT HOOK] Memory integrity OK: Cadena verificada. 446 entradas íntegras.
+[2026-06-08 13:18:31][agents.base][INFO] [CAREER_CONTEXT HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:31][agents.base][INFO] [CAREER_CONTEXT HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:31][agents.base][INFO] [CAREER_CONTEXT HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:31][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_2802f7144d79 (0fb6e90f2513)
+[2026-06-08 13:18:31][core.tools.firecrawl_client][WARNING] Firecrawl get_company_context failed, using mock: No module named 'firecrawl'
+[2026-06-08 13:18:31][core.tools.firecrawl_client][WARNING] Firecrawl get_company_context failed, using mock: No module named 'firecrawl'
+[2026-06-08 13:18:31][core.tools.firecrawl_client][WARNING] Firecrawl get_company_context failed, using mock: No module named 'firecrawl'
+[2026-06-08 13:18:31][core.tools.firecrawl_client][WARNING] Firecrawl get_company_context failed, using mock: No module named 'firecrawl'
+[2026-06-08 13:18:31][core.tools.firecrawl_client][WARNING] Firecrawl get_company_context failed, using mock: No module named 'firecrawl'
+[2026-06-08 13:18:31][core.tools.firecrawl_client][WARNING] Firecrawl get_company_context failed, using mock: No module named 'firecrawl'
+[2026-06-08 13:18:31][agents.base][INFO] [FIT_SCORING HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:31][agents.base][INFO] [FIT_SCORING HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:31][agents.base][INFO] [FIT_SCORING HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:31][agents.base][INFO] [FIT_SCORING HOOK] Memory integrity OK: Cadena verificada. 447 entradas íntegras.
+[2026-06-08 13:18:31][agents.base][INFO] [FIT_SCORING HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:31][agents.base][INFO] [FIT_SCORING HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:31][agents.base][INFO] [FIT_SCORING HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:31][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_f1f88a79d7d0 (65b79853e603)
+[2026-06-08 13:18:31][agents.base][INFO] [EVIDENCE HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:31][agents.base][INFO] [EVIDENCE HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:31][agents.base][INFO] [EVIDENCE HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:31][agents.base][INFO] [EVIDENCE HOOK] Memory integrity OK: Cadena verificada. 448 entradas íntegras.
+[2026-06-08 13:18:31][agents.base][INFO] [EVIDENCE HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:31][agents.base][INFO] [EVIDENCE HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:31][agents.base][INFO] [EVIDENCE HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:31][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_485807b39afb (cce2cf66bbba)
+[2026-06-08 13:18:31][agents.base][INFO] [MEMORY_UPDATE HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:31][agents.base][INFO] [MEMORY_UPDATE HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:31][agents.base][INFO] [MEMORY_UPDATE HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:31][agents.base][INFO] [MEMORY_UPDATE HOOK] Memory integrity OK: Cadena verificada. 449 entradas íntegras.
+[2026-06-08 13:18:31][agents.base][INFO] [MEMORY_UPDATE HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:31][agents.base][INFO] [MEMORY_UPDATE HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:31][agents.base][INFO] [MEMORY_UPDATE HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:31][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_4fb02ed2fdd6 (2f6347a25bbd)
+[2026-06-08 13:18:31][agents.base][INFO] [OUTREACH HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:31][agents.base][INFO] [OUTREACH HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:31][agents.base][INFO] [OUTREACH HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:31][agents.base][INFO] [OUTREACH HOOK] Memory integrity OK: Cadena verificada. 450 entradas íntegras.
+[2026-06-08 13:18:31][agents.base][INFO] [OUTREACH HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:31][agents.base][INFO] [OUTREACH HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:31][agents.base][INFO] [OUTREACH HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:31][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_61a39b79e85c (a8aed0032536)
+[2026-06-08 13:18:37][agents.base][INFO] [CEO HOOK] 1. resolve_context: Resolving context for workspace 'default'
+[2026-06-08 13:18:37][agents.base][INFO] [CEO HOOK] Context resolved: Mode=Demo, Role='VP Operations / COO'
+[2026-06-08 13:18:37][agents.base][INFO] [CEO HOOK] 2. verify_memory_scope: Checking memory integrity (ledger)...
+[2026-06-08 13:18:37][agents.base][INFO] [CEO HOOK] Memory integrity OK: Cadena verificada. 451 entradas íntegras.
+[2026-06-08 13:18:37][agents.base][INFO] [CEO HOOK] 3. load_recent_audit_context: Loading recent relevant entries from ledger...
+[2026-06-08 13:18:37][agents.base][INFO] [CEO HOOK] Loaded 5 relevant audit entries.
+[2026-06-08 13:18:37][agents.base][INFO] [CEO HOOK] 4. append_task_start: Registering task start in ledger...
+[2026-06-08 13:18:37][core.demo_notifiers][INFO] [MCP LEDGER] agent_run_started -> mem_ge_fa7e08e708b8 (37dcf571680b)
+[2026-06-08 13:18:37][dashboard.server][INFO] Pipeline completado para búsqueda 1780946299_ea90d1 — search_id=1780946299_ea90d1
+INFO:     127.0.0.1:59938 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54032 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54032 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1880993]

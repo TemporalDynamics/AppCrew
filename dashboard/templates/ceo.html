@@ -3,29 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GE — CEO Agent</title>
+<title>Talo — CEO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-deep: #080B12;
-  --bg-surface: #0F172A;
-  --bg-card: #111827;
-  --bg-card-hover: #1a2332;
-  --border: #1F2937;
-  --border-active: #2a3a4f;
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --accent: #38BDF8;
-  --accent-dim: #0EA5E9;
-  --success: #22C55E;
-  --warning: #F59E0B;
-  --error: #EF4444;
+  --bg-deep: #f5f4ec;
+  --bg-surface: #f0efe6;
+  --bg-card: #fbfaf3;
+  --bg-card-hover: #f7f6ed;
+  --border: #d6d3c1;
+  --border-active: #136f63;
+  --text-primary: #13201c;
+  --text-secondary: #4f5f58;
+  --text-muted: #8fa09a;
+  --accent: #136f63;
+  --accent-dim: rgba(19,111,99,0.7);
+  --accent-soft: rgba(19,111,99,0.08);
+  --success: #1d7c5a;
+  --warning: #c1572a;
+  --error: #b84040;
   --radius: 16px;
   --radius-sm: 8px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.3);
-  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --shadow: 0 4px 24px rgba(19,32,28,.1);
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -38,7 +40,7 @@ body {
 .app { display:flex; flex-direction:column; min-height:100vh; }
 .main { display:flex; flex:1; }
 .sidebar {
-  width: 72px; background: var(--bg-surface);
+  width: 72px; background: var(--bg-card);
   border-right: 1px solid var(--border);
   display:flex; flex-direction:column; align-items:center;
   padding: 1rem 0; gap: 0.5rem;
@@ -46,7 +48,7 @@ body {
 }
 .sidebar-logo {
   width:40px;height:40px;border-radius:12px;
-  background:linear-gradient(135deg,var(--accent),#2563EB);
+  background:linear-gradient(135deg,#136f63,#0d5a51);
   display:flex;align-items:center;justify-content:center;
   font-weight:700;font-size:0.75rem;color:white;margin-bottom:1.5rem;
 }
@@ -92,7 +94,7 @@ body {
 .ceo-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; }
 .ceo-avatar {
   width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(135deg,var(--accent),#2563EB);
+  background:linear-gradient(135deg,#136f63,#0d5a51);
   display:flex;align-items:center;justify-content:center;font-size:1.25rem;
 }
 .ceo-title h2 { font-size:0.95rem; font-weight:600; }
@@ -110,7 +112,7 @@ body {
 .btn {
   padding:0.6rem 1.5rem; border:none; border-radius:var(--radius-sm);
   font-size:0.85rem; font-weight:600; cursor:pointer; transition:all 0.2s;
-  background:var(--accent); color:#000; align-self:flex-end;
+  background:var(--accent); color:#fff; align-self:flex-end;
 }
 .btn:hover { filter:brightness(1.15); }
 .btn:disabled { opacity:0.5; cursor:not-allowed; }
@@ -121,7 +123,7 @@ body {
   font-size:0.75rem; color:var(--text-secondary); cursor:pointer;
   border:1px solid var(--border); transition:all 0.2s;
 }
-.example-chip:hover { border-color:var(--accent); color:var(--accent); background:rgba(56,189,248,0.06); }
+.example-chip:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 
 .conversation { display:flex; flex-direction:column; gap:0.75rem; }
 .msg {
@@ -173,9 +175,9 @@ body {
     <nav class="sidebar">
       <div class="sidebar-logo">GE</div>
       <div class="sidebar-nav">
-        <a href="/" class="sidebar-btn" title="Command Room">⌂</a>
+        <a href="/inicio" class="sidebar-btn" title="Command Room">⌂</a>
         <a href="/ceo" class="sidebar-btn active" title="CEO Agent">🧠</a>
-        <a href="/" class="sidebar-btn" onclick="runAgents(event)" title="Run All Agents">▶</a>
+        <a href="/inicio" class="sidebar-btn" onclick="runAgents(event)" title="Run All Agents">▶</a>
       </div>
     </nav>
 

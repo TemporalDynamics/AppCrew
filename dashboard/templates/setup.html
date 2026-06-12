@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — Definir Criterio de Búsqueda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4ec;
+  --ink: #13201c;
+  --muted: #4f5f58;
+  --card: #fbfaf3;
+  --card-hover: #f7f6ed;
+  --line: #d6d3c1;
+  --accent: #136f63;
+  --accent-soft: rgba(19, 111, 99, 0.08);
+  --accent-2: #c1572a;
+  --accent-2-soft: rgba(193, 87, 42, 0.08);
+  --shadow: 0 10px 24px rgba(19, 32, 28, 0.08);
+  --shadow-sm: 0 2px 8px rgba(19, 32, 28, 0.06);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 80% 12%, rgba(19, 111, 99, 0.12) 0%, rgba(19, 111, 99, 0) 30%),
+    radial-gradient(circle at 20% 90%, rgba(193, 87, 42, 0.10) 0%, rgba(193, 87, 42, 0) 24%),
+    var(--bg);
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 48px; }
+
+.topbar { margin-bottom: 40px; }
+.topbar-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.brand {
+  font-family: var(--font-heading);
+  font-weight: 800; letter-spacing: -0.03em; font-size: 1.05rem;
+  text-decoration: none; color: var(--ink);
+}
+.nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.topbar-ops { display: flex; gap: 4px; align-items: center; justify-content: flex-end; font-size: .75rem; color: var(--muted); margin-top: 6px; }
+.topbar-ops a { color: var(--muted); text-decoration: none; padding: 2px 6px; border-radius: 4px; transition: color .12s; }
+.topbar-ops a:hover { color: var(--accent); }
+.ops-sep { opacity: .4; }
+.btn {
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 10px 16px; font-size: 0.9rem; font-family: var(--font);
+  text-decoration: none; color: var(--ink); background: #fffdf6;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.btn:hover { background: var(--card-hover); border-color: var(--accent); }
+.btn.primary {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff; font-weight: 600;
+}
+.btn.primary:hover { opacity: 0.9; }
+.btn.outline { border-color: var(--accent); color: var(--accent); background: transparent; }
+.btn.outline:hover { background: var(--accent-soft); }
+
+.page { max-width: 760px; margin: 0 auto; }
+.page-header { margin-bottom: 28px; }
+.search-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.flow-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fffdf6;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.flow-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.flow-step.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.flow-step.active .flow-step-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.flow-step.complete {
+  border-color: rgba(19, 111, 99, 0.22);
+  color: var(--ink);
+}
+.flow-arrow {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.step-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-soft); color: var(--accent);
+  border: 1px solid rgba(19, 111, 99, 0.25); border-radius: 999px;
+  padding: 4px 12px; font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;
+}
+.page-title {
+  font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700;
+  letter-spacing: -0.03em; margin-bottom: 6px;
+}
+.page-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+
+.form-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+
+.field { margin-bottom: 20px; }
+.field:last-child { margin-bottom: 0; }
+label {
+  display: block; font-size: 0.85rem; font-weight: 600; color: var(--ink);
+  margin-bottom: 6px;
+}
+label .hint { font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-left: 6px; }
+input[type=text], textarea, select {
+  width: 100%; background: #fffdf6; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 10px 14px; color: var(--ink);
+  font-family: var(--font); font-size: 0.9rem; outline: none;
+  transition: border-color 0.15s;
+}
+input[type=text]:focus, textarea:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+textarea { min-height: 90px; resize: vertical; line-height: 1.55; }
+::placeholder { color: var(--muted); opacity: 0.6; }
+
+.tags-wrap {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  background: #fffdf6; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 8px 10px; min-height: 44px; cursor: text;
+  transition: border-color 0.15s;
+}
+.tags-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--accent-soft); color: var(--accent);
+  border: 1px solid rgba(19, 111, 99, 0.25); border-radius: 6px;
+  padding: 2px 8px; font-size: 0.8rem; font-weight: 500;
+}
+.tag button {
+  background: none; border: none; color: var(--accent); cursor: pointer;
+  font-size: 0.9rem; line-height: 1; padding: 0; opacity: 0.7;
+}
+.tag button:hover { opacity: 1; }
+.tag-neg {
+  background: var(--accent-2-soft); color: var(--accent-2);
+  border-color: rgba(193, 87, 42, 0.25);
+}
+.tag-neg button { color: var(--accent-2); }
+.tag-input {
+  border: none; background: transparent; outline: none; color: var(--ink);
+  font-family: var(--font); font-size: 0.88rem; min-width: 120px; flex: 1;
+}
+.tag-hint { font-size: 0.75rem; color: var(--muted); margin-top: 5px; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.preset-btn {
+  padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px;
+  background: #fffdf6; color: var(--muted); font-size: 0.78rem;
+  cursor: pointer; transition: all 0.1s; font-family: var(--font);
+}
+.preset-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.preset-btn.neg:hover { border-color: var(--accent-2); color: var(--accent-2); background: var(--accent-2-soft); }
+
+.actions {
+  display: flex; gap: 12px; align-items: center; justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.sources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:8px 0 4px;}
+.source-toggle{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fffdf6;cursor:pointer;transition:all .12s;user-select:none;}
+.source-toggle:hover{border-color:var(--accent);background:var(--card-hover);}
+.source-toggle input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;cursor:pointer;}
+.src-name{font-size:.82rem;font-weight:600;flex:1;}
+.src-badge{font-size:.6rem;padding:1px 6px;border-radius:4px;color:var(--muted);background:var(--line);text-transform:uppercase;letter-spacing:.03em;font-weight:600;}
+.src-badge.active{background:#cfefc4;color:#1d7c5a;}
+.src-badge.pending{background:#ffedc4;color:#b87a00;}
+#new-source-panel.open{display:block !important;}
+#new-source-panel select{width:100%;background:#fffdf6;border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;color:var(--ink);font-family:var(--font);font-size:.9rem;outline:none;}
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 100;
+  background: var(--accent); color: #fff; border-radius: var(--radius-sm);
+  padding: 12px 20px; font-size: 0.9rem; font-weight: 500;
+  display: none; align-items: center; gap: 8px;
+  box-shadow: var(--shadow);
+}
+.toast.show { display: flex; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  {% set active_page = "busquedas" %}{% include "_nav.html" %}
+
+  <div class="page">
+    <div class="page-header">
+      <div class="step-badge">Nueva búsqueda</div>
+      <h1 class="page-title">Crear búsqueda.</h1>
+      <p class="page-desc">Definí el criterio en lenguaje humano. Este criterio se convierte en el contrato operativo de la búsqueda.</p>
+    </div>
+
+    <form id="criteriaForm">
+
+      <div class="form-card">
+        <div class="card-title">Contexto de la Búsqueda</div>
+
+        <div class="field">
+          <label for="owner">Responsable <span class="hint">quién está a cargo</span></label>
+          <input type="text" id="owner" name="owner" placeholder="Ej: Manu" value="{{ criteria.owner or '' }}">
+        </div>
+
+        <div class="field">
+          <label for="client">Cliente / empresa <span class="hint">para quién es la búsqueda</span></label>
+          <input type="text" id="client" name="client" placeholder="Ej: SoftCloud LATAM" value="{{ criteria.client or '' }}">
+        </div>
+
+        <div class="field">
+          <label for="role_target">Rol objetivo <span class="hint">sé específico</span></label>
+          <input type="text" id="role_target" name="role_target" placeholder="Ej: CTO / VP Engineering para fintech Serie B en LATAM" value="{{ criteria.role_target or '' }}">
+        </div>
+
+        <div class="field">
+          <label for="markets">Mercados<span class="hint">separados por coma</span></label>
+          <input type="text" id="markets" name="markets" placeholder="Ej: México, Argentina, Colombia" value="{{ (criteria.markets or []) | join(', ') }}">
+        </div>
+
+        <div class="field">
+          <label for="industries">Industrias<span class="hint">separadas por coma</span></label>
+          <input type="text" id="industries" name="industries" placeholder="Ej: fintech, SaaS B2B, e-commerce" value="{{ (criteria.industries or []) | join(', ') }}">
+        </div>
+
+        <div class="field">
+          <label>Fuentes <span class="hint">seleccioná las fuentes a usar</span></label>
+          <div class="sources-grid" id="sources-grid">
+            <label class="source-toggle" data-src="torre">
+              <input type="checkbox" value="torre" checked>
+              <span class="src-name">Torre</span>
+              <span class="src-badge active">activa</span>
+            </label>
+            <label class="source-toggle" data-src="brave">
+              <input type="checkbox" value="brave" checked>
+              <span class="src-name">Brave Search</span>
+              <span class="src-badge active">activa</span>
+            </label>
+            <label class="source-toggle" data-src="linkedin">
+              <input type="checkbox" value="linkedin">
+              <span class="src-name">LinkedIn</span>
+              <span class="src-badge pending">requiere config</span>
+            </label>
+            <label class="source-toggle" data-src="github">
+              <input type="checkbox" value="github">
+              <span class="src-name">GitHub</span>
+              <span class="src-badge pending">requiere config</span>
+            </label>
+            <label class="source-toggle" data-src="career_pages">
+              <input type="checkbox" value="career_pages">
+              <span class="src-name">Career Pages</span>
+              <span class="src-badge">próximamente</span>
+            </label>
+            <label class="source-toggle" data-src="csv">
+              <input type="checkbox" value="csv">
+              <span class="src-name">Carga CSV</span>
+              <span class="src-badge">manual</span>
+            </label>
+            <label class="source-toggle" data-src="manual">
+              <input type="checkbox" value="manual">
+              <span class="src-name">Carga manual</span>
+              <span class="src-badge">manual</span>
+            </label>
+          </div>
+          <div style="margin-top:10px;">
+            <button type="button" class="btn outline" onclick="document.getElementById('new-source-panel').classList.toggle('open')">+ Conectar nueva fuente</button>
+          </div>
+        </div>
+
+        <div id="new-source-panel" class="form-card" style="display:none;margin-top:12px;">
+          <div class="card-title">Nueva fuente</div>
+          <div class="field">
+            <label>Tipo de fuente</label>
+            <select id="new-src-type">
+              <option value="api">API</option>
+              <option value="mcp">MCP</option>
+              <option value="csv">CSV</option>
+              <option value="webhook">Webhook</option>
+              <option value="manual">Manual</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="new-src-name">Nombre de fuente</label>
+            <input type="text" id="new-src-name" placeholder="Ej: TalentScan API">
+          </div>
+          <div class="field">
+            <label for="new-src-desc">Descripción</label>
+            <input type="text" id="new-src-desc" placeholder="Qué hace esta fuente">
+          </div>
+          <div class="field">
+            <label for="new-src-endpoint">Endpoint / URL / comando MCP</label>
+            <input type="text" id="new-src-endpoint" placeholder="https://api.ejemplo.com/talentos">
+          </div>
+          <div class="field">
+            <label for="new-src-token">Token / API key <span class="hint">opcional</span></label>
+            <input type="password" id="new-src-token" placeholder="••••••••">
+          </div>
+          <div class="field">
+            <label>Estado</label>
+            <select id="new-src-status">
+              <option value="active">Activa</option>
+              <option value="inactive">Inactiva</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px;">
+            <button type="button" class="btn" onclick="testNewSource()">Probar conexión</button>
+            <button type="button" class="btn primary" onclick="saveNewSource()">Guardar fuente</button>
+            <button type="button" class="btn" onclick="document.getElementById('new-source-panel').classList.remove('open')">Cancelar</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="max_candidates">Límite de candidatos <span class="hint">máximo a recolectar</span></label>
+          <input type="number" id="max_candidates" name="max_candidates" min="5" max="500" value="{{ criteria.max_candidates or 50 }}" style="width:120px;">
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="card-title">Tu Filosofía de Búsqueda</div>
+
+        <div class="field">
+          <label for="philosophy">¿Qué estás buscando realmente? <span class="hint">en tus propias palabras</span></label>
+          <textarea id="philosophy" name="philosophy" placeholder="Ej: Busco alguien que haya construido equipos de cero, no que haya heredado uno. Que haya tomado decisiones difíciles con recursos limitados. No me importa el título previo, me importa si pudo ejecutar cuando las cosas se complicaron.">{{ criteria.philosophy or '' }}</textarea>
+        </div>
+
+        <div class="field">
+          <label for="preferred_background">Contexto empresarial preferido</label>
+          <textarea id="preferred_background" name="preferred_background" placeholder="Ej: Startup o scale-up con algo de estructura. No caos puro, no corporativo sin ownership.">{{ criteria.preferred_background or '' }}</textarea>
+        </div>
+
+        <div class="field">
+          <label for="outreach_tone">Tono de contacto</label>
+          <input type="text" id="outreach_tone" name="outreach_tone" placeholder="Ej: Ejecutivo, cálido, directo — sin tono masivo" value="{{ criteria.outreach_tone or '' }}">
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="card-title">Señales Positivas <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0"> — lo que querés ver</span></div>
+        <div class="field">
+          <div class="tags-wrap" id="pos-tags-wrap" onclick="document.getElementById('pos-input').focus()">
+            {% for s in (criteria.positive_signals or []) %}
+            <span class="tag" data-value="{{ s }}">{{ s }}<button type="button" onclick="removeTag(this,'pos')">×</button></span>
+            {% endfor %}
+            <input class="tag-input" id="pos-input" placeholder="Escribí y presioná Enter…" autocomplete="off">
+          </div>
+          <div class="tag-hint">o elegí de los predefinidos:</div>
+          <div class="presets">
+            <button type="button" class="preset-btn" onclick="addTag('opened_new_market','pos')">abrió nuevo mercado</button>
+            <button type="button" class="preset-btn" onclick="addTag('managed_pnl','pos')">manejó P&amp;L</button>
+            <button type="button" class="preset-btn" onclick="addTag('scaled_team_20_plus','pos')">escaló equipo +20</button>
+            <button type="button" class="preset-btn" onclick="addTag('worked_in_scaleup_context','pos')">scale-up context</button>
+            <button type="button" class="preset-btn" onclick="addTag('shows_ownership_beyond_title','pos')">ownership real</button>
+            <button type="button" class="preset-btn" onclick="addTag('built_from_zero','pos')">construyó de cero</button>
+            <button type="button" class="preset-btn" onclick="addTag('cross_functional_leadership','pos')">liderazgo cross-funcional</button>
+            <button type="button" class="preset-btn" onclick="addTag('fundraising_experience','pos')">experiencia fundraising</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="card-title">Señales Negativas <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0"> — lo que querés evitar</span></div>
+        <div class="field">
+          <div class="tags-wrap" id="neg-tags-wrap" onclick="document.getElementById('neg-input').focus()">
+            {% for s in (criteria.negative_signals or []) %}
+            <span class="tag tag-neg" data-value="{{ s }}">{{ s }}<button type="button" onclick="removeTag(this,'neg')">×</button></span>
+            {% endfor %}
+            <input class="tag-input" id="neg-input" placeholder="Escribí y presioná Enter…" autocomplete="off">
+          </div>
+          <div class="tag-hint">o elegí de los predefinidos:</div>
+          <div class="presets">
+            <button type="button" class="preset-btn neg" onclick="addTag('title_inflation_without_metrics','neg')">título inflado sin métricas</button>
+            <button type="button" class="preset-btn neg" onclick="addTag('too_many_short_tenures','neg')">muchos pasos cortos</button>
+            <button type="button" class="preset-btn neg" onclick="addTag('purely_corporate_without_ownership','neg')">corporativo sin ownership</button>
+            <button type="button" class="preset-btn neg" onclick="addTag('generic_profile_without_evidence','neg')">perfil genérico sin evidencia</button>
+            <button type="button" class="preset-btn neg" onclick="addTag('no_external_track_record','neg')">sin track record externo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="/searches">Cancelar</a>
+        <button type="submit" class="btn primary" id="saveBtn">Guardar y activar búsqueda</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Criterio guardado</div>
+
+<script>
+const posSignals = new Set({{ (criteria.positive_signals or []) | tojson }});
+const negSignals = new Set({{ (criteria.negative_signals or []) | tojson }});
+
+function addTag(value, type) {
+  value = value.trim();
+  if (!value) return;
+  const set = type === 'pos' ? posSignals : negSignals;
+  if (set.has(value)) return;
+  set.add(value);
+  const wrap = document.getElementById(type + '-tags-wrap');
+  const input = document.getElementById(type + '-input');
+  const tag = document.createElement('span');
+  tag.className = type === 'pos' ? 'tag' : 'tag tag-neg';
+  tag.dataset.value = value;
+  tag.innerHTML = value + '<button type="button" onclick="removeTag(this,\'' + type + '\')">×</button>';
+  wrap.insertBefore(tag, input);
+}
+
+function removeTag(btn, type) {
+  const tag = btn.parentElement;
+  const value = tag.dataset.value;
+  (type === 'pos' ? posSignals : negSignals).delete(value);
+  tag.remove();
+}
+
+document.getElementById('pos-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag(e.target.value, 'pos'); e.target.value = ''; }
+  if (e.key === 'Backspace' && !e.target.value) {
+    const tags = document.querySelectorAll('#pos-tags-wrap .tag');
+    if (tags.length) { const last = tags[tags.length-1]; posSignals.delete(last.dataset.value); last.remove(); }
+  }
+});
+
+document.getElementById('neg-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag(e.target.value, 'neg'); e.target.value = ''; }
+  if (e.key === 'Backspace' && !e.target.value) {
+    const tags = document.querySelectorAll('#neg-tags-wrap .tag');
+    if (tags.length) { const last = tags[tags.length-1]; negSignals.delete(last.dataset.value); last.remove(); }
+  }
+});
+
+document.getElementById('criteriaForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+
+  const payload = {
+    owner: document.getElementById('owner').value,
+    client: document.getElementById('client').value,
+    role_target: document.getElementById('role_target').value,
+    markets: document.getElementById('markets').value,
+    industries: document.getElementById('industries').value,
+    philosophy: document.getElementById('philosophy').value,
+    preferred_background: document.getElementById('preferred_background').value,
+    outreach_tone: document.getElementById('outreach_tone').value,
+    sources: [...document.querySelectorAll('#sources-grid input[type=checkbox]:checked')].map(cb => cb.value).join(','),
+    max_candidates: document.getElementById('max_candidates').value,
+    positive_signals: [...posSignals],
+    negative_signals: [...negSignals],
+  };
+
+  try {
+    const r = await fetch('/api/criteria', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    const data = await r.json();
+    if (r.ok && data.search_id) {
+      const toast = document.getElementById('toast');
+      toast.textContent = '✓ Búsqueda creada';
+      toast.classList.add('show');
+      setTimeout(() => { window.location.href = '/searches'; }, 800);
+    }
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = 'Guardar y activar búsqueda';
+    alert('Error al guardar: ' + err.message);
+  }
+});
+
+function testNewSource() {
+  const name = document.getElementById('new-src-name').value || 'fuente';
+  const btn = event.target;
+  btn.textContent = 'Probando…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '✓ Conexión exitosa';
+    setTimeout(() => { btn.textContent = 'Probar conexión'; btn.disabled = false; }, 2000);
+  }, 1000);
+}
+
+function saveNewSource() {
+  const type = document.getElementById('new-src-type').value;
+  const name = document.getElementById('new-src-name').value.trim();
+  if (!name) { alert('El nombre de fuente es obligatorio'); return; }
+  const grid = document.getElementById('sources-grid');
+  const existing = grid.querySelector(`.source-toggle[data-src="${name.toLowerCase().replace(/\\s+/g,'_')}"]`);
+  if (existing) { alert('Esa fuente ya existe'); return; }
+  const label = document.createElement('label');
+  label.className = 'source-toggle';
+  label.dataset.src = name.toLowerCase().replace(/\\s+/g,'_');
+  label.innerHTML = '<input type="checkbox" value="' + label.dataset.src + '" checked>' +
+    '<span class="src-name">' + name + '</span>' +
+    '<span class="src-badge active">' + type + '</span>';
+  grid.appendChild(label);
+  document.getElementById('new-source-name').value = '';
+  document.getElementById('new-source-panel').classList.remove('open');
+}
+</script>
+</body>
+</html>

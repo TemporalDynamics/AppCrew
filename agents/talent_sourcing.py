@@ -62,11 +62,17 @@ class TalentSourcingAgent(BaseAgent):
             assert loc, f"Candidato {a.target} sin ubicación"
 
     async def work(self) -> list[AgentAction]:
+        # resolve_context() stores the full criteria dict at self.config["criteria"]
+        _c = self.config.get("criteria", {})
         criteria = {
-            "role_target": self.config.get("role_target", "CTO / VP Engineering"),
-            "markets": self.config.get("markets", ["Mexico"]),
-            "industries": self.config.get("industries", ["fintech", "SaaS B2B"]),
+            "role_target": _c.get("role_target", self.config.get("role_target", "CTO / VP Engineering")),
+            "markets": _c.get("markets", self.config.get("markets", ["Mexico"])),
+            "industries": _c.get("industries", self.config.get("industries", ["fintech", "SaaS B2B"])),
+            "positive_signals": _c.get("positive_signals", self.config.get("positive_signals", [])),
+            "negative_signals": _c.get("negative_signals", self.config.get("negative_signals", [])),
             "limit": self.max_results,
+            "workspace_id": self.config.get("workspace_id", "default"),
+            "search_id": _c.get("search_id", self.config.get("search_id", "")),
         }
         signals = await self._aggregator.search(criteria)
         actions = []
@@ -88,6 +94,7 @@ class TalentSourcingAgent(BaseAgent):
                         "skills": s.skills,
                         "confidence": s.confidence,
                         "summary": s.evidence[0].value[:80] if s.evidence else "",
+                        "decision_scope": criteria.get("search_id", ""),
                     },
                     score=int(s.raw_score) or 70,
                 )

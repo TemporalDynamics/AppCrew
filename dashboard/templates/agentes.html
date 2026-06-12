@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentes — Talo</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+.page { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+.page-header { margin-bottom: 32px; }
+.page-header h1 { font-size: 22px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+.page-header p { font-size: 13px; color: #64748b; }
+
+.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #475569; margin-bottom: 12px; margin-top: 28px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.card { background: #1e293b; border: 1px solid rgba(255,255,255,.07); border-radius: 12px; padding: 20px; }
+.card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.card-title { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+.card-desc { font-size: 12px; color: #64748b; line-height: 1.6; }
+.badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
+.badge-sourcing { background: rgba(99,102,241,.12); color: #a5b4fc; }
+.badge-scoring { background: rgba(245,158,11,.1); color: #fcd34d; }
+.badge-outreach { background: rgba(34,197,94,.1); color: #4ade80; }
+.badge-system { background: rgba(100,116,139,.12); color: #94a3b8; }
+.badge-pipeline { background: rgba(168,85,247,.1); color: #d8b4fe; }
+</style>
+</head>
+<body>
+
+{% set active_page = "agentes" %}{% include "_nav.html" %}
+
+<div class="page">
+
+  <div class="page-header">
+    <h1>Agentes</h1>
+    <p>Los {{ 17 }} agentes de IA que operan el pipeline de talento de Talo.</p>
+  </div>
+
+  <div class="section-label">Sourcing & Scoring</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(99,102,241,.15)">📡</div><div class="card-title">DemandRadarAgent</div></div>
+      <div class="card-desc">Analiza señales del mercado para detectar empresas en expansión, nuevos lanzamientos y movimientos de talento que indican demanda de contratación.</div>
+      <span class="badge badge-sourcing">Sourcing</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(99,102,241,.15)">🔍</div><div class="card-title">TalentSourcingAgent</div></div>
+      <div class="card-desc">Busca candidatos reales en Torre.co, Brave Search y OSINT dorks. Primer agente del pipeline de búsqueda activa.</div>
+      <span class="badge badge-sourcing">Sourcing</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(245,158,11,.12)">📊</div><div class="card-title">FitScoringAgent</div></div>
+      <div class="card-desc">Puntúa candidatos contra los criterios de la búsqueda usando pesos configurables: skills, experiencia, señales de movilidad y consistencia de carrera.</div>
+      <span class="badge badge-scoring">Scoring</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(168,85,247,.1)">🔬</div><div class="card-title">TalentSignalAgent</div></div>
+      <div class="card-desc">Detecta señales humanas y narrativas en el perfil que un score tradicional no ve: ownership, contexto de carrera, patrones de crecimiento.</div>
+      <span class="badge badge-scoring">Análisis</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(168,85,247,.1)">🏢</div><div class="card-title">CareerContextAgent</div></div>
+      <div class="card-desc">Analiza el contexto de la empresa donde trabaja el candidato — etapa, industria, tamaño — para enriquecer el perfil de fit.</div>
+      <span class="badge badge-scoring">Análisis</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(34,197,94,.1)">📎</div><div class="card-title">EvidenceAgent</div></div>
+      <div class="card-desc">Recopila evidencia pública del candidato: perfil web, LinkedIn, GitHub, publicaciones. Alimenta la evaluación de TalentSignal y FitScoring.</div>
+      <span class="badge badge-pipeline">Pipeline</span>
+    </div>
+  </div>
+
+  <div class="section-label">Outreach & Conversación</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(34,197,94,.12)">✉️</div><div class="card-title">OutreachAgent</div></div>
+      <div class="card-desc">Genera drafts de email personalizados por IA usando el perfil real del candidato. <strong style="color:#4ade80">Nunca envía solo</strong> — espera aprobación humana en Decision Inbox.</div>
+      <span class="badge badge-outreach">Outreach</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(34,197,94,.12)">💬</div><div class="card-title">ConversationAgent</div></div>
+      <div class="card-desc">Califica candidatos via Telegram con 3 preguntas clave (disponibilidad, salario, motivación). Cuando el candidato está listo, envía el link de Calendly automáticamente.</div>
+      <span class="badge badge-outreach">Bot Telegram</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(34,197,94,.12)">↩️</div><div class="card-title">ReplyAgent</div></div>
+      <div class="card-desc">Clasifica respuestas a emails en: Interesado / Pide info / No interesado / Otro. Según la intención, envía el link de Telegram, responde con info, o escala al recruiter.</div>
+      <span class="badge badge-outreach">Outreach</span>
+    </div>
+  </div>
+
+  <div class="section-label">Pipeline interno</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(168,85,247,.1)">📥</div><div class="card-title">IntakeAgent</div></div>
+      <div class="card-desc">Procesa el intake de nuevas búsquedas. Valida que el criterio esté completo antes de lanzar el pipeline de sourcing.</div>
+      <span class="badge badge-pipeline">Pipeline</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(168,85,247,.1)">📋</div><div class="card-title">CriteriaAgent</div></div>
+      <div class="card-desc">Genera y refina criterios de búsqueda a partir del briefing del cliente. Convierte texto libre en criterios estructurados para el pipeline.</div>
+      <span class="badge badge-pipeline">Pipeline</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(168,85,247,.1)">🔄</div><div class="card-title">NormalizationAgent</div></div>
+      <div class="card-desc">Normaliza datos de candidatos de diferentes fuentes al esquema unificado de CandidateSignal. Limpia títulos, empresas y ubicaciones.</div>
+      <span class="badge badge-pipeline">Pipeline</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(168,85,247,.1)">🧹</div><div class="card-title">DeduplicationAgent</div></div>
+      <div class="card-desc">Detecta y elimina duplicados antes de que los candidatos entren al TalentPool. Usa hash chain para garantizar integridad.</div>
+      <span class="badge badge-pipeline">Pipeline</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(168,85,247,.1)">💾</div><div class="card-title">MemoryUpdateAgent</div></div>
+      <div class="card-desc">Actualiza la memoria del sistema después de cada run: candidatos vistos, respuestas recibidas, patrones aprendidos.</div>
+      <span class="badge badge-pipeline">Pipeline</span>
+    </div>
+  </div>
+
+  <div class="section-label">Sistema</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(100,116,139,.12)">🧠</div><div class="card-title">DoctrineKeeperAgent</div></div>
+      <div class="card-desc">Mantiene los principios y restricciones del sistema. Todos los agentes consultan la doctrina antes de actuar. Garantiza que el sistema opere dentro de los límites éticos configurados.</div>
+      <span class="badge badge-system">Sistema</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(100,116,139,.12)">🧪</div><div class="card-title">TesterAgent</div></div>
+      <div class="card-desc">18 tests internos con auto-fix. Corre antes de cada deploy y verifica la integridad del pipeline completo. Detecta y corrige inconsistencias automáticamente.</div>
+      <span class="badge badge-system">QA</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(100,116,139,.12)">👔</div><div class="card-title">CEOAgent</div></div>
+      <div class="card-desc">Coordina tareas de alto nivel y decisiones que requieren visión global del pipeline. Actúa como punto de escalación para los demás agentes.</div>
+      <span class="badge badge-system">Sistema</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(100,116,139,.12)">🌐</div><div class="card-title">BrowserAgent</div></div>
+      <div class="card-desc">Navega páginas web para extraer información de perfiles, empresas y fuentes que no tienen API. Usa Playwright en modo headless.</div>
+      <span class="badge badge-system">Tools</span>
+    </div>
+    <div class="card">
+      <div class="card-top"><div class="icon" style="background:rgba(100,116,139,.12)">📚</div><div class="card-title">KnowledgeAgent</div></div>
+      <div class="card-desc">Gestiona la base de conocimiento del sistema: industrias, roles, señales de mercado y criterios históricos de búsquedas anteriores.</div>
+      <span class="badge badge-system">Sistema</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -6,6 +6,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from core.logger import get_logger
+
+logger = get_logger("core.state")
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 STATE_DIR = DATA_DIR / "state"
@@ -17,12 +21,19 @@ ACTIONS_FILE = STATE_DIR / "actions.json"
 AGENTS_FILE = STATE_DIR / "agent_states.json"
 
 
-def _get_db() -> sqlite3.Connection:
+import contextlib
+
+@contextlib.contextmanager
+def _get_db():
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
-    return conn
+    try:
+        with conn:
+            yield conn
+    finally:
+        conn.close()
 
 
 def _ensure_tables():
@@ -92,8 +103,8 @@ def _migrate_from_json():
                                  r.get("started_at", ""), r.get("finished_at", "")),
                             )
                             migrated += 1
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error("Failed to migrate runs from JSON: %s", e)
 
     if ACTIONS_FILE.exists():
         try:
@@ -114,8 +125,8 @@ def _migrate_from_json():
                                  a.get("reviewed_at"), a.get("review_comment", "")),
                             )
                             migrated += 1
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error("Failed to migrate actions from JSON: %s", e)
 
     if AGENTS_FILE.exists():
         try:
@@ -129,8 +140,8 @@ def _migrate_from_json():
                             (aid, json.dumps(data if isinstance(data, dict) else {})),
                         )
                         migrated += 1
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error("Failed to migrate agent states from JSON: %s", e)
 
     return migrated
 
@@ -188,10 +199,6 @@ class StateStore:
                 d["payload"] = json.loads(d.get("payload", "{}"))
             except (json.JSONDecodeError, TypeError):
                 d["payload"] = {}
-            try:
-                d["errors"] = json.loads(d.get("errors", "[]"))
-            except (json.JSONDecodeError, TypeError):
-                d["errors"] = []
             result.append(d)
         return result
 
@@ -263,9 +270,22 @@ class StateStore:
 
         if hasattr(orchestrator, "runs") and runs:
             from contracts import RunRecord
-            orchestrator.runs = [RunRecord(**r) for r in runs if r]
+            _run_fields = set(RunRecord.__dataclass_fields__.keys())
+            parsed_runs = []
+            for r in runs:
+                if not r:
+                    continue
+                if "errors" in r and isinstance(r["errors"], str):
+                    try:
+                        r["errors"] = json.loads(r["errors"])
+                    except (json.JSONDecodeError, TypeError):
+                        r["errors"] = []
+                filtered = {k: v for k, v in r.items() if k in _run_fields}
+                parsed_runs.append(RunRecord(**filtered))
+            orchestrator.runs = parsed_runs
 
         from contracts import AgentState, AgentAction
+        _action_fields = set(AgentAction.__dataclass_fields__.keys())
         restored = 0
         pending_by_agent: dict[str, list] = {aid: [] for aid in orchestrator.agents}
         history_by_agent: dict[str, list] = {aid: [] for aid in orchestrator.agents}
@@ -273,10 +293,11 @@ class StateStore:
         for a in actions:
             aid = a.get("agent_id", "")
             state_val = a.get("state", "")
+            filtered = {k: v for k, v in a.items() if k in _action_fields}
             if state_val in ("pending_review",):
-                pending_by_agent.setdefault(aid, []).append(AgentAction(**a))
+                pending_by_agent.setdefault(aid, []).append(AgentAction(**filtered))
             else:
-                history_by_agent.setdefault(aid, []).append(AgentAction(**a))
+                history_by_agent.setdefault(aid, []).append(AgentAction(**filtered))
 
         if hasattr(orchestrator, "agents") and agents:
             for aid, state in agents.items():

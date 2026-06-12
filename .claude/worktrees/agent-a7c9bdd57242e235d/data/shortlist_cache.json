@@ -1,0 +1,359 @@
+{
+  "brief": {
+    "objective": "Recuperar pipeline ejecutivo con shortlist accionable para Global Executive.",
+    "context": "Demo offline: capturar criterio de Rodri, hidratar celulas chicas y producir decisiones revisables.",
+    "criteria_owner": "Rodri",
+    "role_target": "CTO / VP Engineering / Country Manager",
+    "agents": [
+      "Talent Cell Commander",
+      "Demand Radar",
+      "Talent Sourcing",
+      "Career Context",
+      "Talent Signal",
+      "Outreach",
+      "Auditor"
+    ],
+    "no_hacer": [
+      "No contactar sin aprobacion humana.",
+      "No inventar fuentes.",
+      "No usar inferencias sensibles.",
+      "No presentar datos demo como candidatos reales verificados."
+    ],
+    "evidence_required": [
+      "Criterios de Rodri usados.",
+      "Golden set de calibracion cargado.",
+      "Celulas hidratadas.",
+      "Shortlist ordenada.",
+      "Lectura del sistema sobre obvio, fino, dudoso y falso positivo.",
+      "Accion humana requerida."
+    ]
+  },
+  "cells": [
+    {
+      "name": "Fintech Mexico",
+      "kernel": "Talent Scout",
+      "hydration": {
+        "market": "Mexico",
+        "industry": "fintech",
+        "role_focus": "CTO / VP Engineering / Head of Product",
+        "signals": [
+          "opened_new_market",
+          "managed_pnl",
+          "scaled_team_20_plus",
+          "worked_in_scaleup_context"
+        ],
+        "token_budget": 500
+      }
+    },
+    {
+      "name": "SaaS B2B Mexico",
+      "kernel": "Talent Scout",
+      "hydration": {
+        "market": "Mexico",
+        "industry": "SaaS B2B",
+        "role_focus": "VP Product / VP Sales / Engineering",
+        "signals": [
+          "opened_new_market",
+          "managed_pnl",
+          "scaled_team_20_plus",
+          "worked_in_scaleup_context"
+        ],
+        "token_budget": 500
+      }
+    },
+    {
+      "name": "E-commerce Retail LATAM",
+      "kernel": "Talent Scout",
+      "hydration": {
+        "market": "LATAM",
+        "industry": "e-commerce / retail",
+        "role_focus": "Country Manager / Operations / Growth",
+        "signals": [
+          "opened_new_market",
+          "managed_pnl",
+          "scaled_team_20_plus",
+          "worked_in_scaleup_context"
+        ],
+        "token_budget": 500
+      }
+    },
+    {
+      "name": "Mobility Signals",
+      "kernel": "Signal Scout",
+      "hydration": {
+        "markets": [
+          "Mexico",
+          "LATAM"
+        ],
+        "industries": [
+          "fintech",
+          "SaaS B2B",
+          "e-commerce",
+          "retail"
+        ],
+        "role_focus": "executives with recent movement or advisory signals",
+        "signals": [
+          "role_change",
+          "advisory",
+          "founder_exit",
+          "opened_new_market",
+          "managed_pnl"
+        ],
+        "token_budget": 350
+      }
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Jorge Martínez",
+      "role": "VP Operations",
+      "company": "Kueski",
+      "market": "Mexico",
+      "industry": "fintech",
+      "signals": [
+        "scaled_team_20_plus",
+        "managed_pnl",
+        "worked_in_scaleup_context",
+        "shows_ownership_beyond_title"
+      ],
+      "risk_signals": [],
+      "why": "Escaló el equipo de ops de 12 a 55 personas en 18 meses, abrió el hub de Monterrey, tiene P&L real de cobranza y underwriting. Kueski es un nombre que Rodri reconoce de inmediato.",
+      "recommended_action": "review_profile",
+      "source": "golden_seed",
+      "score": 96,
+      "criteria_match": "4/5",
+      "matched_criteria": [
+        "managed_pnl",
+        "scaled_team_20_plus",
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [],
+      "golden_match": true,
+      "golden_type": "obvious_yes",
+      "expected_system_behavior": "rank_high",
+      "calibration_behavior": "rank_high",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    },
+    {
+      "name": "Sofía Herrera",
+      "role": "Country Manager",
+      "company": "Pagali",
+      "market": "LATAM",
+      "industry": "fintech",
+      "signals": [
+        "opened_new_market",
+        "managed_pnl",
+        "worked_in_scaleup_context"
+      ],
+      "risk_signals": [],
+      "why": "Nadie la conoce de nombre, pero abrió Colombia y Perú desde cero con P&L de USD 4M. Perfil que requiere leer entre líneas — exactamente lo que el sistema tiene que poder hacer.",
+      "recommended_action": "review_profile",
+      "source": "golden_seed",
+      "score": 96,
+      "criteria_match": "3/5",
+      "matched_criteria": [
+        "managed_pnl",
+        "opened_new_market",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [],
+      "golden_match": true,
+      "golden_type": "hidden_gem",
+      "expected_system_behavior": "surface_as_non_obvious",
+      "calibration_behavior": "surface_as_non_obvious",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    },
+    {
+      "name": "Carlos Mendoza",
+      "role": "VP Digital",
+      "company": "Banorte",
+      "market": "Mexico",
+      "industry": "fintech",
+      "signals": [
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risk_signals": [
+        "purely_corporate_without_ownership"
+      ],
+      "why": "Título impresionante, empresa reconocida, equipo de 40+ personas. Pero Banorte es banca tradicional — hay que validar si el ownership fue real o solo autoridad de presupuesto.",
+      "recommended_action": "review_profile",
+      "source": "golden_seed",
+      "score": 84,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [
+        "purely_corporate_without_ownership"
+      ],
+      "golden_match": true,
+      "golden_type": "risky_maybe",
+      "expected_system_behavior": "flagged_with_risk",
+      "calibration_behavior": "flagged_with_risk",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    },
+    {
+      "name": "Paula Benítez",
+      "role": "Head of Growth",
+      "company": "PagoNorte",
+      "market": "Mexico",
+      "industry": "fintech",
+      "signals": [
+        "opened_new_market",
+        "shows_ownership_beyond_title"
+      ],
+      "risk_signals": [
+        "title_inflation_without_metrics"
+      ],
+      "why": "Señal de crecimiento comercial y ownership, pero faltan métricas públicas que respalden el título.",
+      "recommended_action": "secondary_candidate",
+      "source": "demo_discovery",
+      "score": 78,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "opened_new_market",
+        "shows_ownership_beyond_title"
+      ],
+      "risks": [
+        "title_inflation_without_metrics"
+      ],
+      "golden_match": false,
+      "golden_type": "",
+      "expected_system_behavior": "",
+      "calibration_behavior": "not_calibrated",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    }
+  ],
+  "golden_calibration": [
+    {
+      "name": "Jorge Martínez",
+      "role": "VP Operations",
+      "company": "Kueski",
+      "market": "Mexico",
+      "industry": "fintech",
+      "signals": [
+        "scaled_team_20_plus",
+        "managed_pnl",
+        "worked_in_scaleup_context",
+        "shows_ownership_beyond_title"
+      ],
+      "risk_signals": [],
+      "why": "Escaló el equipo de ops de 12 a 55 personas en 18 meses, abrió el hub de Monterrey, tiene P&L real de cobranza y underwriting. Kueski es un nombre que Rodri reconoce de inmediato.",
+      "recommended_action": "review_profile",
+      "source": "golden_seed",
+      "score": 96,
+      "criteria_match": "4/5",
+      "matched_criteria": [
+        "managed_pnl",
+        "scaled_team_20_plus",
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [],
+      "golden_match": true,
+      "golden_type": "obvious_yes",
+      "expected_system_behavior": "rank_high",
+      "calibration_behavior": "rank_high",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence",
+      "_in_shortlist": true
+    },
+    {
+      "name": "Sofía Herrera",
+      "role": "Country Manager",
+      "company": "Pagali",
+      "market": "LATAM",
+      "industry": "fintech",
+      "signals": [
+        "opened_new_market",
+        "managed_pnl",
+        "worked_in_scaleup_context"
+      ],
+      "risk_signals": [],
+      "why": "Nadie la conoce de nombre, pero abrió Colombia y Perú desde cero con P&L de USD 4M. Perfil que requiere leer entre líneas — exactamente lo que el sistema tiene que poder hacer.",
+      "recommended_action": "review_profile",
+      "source": "golden_seed",
+      "score": 96,
+      "criteria_match": "3/5",
+      "matched_criteria": [
+        "managed_pnl",
+        "opened_new_market",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [],
+      "golden_match": true,
+      "golden_type": "hidden_gem",
+      "expected_system_behavior": "surface_as_non_obvious",
+      "calibration_behavior": "surface_as_non_obvious",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence",
+      "_in_shortlist": true
+    },
+    {
+      "name": "Carlos Mendoza",
+      "role": "VP Digital",
+      "company": "Banorte",
+      "market": "Mexico",
+      "industry": "fintech",
+      "signals": [
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risk_signals": [
+        "purely_corporate_without_ownership"
+      ],
+      "why": "Título impresionante, empresa reconocida, equipo de 40+ personas. Pero Banorte es banca tradicional — hay que validar si el ownership fue real o solo autoridad de presupuesto.",
+      "recommended_action": "review_profile",
+      "source": "golden_seed",
+      "score": 84,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [
+        "purely_corporate_without_ownership"
+      ],
+      "golden_match": true,
+      "golden_type": "risky_maybe",
+      "expected_system_behavior": "flagged_with_risk",
+      "calibration_behavior": "flagged_with_risk",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence",
+      "_in_shortlist": true
+    },
+    {
+      "name": "Andrés Torres",
+      "role": "Director of Growth",
+      "company": "Jüsto",
+      "market": "LATAM",
+      "industry": "e-commerce",
+      "signals": [
+        "scaled_team_20_plus",
+        "opened_new_market"
+      ],
+      "risk_signals": [
+        "too_many_short_tenures"
+      ],
+      "why": "Logos perfectos — Rappi, Cornershop, NotCo, ahora Jüsto. Pero 8-10 meses en cada uno. Rodri lo ve de lejos: este no se queda. El sistema tiene que detectar ese patrón antes de que llegue a la entrevista.",
+      "recommended_action": "watchlist",
+      "source": "golden_seed",
+      "score": 76,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "opened_new_market",
+        "scaled_team_20_plus"
+      ],
+      "risks": [
+        "too_many_short_tenures"
+      ],
+      "golden_match": true,
+      "golden_type": "false_positive",
+      "expected_system_behavior": "rejected_or_low_rank",
+      "calibration_behavior": "rejected_or_low_rank",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence",
+      "_in_shortlist": false
+    }
+  ],
+  "golden_total": 4
+}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talo — {{ search.get('role_target','Búsqueda')[:50] }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4ec;--ink:#13201c;--muted:#4f5f58;--card:#fbfaf3;--card-hover:#f7f6ed;--line:#d6d3c1;--accent:#136f63;--accent-soft:rgba(19,111,99,.08);--accent-2:#c1572a;--accent-2-soft:rgba(193,87,42,.08);--shadow:0 10px 24px rgba(19,32,28,.08);--shadow-sm:0 2px 8px rgba(19,32,28,.06);--radius:14px;--radius-sm:8px;--font:'Plus Jakarta Sans',system-ui,sans-serif;--font-heading:'Plus Jakarta Sans',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);color:var(--ink);background:radial-gradient(circle at 80% 12%,rgba(19,111,99,.12) 0%,rgba(19,111,99,0) 30%),radial-gradient(circle at 20% 90%,rgba(193,87,42,.10) 0%,rgba(193,87,42,0) 24%),var(--bg);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 48px;}
+.topbar{margin-bottom:32px;}
+.topbar-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.brand{font-family:var(--font-heading);font-weight:800;letter-spacing:-.03em;font-size:1.05rem;text-decoration:none;color:var(--ink);}
+.nav{display:flex;gap:8px;flex-wrap:wrap;}
+.topbar-ops{display:flex;gap:4px;align-items:center;justify-content:flex-end;font-size:.75rem;color:var(--muted);margin-top:6px;}
+.topbar-ops a{color:var(--muted);text-decoration:none;padding:2px 6px;border-radius:4px;transition:color .12s;}
+.topbar-ops a:hover{color:var(--accent);}
+.ops-sep{opacity:.4;}
+.btn{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:.88rem;font-family:var(--font);text-decoration:none;color:var(--ink);background:#fffdf6;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn:hover{background:var(--card-hover);border-color:var(--accent);}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.btn.primary:hover{opacity:.9;}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent);}
+.btn.ghost:hover{background:var(--accent-soft);border-color:var(--accent);}
+.btn.outline{border-color:var(--accent);color:var(--accent);background:transparent;}
+.btn.outline:hover{background:var(--accent-soft);}
+.btn-sm{padding:5px 12px;font-size:.78rem;}
+
+.page-header{margin-bottom:24px;}
+.breadcrumb{font-size:.78rem;color:var(--muted);margin-bottom:12px;}
+.breadcrumb a{color:var(--accent);text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
+.page-header h1{font-family:var(--font-heading);font-size:clamp(1.4rem,3vw,2rem);font-weight:800;letter-spacing:-.04em;margin-bottom:4px;}
+.page-sub{font-size:.9rem;color:var(--muted);margin-bottom:8px;}
+.page-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:.78rem;color:var(--muted);}
+.page-meta span{display:flex;align-items:center;gap:4px;}
+
+.status-badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.7rem;font-weight:600;}
+.status-active{background:var(--accent-soft);color:var(--accent);}
+.status-closed{background:rgba(79,95,88,.08);color:var(--muted);}
+
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px;flex-wrap:wrap;}
+.tab-btn{padding:8px 16px;border-radius:8px 8px 0 0;font-size:.82rem;font-weight:500;cursor:pointer;border:1px solid transparent;border-bottom:none;background:transparent;color:var(--muted);font-family:var(--font);transition:all .12s;position:relative;bottom:-1px;}
+.tab-btn:hover{color:var(--ink);background:var(--card);}
+.tab-btn.active{background:var(--card);border-color:var(--line);color:var(--ink);font-weight:600;}
+.tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.65rem;font-weight:700;margin-left:6px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+.context-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);margin-bottom:16px;}
+.context-card h3{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+.context-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:680px){.context-grid{grid-template-columns:1fr;}}
+.context-field{font-size:.85rem;}
+.context-field .clabel{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600;display:block;margin-bottom:2px;}
+.context-field .cvalue{color:var(--ink);line-height:1.5;}
+.signal-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.signal-tag{display:inline-block;padding:2px 8px;border-radius:5px;font-size:.72rem;font-weight:500;}
+.signal-pos{background:var(--accent-soft);color:var(--accent);border:1px solid rgba(19,111,99,.2);}
+.signal-neg{background:var(--accent-2-soft);color:var(--accent-2);border:1px solid rgba(193,87,42,.2);}
+
+.candidate-table{width:100%;border-collapse:collapse;font-size:.82rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);}
+.candidate-table th{padding:10px 14px;text-align:left;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--line);background:var(--card);}
+.candidate-table td{padding:10px 14px;border-bottom:1px solid rgba(214,211,193,.4);color:var(--muted);}
+.candidate-table tr:last-child td{border-bottom:none;}
+.candidate-table tr:hover td{background:var(--card-hover);}
+td.name a{font-weight:600;color:var(--ink);text-decoration:none;}
+td.name a:hover{color:var(--accent);text-decoration:underline;}
+.band-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:.68rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;}
+.band-priority_1{background:#cfefc4;color:#1d7c5a;}
+.band-priority_2{background:var(--accent-soft);color:var(--accent);}
+.band-review_needed{background:var(--accent-2-soft);color:var(--accent-2);}
+.band-discard{background:rgba(179,51,51,.1);color:#b33;}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-state h3{font-family:var(--font-heading);font-size:1.1rem;margin-bottom:8px;color:var(--ink);}
+
+.alert-card{background:var(--accent-2-soft);border:1px solid rgba(193,87,42,.25);border-radius:var(--radius-sm);padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.alert-card .alert-text{flex:1;font-size:.85rem;color:var(--ink);}
+.alert-card .alert-text strong{color:var(--accent-2);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+{% set active_page = "busquedas" %}{% include "_nav.html" %}
+
+{% set criteria = search.get('criteria_obj', {}) %}
+{% set c = candidates or [] %}
+{% set shortlisted = c | selectattr("band", "equalto", "priority_1") | list %}
+{% set reviewing = c | selectattr("band", "equalto", "priority_2") | list %}
+{% set pending_review = c | selectattr("band", "equalto", "review_needed") | list %}
+{% set discarded = c | selectattr("band", "equalto", "discard") | list %}
+
+<section class="page-header">
+  <div class="breadcrumb"><a href="/searches">Búsquedas</a> / {{ search.get('search_id','')[:12] }}</div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <h1>{{ search.get('role_target', 'Búsqueda') }}</h1>
+    <span class="status-badge status-{{ search.get('status','active') }}">{{ search.get('status','active') }}</span>
+  </div>
+  <div class="page-sub">{{ criteria.get('client','') }}</div>
+  <div class="page-meta">
+    <span>👤 {{ criteria.get('owner','—') }}</span>
+    <span>📅 {{ (search.get('created_at','') or '')[:10] }}</span>
+    <span>📍 {{ (criteria.get('markets',[]) or []) | join(', ') or '—' }}</span>
+    <span>🏭 {{ (criteria.get('industries',[]) or []) | join(', ') or '—' }}</span>
+    <span>🎯 {{ c|length }} talentos</span>
+    {% if c %}
+    <span style="color:var(--accent);">✅ {{ shortlisted|length }} en shortlist</span>
+    {% endif %}
+  </div>
+</section>
+
+{% if pending_review and pending_review|length > 0 %}
+<div class="alert-card">
+  <div class="alert-text">Hay <strong>{{ pending_review|length }} talentos por revisar</strong></div>
+  <a class="btn btn-sm outline" href="#" onclick="switchTab('talents');return false;">Revisar talentos</a>
+</div>
+{% endif %}
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('resumen')">Resumen</button>
+  <button class="tab-btn" onclick="switchTab('criterio')">Criterio</button>
+  <button class="tab-btn" onclick="switchTab('talents')">Talentos {% if c %}<span class="tab-count">{{ c|length }}</span>{% endif %}</button>
+  <button class="tab-btn" onclick="switchTab('shortlist')">Shortlist {% if shortlisted %}<span class="tab-count">{{ shortlisted|length }}</span>{% endif %}</button>
+  <button class="tab-btn" onclick="switchTab('outreach')">Outreach</button>
+  <button class="tab-btn" onclick="switchTab('entrevistas')">Entrevistas</button>
+  <button class="tab-btn" onclick="switchTab('notas')">Notas</button>
+  <button class="tab-btn" onclick="switchTab('reporte')">Reporte</button>
+  <button class="tab-btn" onclick="switchTab('timeline')">Timeline</button>
+</div>
+
+<!-- Resumen -->
+<div class="tab-panel active" id="tab-resumen">
+  <div class="context-card">
+    <h3>Resumen de la búsqueda</h3>
+    <div class="context-grid">
+      <div class="context-field">
+        <span class="clabel">Responsable</span>
+        <span class="cvalue">{{ criteria.get('owner','—') }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Cliente</span>
+        <span class="cvalue">{{ criteria.get('client','—') }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Rol objetivo</span>
+        <span class="cvalue">{{ search.get('role_target','—') }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Mercados</span>
+        <span class="cvalue">{{ (criteria.get('markets',[]) or []) | join(', ') or '—' }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Industrias</span>
+        <span class="cvalue">{{ (criteria.get('industries',[]) or []) | join(', ') or '—' }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Fuentes</span>
+        <span class="cvalue">{{ criteria.get('sources','—') }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="context-card">
+    <h3>Cobertura</h3>
+    <div class="context-grid" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr));">
+      <div class="context-field">
+        <span class="clabel">Total talentos</span>
+        <span class="cvalue" style="font-size:1.4rem;font-weight:700;">{{ c|length }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Shortlist</span>
+        <span class="cvalue" style="font-size:1.4rem;font-weight:700;color:var(--accent);">{{ shortlisted|length }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Por revisar</span>
+        <span class="cvalue" style="font-size:1.4rem;font-weight:700;{% if pending_review %}color:var(--accent-2);{% endif %}">{{ pending_review|length }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Descartados</span>
+        <span class="cvalue" style="font-size:1.4rem;font-weight:700;">{{ discarded|length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+    <a class="btn" href="/setup">+ Nueva búsqueda</a>
+    <a class="btn" href="/blind?search_id={{ search.get('search_id','') }}">Revisión ciega</a>
+    <a class="btn" href="/run">Buscar talentos</a>
+    <a class="btn" href="/coverage">Cobertura detallada</a>
+  </div>
+</div>
+
+<!-- Criterio -->
+<div class="tab-panel" id="tab-criterio">
+  <div class="context-card">
+    <h3>Filosofía de búsqueda</h3>
+    <p style="font-size:.88rem;line-height:1.6;color:var(--muted);">{{ criteria.get('philosophy','—') }}</p>
+  </div>
+  {% if criteria.get('positive_signals') or criteria.get('negative_signals') %}
+  <div class="context-card">
+    <h3>Señales</h3>
+    <div class="context-grid">
+      {% if criteria.get('positive_signals') %}
+      <div class="context-field">
+        <span class="clabel">Positivas</span>
+        <div class="signal-list">
+          {% for s in criteria.get('positive_signals',[]) %}
+          <span class="signal-tag signal-pos">{{ s }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% if criteria.get('negative_signals') %}
+      <div class="context-field">
+        <span class="clabel">Negativas</span>
+        <div class="signal-list">
+          {% for s in criteria.get('negative_signals',[]) %}
+          <span class="signal-tag signal-neg">{{ s }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="context-card">
+    <h3>Preferencias</h3>
+    <div class="context-grid">
+      <div class="context-field">
+        <span class="clabel">Contexto empresarial</span>
+        <span class="cvalue">{{ criteria.get('preferred_background','—') }}</span>
+      </div>
+      <div class="context-field">
+        <span class="clabel">Tono de outreach</span>
+        <span class="cvalue">{{ criteria.get('outreach_tone','—') }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Talentos -->
+<div class="tab-panel" id="tab-talents">
+  {% if c %}
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+    <a class="btn btn-sm" href="#" onclick="filterCandidates('all');return false;" id="f-all">Todos</a>
+    <a class="btn btn-sm" href="#" onclick="filterCandidates('priority_1');return false;" id="f-priority_1">Shortlist</a>
+    <a class="btn btn-sm" href="#" onclick="filterCandidates('review_needed');return false;" id="f-review_needed">Por revisar</a>
+    <a class="btn btn-sm" href="#" onclick="filterCandidates('discard');return false;" id="f-discard">Descartados</a>
+  </div>
+  <table class="candidate-table" id="candidate-table">
+    <thead><tr><th>Talento</th><th>Rol actual</th><th>Empresa</th><th>Banda</th><th>Señales</th><th>Estado</th></tr></thead>
+    <tbody>
+    {% for candidate in c %}
+    <tr class="cand-row" data-band="{{ candidate.get('band','') }}">
+      <td class="name" data-label="Talento">
+        {% set key = candidate.dedup_key | urlencode %}
+        <a href="/candidate/{{ key }}">{{ candidate.name or '—' }}</a>
+      </td>
+      <td data-label="Rol">{{ candidate.current_role or '' }}</td>
+      <td data-label="Empresa">{{ candidate.company or '' }}</td>
+      <td data-label="Banda">
+        {% set band = candidate.get('band','') %}
+        <span class="band-badge band-{{ band }}">
+          {% if band == 'priority_1' %}Shortlist{% elif band == 'priority_2' %}Alto{% elif band == 'review_needed' %}Revisar{% elif band == 'discard' %}Descartado{% else %}—{% endif %}
+        </span>
+        {% if candidate.score %}<div style="font-size:.7rem;color:var(--muted);margin-top:2px;">Score {{ candidate.score }}</div>{% endif %}
+      </td>
+      <td data-label="Señales" style="font-size:.75rem;">
+        {% if candidate.get('matched_criteria') %}
+          {{ candidate.matched_criteria[:2] | join(', ') }}{% if candidate.matched_criteria|length > 2 %}…{% endif %}
+        {% endif %}
+      </td>
+      <td data-label="Estado" style="font-size:.75rem;">{{ candidate.get('status','') or '—' }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <h3>Sin talentos aún</h3>
+    <p>Iniciá la búsqueda para encontrar candidatos.</p>
+    <p style="margin-top:12px;"><a class="btn primary" href="/run">Buscar talentos</a></p>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Shortlist -->
+<div class="tab-panel" id="tab-shortlist">
+  {% if shortlisted %}
+  <table class="candidate-table">
+    <thead><tr><th>Talento</th><th>Rol actual</th><th>Empresa</th><th>Score</th><th>Acción</th></tr></thead>
+    <tbody>
+    {% for candidate in shortlisted %}
+    <tr>
+      <td class="name"><a href="/candidate/{{ candidate.dedup_key | urlencode }}">{{ candidate.name or '—' }}</a></td>
+      <td>{{ candidate.current_role or '' }}</td>
+      <td>{{ candidate.company or '' }}</td>
+      <td><span class="band-badge band-priority_1">{{ candidate.score }}</span></td>
+      <td><a class="btn btn-sm" href="/candidate/{{ candidate.dedup_key | urlencode }}">Ver perfil</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state"><h3>Sin talentos en shortlist</h3></div>
+  {% endif %}
+</div>
+
+<!-- Outreach -->
+<div class="tab-panel" id="tab-outreach">
+  <div class="empty-state"><h3>Sin outreach generado</h3><p>Los mensajes de outreach aparecerán aquí cuando los agentes los preparen.</p></div>
+</div>
+
+<!-- Entrevistas -->
+<div class="tab-panel" id="tab-entrevistas">
+  <div class="empty-state"><h3>Sin entrevistas agendadas</h3></div>
+</div>
+
+<!-- Notas -->
+<div class="tab-panel" id="tab-notas">
+  <div class="empty-state"><h3>Sin notas todavía</h3><p>Las notas humanas sobre esta búsqueda aparecerán aquí.</p></div>
+</div>
+
+<!-- Reporte -->
+<div class="tab-panel" id="tab-reporte">
+  <div class="context-card">
+    <h3>Evidencia / Trazabilidad</h3>
+    <p style="font-size:.85rem;color:var(--muted);">Descargá el paquete de evidencia de esta búsqueda para auditoría.</p>
+    <p style="margin-top:12px;">
+      <a class="btn" href="/api/evidence/{{ search.get('search_id','') }}/download">📦 Descargar .eco</a>
+    </p>
+  </div>
+</div>
+
+<!-- Timeline -->
+<div class="tab-panel" id="tab-timeline">
+  <div class="empty-state"><h3>Sin actividad registrada</h3></div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function filterCandidates(band) {
+  document.querySelectorAll('[id^="f-"]').forEach(b => b.classList.remove('primary'));
+  const btn = document.getElementById('f-' + band);
+  if (btn) btn.classList.add('primary');
+  document.querySelectorAll('.cand-row').forEach(r => {
+    if (band === 'all' || r.dataset.band === band) {
+      r.style.display = '';
+    } else {
+      r.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

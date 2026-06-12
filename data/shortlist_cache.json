@@ -196,34 +196,198 @@
       "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
     },
     {
-      "name": "Paula Benítez",
-      "role": "Head of Growth",
-      "company": "PagoNorte",
-      "market": "Mexico",
-      "industry": "fintech",
+      "name": "César Augusto Ramírez Ramírez",
+      "role": "| SENIOR PM IT",
+      "company": "MANAGER IT | CTO | TL | SMC® |",
+      "market": "LATAM",
+      "industry": "SaaS B2B",
       "signals": [
-        "opened_new_market",
+        "actively_looking",
+        "scaled_team_20_plus",
         "shows_ownership_beyond_title"
       ],
-      "risk_signals": [
-        "title_inflation_without_metrics"
+      "risk_signals": [],
+      "why": "[Torre.co] | SENIOR PM IT | MANAGER IT | CTO | TL | SMC® |",
+      "recommended_action": "review_profile",
+      "source": "torre",
+      "source_url": "https://torre.co/cesaraugusto_81",
+      "confidence": "medium",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Implementación de proyectos tecnológicos",
+        "Control de versiones",
+        "Gestión de stakeholders",
+        "DevOps",
+        "Risk management",
+        "CRM (Customer relationship management)",
+        "Arquitectura de software",
+        "Team leadership"
       ],
-      "why": "Señal de crecimiento comercial y ownership, pero faltan métricas públicas que respalden el título.",
-      "recommended_action": "secondary_candidate",
-      "source": "demo_discovery",
-      "score": 78,
+      "score": 82,
       "criteria_match": "2/5",
       "matched_criteria": [
-        "opened_new_market",
+        "scaled_team_20_plus",
         "shows_ownership_beyond_title"
       ],
-      "risks": [
-        "title_inflation_without_metrics"
-      ],
+      "risks": [],
       "golden_match": false,
       "golden_type": "",
       "expected_system_behavior": "",
       "calibration_behavior": "not_calibrated",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    },
+    {
+      "name": "Paulo Madronero",
+      "role": "CTO Motivy",
+      "company": "Por confirmar",
+      "market": "LATAM",
+      "industry": "general",
+      "signals": [
+        "actively_looking",
+        "worked_in_scaleup_context",
+        "shows_ownership_beyond_title"
+      ],
+      "risk_signals": [],
+      "why": "[Torre.co] CTO Motivy",
+      "recommended_action": "review_profile",
+      "source": "torre",
+      "source_url": "https://torre.co/paulomadronero",
+      "confidence": "medium",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Python",
+        "DevOps",
+        "Data science",
+        "Resilience",
+        "Security",
+        "Web development",
+        "Product owner",
+        "Innovation"
+      ],
+      "score": 77,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [],
+      "golden_match": false,
+      "golden_type": "",
+      "expected_system_behavior": "",
+      "calibration_behavior": "not_calibrated",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    },
+    {
+      "name": "Yves Gagnon",
+      "role": "Global Senior Engineering & Product Development Leader",
+      "company": "Director of Engineering | VP Product Development | Head of R&D | Senior Engineer",
+      "market": "LATAM",
+      "industry": "general",
+      "signals": [
+        "actively_looking",
+        "managed_pnl",
+        "shows_ownership_beyond_title"
+      ],
+      "risk_signals": [],
+      "why": "[Torre.co] Global Senior Engineering & Product Development Leader | Director of Engineering | VP Product Development | Head of R&D | Senior Engineering Manager",
+      "recommended_action": "review_profile",
+      "source": "torre",
+      "source_url": "https://torre.co/yvesgagnon",
+      "confidence": "medium",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "IEC 60601",
+        "Technical maintenance",
+        "Proactivity",
+        "Configuration management",
+        "Systems Integration",
+        "Product lifecycle management (PLM)",
+        "Risk management",
+        "Budget"
+      ],
+      "score": 77,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "managed_pnl",
+        "shows_ownership_beyond_title"
+      ],
+      "risks": [],
+      "golden_match": false,
+      "golden_type": "",
+      "expected_system_behavior": "",
+      "calibration_behavior": "not_calibrated",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    },
+    {
+      "name": "Pedro Restrepo",
+      "role": "VP of Engineering",
+      "company": "Por confirmar",
+      "market": "LATAM",
+      "industry": "general",
+      "signals": [
+        "actively_looking",
+        "worked_in_scaleup_context",
+        "shows_ownership_beyond_title"
+      ],
+      "risk_signals": [],
+      "why": "[Torre.co] VP of Engineering",
+      "recommended_action": "review_profile",
+      "source": "torre",
+      "source_url": "https://torre.co/pedrojrestrepo",
+      "confidence": "medium",
+      "availability_signal": "open_to_work",
+      "skills": [
+        "Fullstack development",
+        "Python",
+        "Redux",
+        "TypeScript",
+        "Customer Satisfaction",
+        "AWS Elastic Beanstalk1",
+        "Web development",
+        "Startups"
+      ],
+      "score": 77,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "shows_ownership_beyond_title",
+        "worked_in_scaleup_context"
+      ],
+      "risks": [],
+      "golden_match": false,
+      "golden_type": "",
+      "expected_system_behavior": "",
+      "calibration_behavior": "not_calibrated",
+      "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
+    },
+    {
+      "name": "Andrés Torres",
+      "role": "Director of Growth",
+      "company": "Jüsto",
+      "market": "LATAM",
+      "industry": "e-commerce",
+      "signals": [
+        "scaled_team_20_plus",
+        "opened_new_market"
+      ],
+      "risk_signals": [
+        "too_many_short_tenures"
+      ],
+      "why": "Logos perfectos — Rappi, Cornershop, NotCo, ahora Jüsto. Pero 8-10 meses en cada uno. Rodri lo ve de lejos: este no se queda. El sistema tiene que detectar ese patrón antes de que llegue a la entrevista.",
+      "recommended_action": "watchlist",
+      "source": "golden_seed",
+      "score": 76,
+      "criteria_match": "2/5",
+      "matched_criteria": [
+        "opened_new_market",
+        "scaled_team_20_plus"
+      ],
+      "risks": [
+        "too_many_short_tenures"
+      ],
+      "golden_match": true,
+      "golden_type": "false_positive",
+      "expected_system_behavior": "rejected_or_low_rank",
+      "calibration_behavior": "rejected_or_low_rank",
       "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence"
     }
   ],
@@ -352,7 +516,7 @@
       "expected_system_behavior": "rejected_or_low_rank",
       "calibration_behavior": "rejected_or_low_rank",
       "human_decision_needed": "shortlist / dismiss / ask_for_more_evidence",
-      "_in_shortlist": false
+      "_in_shortlist": true
     }
   ],
   "golden_total": 4

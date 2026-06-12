@@ -4,22 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cerno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f172a;
-    --surface: #1e293b;
-    --surface2: #334155;
-    --text: #f1f5f9;
-    --text2: #94a3b8;
-    --accent: #3b82f6;
-    --green: #22c55e;
-    --yellow: #eab308;
-    --red: #ef4444;
-    --orange: #f97316;
+    --bg: #f5f4ec;
+    --surface: #fbfaf3;
+    --surface2: #f0efe6;
+    --text: #13201c;
+    --text2: #4f5f58;
+    --accent: #136f63;
+    --line: #d6d3c1;
+    --green: #1d7c5a;
+    --yellow: #c1572a;
+    --red: #b84040;
+    --orange: #c1572a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
     padding: 16px;
@@ -34,14 +38,14 @@
   .header .sub { color: var(--text2); font-size: 0.85rem; }
   .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .btn {
-    padding: 8px 16px; border: none; border-radius: 8px;
+    padding: 8px 16px; border: 1px solid var(--line); border-radius: 8px;
     font-size: 0.85rem; font-weight: 600; cursor: pointer;
     transition: all .2s; background: var(--surface2); color: var(--text);
   }
-  .btn:hover { filter: brightness(1.2); }
-  .btn-primary { background: var(--accent); }
-  .btn-green { background: var(--green); }
-  .btn-red { background: var(--red); }
+  .btn:hover { filter: brightness(0.96); border-color: var(--accent); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-green { background: var(--green); color: #fff; border-color: var(--green); }
+  .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
 
   .agent-grid {
     display: grid;
@@ -51,7 +55,7 @@
   .agent-card {
     background: var(--surface); border-radius: 12px;
     padding: 14px; cursor: pointer;
-    transition: all .2s; border: 1px solid transparent;
+    transition: all .2s; border: 1px solid var(--line);
   }
   .agent-card:hover { border-color: var(--accent); transform: translateY(-2px); }
   .agent-card .icon { font-size: 1.8rem; margin-bottom: 6px; }
@@ -77,7 +81,7 @@
   .pending-list { display: flex; flex-direction: column; gap: 12px; }
   .pending-card {
     background: var(--surface); border-radius: 12px; padding: 16px;
-    border-left: 4px solid var(--orange);
+    border: 1px solid var(--line); border-left: 4px solid var(--orange);
   }
   .pending-card .top {
     display: flex; justify-content: space-between; align-items: start;
@@ -93,8 +97,8 @@
     font-size: 0.85rem; font-weight: 700;
     padding: 2px 8px; border-radius: 4px;
   }
-  .score-high { background: #166534; color: var(--green); }
-  .score-mid { background: #713f12; color: var(--yellow); }
+  .score-high { background: rgba(29,124,90,.12); color: var(--green); }
+  .score-mid { background: rgba(193,87,42,.12); color: var(--yellow); }
   .pending-card .actions {
     display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
   }
@@ -106,12 +110,12 @@
 
   .modal-overlay {
     display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,.6); z-index: 100;
+    background: rgba(19,32,28,.4); z-index: 100;
     justify-content: center; align-items: center; padding: 16px;
   }
   .modal-overlay.active { display: flex; }
   .modal {
-    background: var(--surface); border-radius: 16px; padding: 24px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 24px;
     max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
   }
   .modal h2 { margin-bottom: 12px; font-size: 1.1rem; }
@@ -146,19 +150,27 @@
 </div>
 
 <div class="agent-grid" id="agent-grid">
-{% for id, agent in status.agents.items() %}
+{% if status.agents %}
+  {% for id, agent in status.agents.items() %}
   <div class="agent-card" onclick="showAgent('{{ id }}')">
     <div class="icon">{{ agent.icon }}</div>
     <div class="name">{{ agent.name }}</div>
     <div class="state">
-      <span class="state-dot state-{{ agent.state }}"></span>
-      {{ agent.state.replace('_',' ') }}
+      <span class="state-dot state-{{ agent.state }}" aria-hidden="true"></span>
+      <span>{{ agent.state.replace('_',' ') }}</span>
     </div>
     <div style="font-size:.75rem;color:var(--text2);margin-top:4px">
       {{ agent.last_action or '—' }}
     </div>
   </div>
-{% endfor %}
+  {% endfor %}
+{% else %}
+  <div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text2);">
+    <div style="font-size:2rem;margin-bottom:12px">⚙️</div>
+    <p style="font-weight:600;color:var(--ink)">Los agentes no están disponibles</p>
+    <p style="font-size:.85rem;margin-top:6px">Reiniciá el servidor para activarlos.</p>
+  </div>
+{% endif %}
 </div>
 
 <div class="section-title">⏳ Pendientes de Aprobación</div>

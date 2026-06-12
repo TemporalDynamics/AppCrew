@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Búsquedas — Talo</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+.page { max-width: 860px; margin: 0 auto; padding: 32px 24px 64px; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.page-header h1 { font-size: 22px; font-weight: 700; color: #f1f5f9; }
+.btn-new { display: inline-flex; align-items: center; gap: 6px; background: #6366f1; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; text-decoration: none; transition: background .15s; }
+.btn-new:hover { background: #4f46e5; }
+
+.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #475569; margin-bottom: 12px; }
+
+.search-card { background: #1e293b; border: 1px solid rgba(255,255,255,.07); border-radius: 12px; padding: 18px 22px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 16px; transition: border-color .15s; cursor: pointer; }
+.search-card:hover { border-color: rgba(99,102,241,.4); }
+.search-card a { position: absolute; inset: 0; }
+
+.card-left { flex: 1; min-width: 0; position: relative; }
+.card-role { font-size: 15px; font-weight: 600; color: #f1f5f9; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-meta { display: flex; align-items: center; gap: 14px; font-size: 12px; color: #64748b; }
+.card-meta span { display: flex; align-items: center; gap: 4px; }
+
+.card-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.stat-pill { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.07); border-radius: 99px; padding: 4px 12px; font-size: 12px; font-weight: 600; color: #94a3b8; }
+.stat-pill.has-talents { color: #a5b4fc; border-color: rgba(99,102,241,.2); background: rgba(99,102,241,.08); }
+.runs-badge { font-size: 11px; color: #475569; }
+.status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; }
+.dot-active { background: #6366f1; }
+.dot-running { background: #f59e0b; }
+.dot-closed { background: #475569; }
+
+.arrow { color: #475569; font-size: 16px; }
+.empty { text-align: center; padding: 64px 20px; color: #475569; }
+.empty h3 { font-size: 16px; color: #94a3b8; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+{% set active_page = "busquedas" %}{% include "_nav.html" %}
+
+<div class="page">
+
+  <div class="page-header">
+    <h1>Búsquedas</h1>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button onclick="location.reload()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#64748b;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;font-family:inherit;" title="Actualizar lista">↺</button>
+      <a href="/setup" class="btn-new">+ Nueva búsqueda</a>
+    </div>
+  </div>
+
+  {% if searches %}
+    <div class="section-label">{{ searches|length }} búsqueda{{ 's' if searches|length != 1 else '' }}</div>
+    {% for s in searches %}
+    <a href="/search/{{ s.latest_id or s.search_id }}" style="display:block; text-decoration:none;">
+      <div class="search-card">
+        <div class="card-left">
+          <div class="card-role">{{ s.role_target or 'Sin nombre' }}</div>
+          <div class="card-meta">
+            <span>
+              {% set st = s.status or 'active' %}
+              <span class="status-dot dot-{{ 'running' if st == 'running' else 'active' if st == 'active' else 'closed' }}"></span>
+              {{ st }}
+            </span>
+            <span>🕐 {{ (s.latest or s.created_at or '')[:10] }}</span>
+            {% if s.get('runs', 1) > 1 %}
+            <span>{{ s.runs }} ejecuciones</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="card-right">
+          <span class="stat-pill {{ 'has-talents' if (s.talents_count or 0) > 0 else '' }}">
+            {{ s.talents_count or 0 }} talentos
+          </span>
+          <span class="arrow">›</span>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  {% else %}
+  <div class="empty">
+    <h3>No hay búsquedas todavía</h3>
+    <p>Creá tu primera búsqueda para empezar a encontrar candidatos.</p>
+  </div>
+  {% endif %}
+
+</div>
+<script>
+// Auto-refresh while any search is running
+(function() {
+  const hasRunning = document.querySelector('.dot-running');
+  if (hasRunning) {
+    setTimeout(() => location.reload(), 5000);
+  }
+})();
+</script>
+</body>
+</html>

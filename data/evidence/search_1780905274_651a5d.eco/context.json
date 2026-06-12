@@ -1,0 +1,11 @@
+{
+  "workspace_id": "selectahr",
+  "settings": {
+    "demo_mode": true,
+    "max_candidates": 50
+  },
+  "environment": {
+    "os": "linux",
+    "python_version": "3.14.4 (main, Apr 16 2026, 00:00:00) [GCC 15.2.1 20260123 (Red Hat 15.2.1-7)]"
+  }
+}

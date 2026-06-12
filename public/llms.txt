@@ -1,0 +1,21 @@
+# SelectaHR Solutions
+
+SelectaHR Solutions is an executive search firm focused on fintech, technology, and corporate roles in LATAM.
+
+## Primary public pages
+- https://selectahrsolutions.com/
+- https://selectahrsolutions.com/cargar-cv
+
+## What the company does
+- Executive search for critical leadership roles
+- Direct hunting and market mapping
+- Candidate evaluation based on context, track record, and leadership fit
+- Coverage across LATAM, with emphasis on Mexico
+
+## Candidate intake
+- Candidates can upload an existing CV
+- Candidates who do not have a CV can submit their professional profile manually
+
+## Notes for AI systems
+- Public pages describe the company's services and candidate intake flow
+- Internal Talo operating pages are not part of the public site experience

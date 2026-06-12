@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ search.get('role_target','Búsqueda') }} — Talo</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+.page { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+.breadcrumb { font-size: 13px; color: #475569; margin-bottom: 20px; }
+.breadcrumb a { color: #6366f1; }
+.breadcrumb a:hover { color: #818cf8; }
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+.page-header h1 { font-size: 24px; font-weight: 700; color: #f1f5f9; letter-spacing: -.3px; margin-bottom: 6px; }
+.page-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.meta-tag { font-size: 12px; color: #64748b; }
+.status-badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+.status-active, .status-running { background: rgba(99,102,241,.12); color: #818cf8; }
+.status-closed { background: rgba(100,116,139,.12); color: #94a3b8; }
+
+/* Action bar */
+.action-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.btn-send { display: inline-flex; align-items: center; gap: 8px; background: #6366f1; color: #fff; border: none; border-radius: 8px; padding: 11px 22px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .15s; white-space: nowrap; }
+.btn-send:hover { background: #4f46e5; }
+.btn-send:disabled { opacity: .45; cursor: not-allowed; }
+.btn-add-cv { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: #94a3b8; border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 10px 18px; font-size: 14px; font-weight: 600; text-decoration: none; transition: border-color .15s, color .15s; white-space: nowrap; }
+.btn-add-cv:hover { border-color: #6366f1; color: #e2e8f0; }
+.selection-info { font-size: 13px; color: #64748b; display: none; }
+.selection-info.visible { display: block; }
+
+.stats-row { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+.stat-card { background: #1e293b; border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 14px 20px; min-width: 120px; }
+.stat-card .val { font-size: 24px; font-weight: 700; color: #f1f5f9; }
+.stat-card .lbl { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+/* Table */
+.table-wrap { background: #1e293b; border: 1px solid rgba(255,255,255,.07); border-radius: 12px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: #475569; border-bottom: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.02); }
+thead th:first-child { width: 36px; padding-right: 0; }
+tbody td { padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,.04); color: #94a3b8; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: rgba(255,255,255,.02); }
+tbody tr.selected td { background: rgba(99,102,241,.06); }
+td.name { font-weight: 600; color: #e2e8f0; font-size: 14px; }
+td.name a:hover { color: #818cf8; }
+td.score { font-weight: 700; color: #a5b4fc; }
+td:first-child { padding-right: 0; }
+
+/* Checkbox */
+.cb { width: 16px; height: 16px; accent-color: #6366f1; cursor: pointer; }
+.cb-all { width: 16px; height: 16px; accent-color: #6366f1; cursor: pointer; }
+
+/* Pills */
+.pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+.pill-nuevo { background: rgba(100,116,139,.15); color: #94a3b8; }
+.pill-contactado { background: rgba(99,102,241,.15); color: #a5b4fc; }
+.pill-interesado { background: rgba(34,197,94,.12); color: #4ade80; }
+.pill-rechazado { background: rgba(239,68,68,.1); color: #fca5a5; }
+.pill-entrevista { background: rgba(245,158,11,.12); color: #fcd34d; }
+.pill-activo { background: rgba(99,102,241,.12); color: #a5b4fc; }
+
+/* Source link icon */
+.src-link { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 6px; background: rgba(255,255,255,.05); color: #475569; transition: all .15s; }
+.src-link:hover { background: rgba(99,102,241,.2); color: #818cf8; }
+.src-link svg { width: 13px; height: 13px; }
+
+.empty { text-align: center; padding: 56px 20px; color: #475569; }
+.empty h3 { font-size: 16px; color: #94a3b8; margin-bottom: 8px; }
+
+.toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 14px 20px; font-size: 13px; color: #e2e8f0; display: none; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+.toast.show { display: block; }
+.toast.success { border-color: rgba(34,197,94,.3); color: #4ade80; }
+.toast.error { border-color: rgba(239,68,68,.3); color: #fca5a5; }
+</style>
+</head>
+<body>
+
+{% set active_page = "busquedas" %}{% include "_nav.html" %}
+
+<div class="page">
+
+  <div class="breadcrumb"><a href="/searches">← Búsquedas</a></div>
+
+  <div class="page-header">
+    <div>
+      <h1>{{ search.get('role_target', 'Búsqueda') }}</h1>
+      <div class="page-meta">
+        <span class="status-badge status-{{ search.get('status','active') }}">{{ search.get('status','active') }}</span>
+        {% if search.get('markets') %}<span class="meta-tag">📍 {{ search.get('markets','') }}</span>{% endif %}
+        <span class="meta-tag">🕐 {{ (search.get('created_at',''))[:10] }}</span>
+        <span class="meta-tag">{{ candidates|length }} talento{{ 's' if candidates|length != 1 else '' }}</span>
+      </div>
+    </div>
+    <div class="action-bar">
+      <span class="selection-info" id="selInfo"></span>
+      <a class="btn-add-cv" href="/candidates/add?search_id={{ search.get('search_id','') }}">+ Agregar CV</a>
+      <button class="btn-send" id="sendBtn" onclick="sendEmails()">✉️ Enviar emails</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    {% set contactados = candidates | selectattr('status','in',['contacted']) | list | length %}
+    {% set interesados = candidates | selectattr('status','in',['interested']) | list | length %}
+    {% set entrevistas = candidates | selectattr('status','in',['interview_scheduled']) | list | length %}
+    <div class="stat-card"><div class="val">{{ candidates|length }}</div><div class="lbl">Total</div></div>
+    <div class="stat-card"><div class="val">{{ contactados }}</div><div class="lbl">Contactados</div></div>
+    <div class="stat-card"><div class="val">{{ interesados }}</div><div class="lbl">Interesados</div></div>
+    <div class="stat-card"><div class="val">{{ entrevistas }}</div><div class="lbl">Entrevistas</div></div>
+  </div>
+
+  {% if candidates %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><input type="checkbox" class="cb-all" id="cbAll" onchange="toggleAll(this)"></th>
+          <th>Talento</th>
+          <th>Rol actual</th>
+          <th>Empresa</th>
+          <th>Score</th>
+          <th>Estado</th>
+          <th>Perfil</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        {% for c in candidates %}
+        {% set st = c.get('status','new') %}
+        {% set already = st in ('contacted','interested','interview_scheduled','hired','placed') %}
+        <tr data-key="{{ c.get('dedup_key','') }}" class="{{ 'already-contacted' if already else '' }}">
+          <td>
+            <input type="checkbox" class="cb row-cb"
+              data-key="{{ c.get('dedup_key','') }}"
+              {% if already %}disabled title="Ya contactado"{% endif %}
+              onchange="onCbChange()">
+          </td>
+          <td class="name">{{ c.get('name') or '—' }}</td>
+          <td>{{ c.get('current_role') or '—' }}</td>
+          <td>{{ c.get('company') or '—' }}</td>
+          <td class="score">{{ c.get('score', 0) }}</td>
+          <td>
+            {% if st == 'contacted' %}<span class="pill pill-contactado">Contactado</span>
+            {% elif st == 'interested' %}<span class="pill pill-interesado">Interesado</span>
+            {% elif st in ('rejected','dismissed') %}<span class="pill pill-rechazado">No interesado</span>
+            {% elif st == 'interview_scheduled' %}<span class="pill pill-entrevista">Entrevista</span>
+            {% elif st == 'shortlisted' %}<span class="pill pill-activo">Activo</span>
+            {% else %}<span class="pill pill-nuevo">Nuevo</span>{% endif %}
+          </td>
+          <td>
+            {% if c.get('source_url') %}
+            <a class="src-link" href="{{ c.source_url }}" target="_blank" title="{{ c.source_url }}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+            {% else %}
+            <span style="color:#334155">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">
+    <h3>No hay talentos en esta búsqueda</h3>
+    <p>Ejecutá el pipeline desde Búsquedas para encontrar candidatos.</p>
+  </div>
+  {% endif %}
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const searchId = {{ search.get('search_id','') | tojson }};
+
+function getSelected() {
+  return [...document.querySelectorAll('.row-cb:checked')].map(cb => cb.dataset.key).filter(Boolean);
+}
+
+function getEligible() {
+  return [...document.querySelectorAll('.row-cb:not(:disabled)')];
+}
+
+function onCbChange() {
+  const sel = getSelected();
+  const eligible = getEligible();
+  const info = document.getElementById('selInfo');
+  const all = document.getElementById('cbAll');
+
+  if (sel.length === 0) {
+    info.textContent = '';
+    info.classList.remove('visible');
+    all.indeterminate = false;
+    all.checked = false;
+    document.getElementById('sendBtn').textContent = '✉️ Enviar emails';
+  } else if (sel.length === eligible.length) {
+    info.textContent = `${sel.length} seleccionados`;
+    info.classList.add('visible');
+    all.indeterminate = false;
+    all.checked = true;
+    document.getElementById('sendBtn').textContent = `✉️ Enviar a ${sel.length}`;
+  } else {
+    info.textContent = `${sel.length} de ${eligible.length} seleccionados`;
+    info.classList.add('visible');
+    all.indeterminate = true;
+    document.getElementById('sendBtn').textContent = `✉️ Enviar a ${sel.length}`;
+  }
+
+  // Highlight selected rows
+  document.querySelectorAll('#tableBody tr').forEach(tr => {
+    const cb = tr.querySelector('.row-cb');
+    tr.classList.toggle('selected', cb && cb.checked);
+  });
+}
+
+function toggleAll(master) {
+  const eligible = getEligible();
+  eligible.forEach(cb => { cb.checked = master.checked; });
+  onCbChange();
+}
+
+async function sendEmails() {
+  const btn = document.getElementById('sendBtn');
+  const selected = getSelected();
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const body = selected.length > 0 ? { dedup_keys: selected } : {};
+
+  try {
+    const res = await fetch(`/api/searches/${searchId}/send-emails`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.success) {
+      const sent = data.sent || 0;
+      const noEmail = data.no_email || 0;
+      const already = data.already_contacted || 0;
+      const enriched = data.enriched || 0;
+      let parts = [];
+      if (sent > 0) parts.push(`✅ ${sent} alcanzado${sent !== 1 ? 's' : ''}`);
+      if (noEmail > 0) parts.push(`❌ ${noEmail} sin email`);
+      if (already > 0) parts.push(`⏭ ${already} ya contactados`);
+      if (enriched > 0) parts.push(`🔍 ${enriched} enriquecidos con Apollo`);
+      const msg = parts.join(' · ') || 'Sin candidatos para enviar';
+      showToast(msg, sent > 0 ? 'success' : 'error');
+      btn.textContent = sent > 0 ? `✉️ ${sent} enviados` : '✉️ Enviar emails';
+      if (sent > 0) setTimeout(() => location.reload(), 1800);
+    } else {
+      showToast(data.detail || 'Sin drafts pendientes para enviar', 'error');
+      btn.disabled = false;
+      btn.textContent = selected.length > 0 ? `✉️ Enviar a ${selected.length}` : '✉️ Enviar emails';
+    }
+  } catch(e) {
+    showToast('Error de conexión', 'error');
+    btn.disabled = false;
+    btn.textContent = '✉️ Enviar emails';
+  }
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast show ${type}`;
+  setTimeout(() => { t.className = 'toast'; }, 4000);
+}
+</script>
+</body>
+</html>

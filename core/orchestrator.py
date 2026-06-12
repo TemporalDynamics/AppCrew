@@ -5,6 +5,9 @@ from uuid import uuid4
 import yaml
 
 from agents.base import AgentAction
+from core.logger import get_logger
+
+logger = get_logger("core.orchestrator")
 from agents.demand_radar import DemandRadarAgent
 from agents.talent_sourcing import TalentSourcingAgent
 from agents.fit_scoring import FitScoringAgent
@@ -39,7 +42,7 @@ class Orchestrator:
         fc_key = settings.firecrawl_api_key
         if fc_key and not self.config.get("firecrawl", {}).get("api_key"):
             self.config.setdefault("firecrawl", {})["api_key"] = fc_key
-        search_key = settings.brave_search_api_key
+        search_key = settings.serper_api_key or settings.brave_search_api_key
         if search_key and not self.config.get("search", {}).get("api_key"):
             self.config.setdefault("search", {})["api_key"] = search_key
         llm_key = settings.openrouter_api_key
@@ -252,13 +255,14 @@ class Orchestrator:
             StateStore.save_actions(all_actions)
             agent_states = {aid: agent.to_dict() for aid, agent in self.agents.items()}
             StateStore.save_agent_states(agent_states)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error("Failed to save state: %s", e)
 
     def restore_state(self) -> dict:
         try:
             return StateStore.restore(self)
-        except Exception:
+        except Exception as e:
+            logger.error("Failed to restore state: %s", e)
             return {"runs_restored": 0, "agents_restored": 0}
 
     def clear_state(self) -> None:

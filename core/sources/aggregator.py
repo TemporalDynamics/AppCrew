@@ -3,11 +3,16 @@ from __future__ import annotations
 import asyncio
 import os
 import re
+import traceback
 
 from contracts.talent import CandidateSignal
+from core.logger import get_logger
 from core.sources.base import TalentSourceConnector
+
+logger = get_logger("core.sources.aggregator")
 from core.sources.torre import TorreConnector
 from core.sources.brave_search import BraveSearchConnector
+from core.sources.dork_connector import OpenSignalConnector
 from core.sources.manual_seed import ManualSeedConnector
 
 
@@ -27,6 +32,56 @@ def _escape_signal_keywords(text: str) -> str:
     return text.lower().strip()
 
 
+def _signal_text(signal: CandidateSignal) -> str:
+    return (signal.current_role + " " + signal.company + " " +
+            " ".join(signal.skills) + " " +
+            " ".join(e.value for e in signal.evidence)).lower()
+
+
+_SIGNAL_KEYWORDS: dict[str, tuple[str, ...]] = {
+    "scaleup": ("startup", "scaleup", "scale-up", "growth", "serie", "venture",
+                "entrepreneurship", "innovation", "scaling", "escalado"),
+    "P&L": ("p&l", "pnl", "profit", "revenue", "budget", "finanzas",
+            "ingresos", "financial", "cuenta de resultados"),
+    "regional expansion": ("expansion", "market entry", "go-to-market", "nuevo mercado",
+                           "apertura", "launch", "country manager", "regional", "latam",
+                           "expansion regional", "internationa"),
+    "team scaling": ("team leadership", "team building", "managing", "operations",
+                     "escalado", "scaling", "people management", "gestión de equipo",
+                     "resource management", "workforce"),
+    "ownership": ("cto", "ceo", "coo", "vp ", "vice president", "director", "founder",
+                  "co-founder", "fundador", "head of", "jefe de"),
+}
+
+
+def _preliminary_score(signal: CandidateSignal, criteria: dict) -> int:
+    """Compute a preliminary match score (0-100) based on evidence overlap with positive signals."""
+    pos = criteria.get("positive_signals", [])
+    if not pos:
+        return 50
+    text = _signal_text(signal)
+    matched = 0
+    for kw in pos:
+        keywords = _SIGNAL_KEYWORDS.get(kw, (kw.lower(),))
+        if any(kw_text in text for kw_text in keywords):
+            matched += 1
+    return min(100, int((matched / len(pos)) * 100))
+
+
+def _matched_signals(signal: CandidateSignal, criteria: dict) -> list[str]:
+    """Return which positive_signals from criteria are hinted by signal evidence."""
+    pos = criteria.get("positive_signals", [])
+    if not pos:
+        return []
+    text = _signal_text(signal)
+    result = []
+    for kw in pos:
+        keywords = _SIGNAL_KEYWORDS.get(kw, (kw.lower(),))
+        if any(kw_text in text for kw_text in keywords):
+            result.append(kw)
+    return result
+
+
 class TalentSourceAggregator:
     """Runs multiple source connectors in parallel, deduplicates by dedup_key().
 
@@ -35,9 +90,12 @@ class TalentSourceAggregator:
     """
 
     def __init__(self):
+        # Prefer SERPER_API_KEY; fall back to BRAVE_SEARCH_API_KEY (legacy)
+        _search_key = os.getenv("SERPER_API_KEY", "") or os.getenv("BRAVE_SEARCH_API_KEY", "")
         self._live: list[TalentSourceConnector] = [
             TorreConnector(),
-            BraveSearchConnector(api_key=os.getenv("BRAVE_SEARCH_API_KEY", "")),
+            BraveSearchConnector(api_key=_search_key),
+            OpenSignalConnector(api_key=_search_key),
         ]
         self._seed = ManualSeedConnector()
 
@@ -51,39 +109,52 @@ class TalentSourceAggregator:
         results: list[CandidateSignal] = []
         seen: set[str] = set()
 
+        # Import TalentPool locally to avoid circular dependencies if any, and fetch status
+        from core.talent_pool import TalentPool
+
         for batch in batches:
             if isinstance(batch, Exception):
-                print(f"[AGGREGATOR] source error: {batch}")
+                logger.error("[AGGREGATOR] source error: %s", batch)
                 continue
             for c in batch:
                 key = c.dedup_key()
                 if key not in seen:
+                    # Filter out candidates that were explicitly rejected or dismissed previously
+                    db_candidate = TalentPool.get_candidate(key)
+                    if db_candidate and db_candidate.get("status") in ("dismissed", "rejected"):
+                        continue
+
                     seen.add(key)
                     results.append(c)
                 if len(results) >= limit * 2:
                     break
 
-        # Only fall back to seed when live sources returned nothing
-        if not results:
-            print("[AGGREGATOR] No live results — using demo_seed fallback")
-            seed_results = await self._seed.search(criteria)
-            for c in seed_results:
-                key = c.dedup_key()
-                if key not in seen:
-                    seen.add(key)
-                    results.append(c)
+        # We no longer fall back to demo_seed silently. If there are no results,
+        # we return an empty list so the agent can correctly report the lack of candidates.
 
         # Persist to TalentPool
         try:
             from core.talent_pool import TalentPool
             pool = TalentPool()
+            workspace_id = criteria.get("workspace_id", "default")
+            search_id = criteria.get("search_id", "")
+            if search_id:
+                TalentPool.record_search(search_id, criteria)
             for signal in results:
-                pool.upsert_candidate(signal)
-            # If a search_id was passed through criteria, register the search for coverage
-            if criteria.get("search_id"):
-                TalentPool.record_search(criteria["search_id"], criteria)
+                signal.workspace_id = workspace_id
+                pool.upsert_candidate(signal, run_id=search_id)
+                if search_id:
+                    dedup_key = signal.dedup_key()
+                    score = _preliminary_score(signal, criteria)
+                    matched = _matched_signals(signal, criteria)
+                    TalentPool.record_match(
+                        search_id, dedup_key,
+                        score=score,
+                        matched_criteria=matched,
+                        risks=list(signal.risk_flags),
+                    )
         except Exception as e:
-            print(f"[AGGREGATOR] TalentPool persist error (non-fatal): {e}")
+            logger.error("[AGGREGATOR] TalentPool persist error (non-fatal): %s", e, exc_info=True)
 
         return results[:limit]
 
@@ -97,7 +168,15 @@ class TalentSourceAggregator:
         skills_lower = {_sanitize_external_text(sk, 80).lower() for sk in s.skills}
         headline_lower = _sanitize_external_text(s.current_role, 150).lower()
         company_lower = _sanitize_external_text(s.company, 100).lower()
-        evidence_text = _sanitize_external_text(s.evidence[0].value, 200) if s.evidence else ""
+
+        # Use full PDF extracted text when available, fall back to short evidence
+        evidence_text = ""
+        if s.evidence:
+            pdf_ev = next((e for e in s.evidence if e.label == "pdf_extracted_text"), None)
+            if pdf_ev:
+                evidence_text = _sanitize_external_text(pdf_ev.value, 3000)
+            else:
+                evidence_text = _sanitize_external_text(s.evidence[0].value, 200)
         full_text = " ".join([headline_lower, company_lower, evidence_text.lower(), *skills_lower])
         full_text = _escape_signal_keywords(full_text)
 
@@ -200,12 +279,34 @@ class TalentSourceAggregator:
 
 def _guess_industry(s: CandidateSignal) -> str:
     text = (s.current_role + " " + s.company + " " + " ".join(s.skills)).lower()
-    if any(w in text for w in ("fintech", "finance", "payments", "bank", "crypto", "kueski", "clip", "conekta")):
-        return "fintech"
-    if any(w in text for w in ("saas", "software", "cloud", "platform")):
-        return "SaaS B2B"
-    if any(w in text for w in ("e-commerce", "ecommerce", "retail", "marketplace", "rappi", "jüsto", "cornershop")):
-        return "e-commerce"
-    if any(w in text for w in ("health", "salud", "biotech")):
-        return "healthtech"
+    if any(w in text for w in (
+        "finanzas", "finance", "fintech", "banking", "banco", "bank", "tesorería", "treasury",
+        "contabilidad", "accounting", "auditor", "crédito", "credit", "riesgo financiero",
+        "payments", "kueski", "clip", "conekta", "mercado pago", "nubank",
+    )):
+        return "FINANZAS & BANKING"
+    if any(w in text for w in (
+        "ventas", "sales", "marketing", "comercial", "growth", "revenue", "cmo", "gtm",
+        "go-to-market", "demand generation", "account executive", "business development",
+        "quota", "pipeline", "crm", "hubspot", "salesforce",
+    )):
+        return "VENTAS & MARKETING"
+    if any(w in text for w in (
+        "recursos humanos", "rrhh", "hr ", "people", "talent", "talento", "chro",
+        "reclutamiento", "recruiting", "onboarding", "cultura organizacional",
+        "employee experience", "compensaciones", "nómina", "payroll",
+    )):
+        return "RECURSOS HUMANOS"
+    if any(w in text for w in (
+        "logística", "logistics", "supply chain", "cadena de suministro", "almacén",
+        "warehouse", "distribución", "distribution", "flota", "fleet", "transporte",
+        "inventario", "inventory", "last mile", "última milla", "fulfillment",
+    )):
+        return "LOGÍSTICA"
+    if any(w in text for w in (
+        "ingeniería", "engineering", "software", "cto", "tech lead", "developer",
+        "desarrollador", "infraestructura", "cloud", "devops", "data engineer",
+        "machine learning", "platform", "arquitecto", "architect", "saas",
+    )):
+        return "INGENIERÍA"
     return "general"

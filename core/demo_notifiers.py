@@ -9,6 +9,10 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from core.logger import get_logger
+
+logger = get_logger("core.demo_notifiers")
+
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -25,9 +29,9 @@ def safe_notify_telegram(title: str, body: str) -> dict[str, Any]:
             ok = notifier.send_raw_message(message)
             return {"provider": "telegram", "sent": ok, "message": message}
     except Exception as exc:
-        print(f"[TELEGRAM MOCK] Telegram unavailable: {exc}")
+        logger.warning("Telegram unavailable: %s", exc)
 
-    print(f"\n[TELEGRAM MOCK]\n{message}\n")
+    logger.info("[TELEGRAM MOCK]\n%s", message)
     return {"provider": "mock", "sent": False, "message": message}
 
 
@@ -120,7 +124,7 @@ def safe_record_ledger(
         )
         conn.commit()
         conn.close()
-        print(f"[MCP LEDGER] {event_type} -> {entry_id} ({entry_hash[:12]})")
+        logger.info("[MCP LEDGER] %s -> %s (%s)", event_type, entry_id, entry_hash[:12])
         return {
             "provider": "verifiable-memory-compatible-sqlite",
             "recorded": True,
@@ -140,5 +144,5 @@ def safe_record_ledger(
         }
         with fallback.open("a", encoding="utf-8") as f:
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
-        print(f"[MCP MOCK] {event_type} -> fallback {fallback} ({exc})")
+        logger.warning("[MCP MOCK] %s -> fallback %s (%s)", event_type, fallback, exc)
         return {"provider": "jsonl-fallback", "recorded": False, "path": str(fallback)}

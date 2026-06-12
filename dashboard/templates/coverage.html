@@ -3,106 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coverage Report</title>
+<title>Talo — Cobertura</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600\&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-deep: #080B12;
-  --bg-surface: #0F172A;
-  --bg-card: #111827;
-  --bg-card-hover: #1a2332;
-  --border: #1F2937;
-  --border-active: #2a3a4f;
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --accent: #38BDF8;
-  --success: #22C55E;
-  --success-bg: rgba(34,197,94,0.08);
-  --warning: #F59E0B;
-  --warning-bg: rgba(245,158,11,0.08);
-  --error: #EF4444;
-  --error-bg: rgba(239,68,68,0.08);
-  --radius: 16px;
+  --bg-deep: #f5f4ec;
+  --bg-surface: #fffdf6;
+  --bg-card: #fbfaf3;
+  --bg-card-hover: #f7f6ed;
+  --line: #d6d3c1;
+  --border: #d6d3c1;
+  --border-active: #136f63;
+  --ink: #13201c;
+  --text-primary: #13201c;
+  --text-secondary: #4f5f58;
+  --text-muted: rgba(79, 95, 88, 0.7);
+  --card-hover: #f7f6ed;
+  --accent: #136f63;
+  --success: #1d7c5a;
+  --success-bg: #cfefc4;
+  --warning: #c1572a;
+  --warning-bg: rgba(193, 87, 42, 0.08);
+  --error: #b33;
+  --error-bg: rgba(187, 51, 51, 0.1);
+  --radius: 14px;
   --radius-sm: 8px;
   --radius-lg: 20px;
-  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --shadow: 0 10px 24px rgba(19, 32, 28, 0.08);
+  --shadow-sm: 0 2px 8px rgba(19, 32, 28, 0.06);
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: var(--font);
-  background: var(--bg-deep);
+  background: radial-gradient(circle at 80% 12%, rgba(19, 111, 99, 0.12) 0%, rgba(19, 111, 99, 0) 30%), radial-gradient(circle at 20% 90%, rgba(193, 87, 42, 0.10) 0%, rgba(193, 87, 42, 0) 24%), var(--bg-deep);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  min-height:100vh;
 }
-.header {
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 0.75rem 1.5rem; background: var(--bg-surface);
-  border-bottom: 1px solid var(--border); position: sticky; top:0; z-index:10;
+.wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 48px; }
+.topbar { margin-bottom: 40px; }
+.topbar-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
 }
-.header h1 { font-size:0.85rem; font-weight:700; }
-.header .sub { font-size:0.6rem; color:var(--text-muted); }
-.header-actions { display:flex; gap:0.5rem; }
-.header-btn {
-  padding:0.35rem 0.85rem; border-radius:var(--radius-sm); font-size:0.72rem;
-  font-weight:500; cursor:pointer; border:1px solid var(--border);
-  background:var(--bg-surface); color:var(--text-secondary);
-  transition:all 0.15s; text-decoration:none;
+.brand {
+  font-family: var(--font-heading);
+  font-weight: 800; letter-spacing: -0.03em; font-size: 1.05rem;
+  text-decoration: none; color: var(--ink);
 }
-.header-btn:hover { background:var(--bg-card-hover); color:var(--text-primary); }
-.container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.topbar-ops { display: flex; gap: 4px; align-items: center; justify-content: flex-end; font-size: .75rem; color: var(--muted); margin-top: 6px; }
+.topbar-ops a { color: var(--muted); text-decoration: none; padding: 2px 6px; border-radius: 4px; transition: color .12s; }
+.topbar-ops a:hover { color: var(--accent); }
+.ops-sep { opacity: .4; }
+.btn {
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 10px 16px; font-size: 0.9rem; font-family: var(--font);
+  text-decoration: none; color: var(--ink); background: #fffdf6;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.btn:hover { background: var(--card-hover); border-color: var(--accent); }
+.btn.primary {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff; font-weight: 600;
+}
+.btn.primary:hover { opacity: 0.9; }
+
+.page-hero { margin-bottom: 32px; }
+.eyebrow { font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px; font-weight:600; }
+.page-hero h2 { font-family:var(--font-heading); letter-spacing:-0.04em; line-height:1.05; font-size:clamp(1.8rem, 4vw, 2.8rem); margin-bottom:10px; }
+.page-hero .subtitle { font-size:clamp(0.95rem, 2vw, 1.1rem); color:var(--text-muted); max-width:680px; }
+
+.container { max-width: 100%; }
 
 .summary-bar {
   display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap;
 }
 .summary-card {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius); padding:0.75rem 1.25rem; flex:1; min-width:120px;
+  background:var(--bg-card); border:1px solid var(--border); box-shadow:var(--shadow-sm);
+  border-radius:var(--radius); padding:0.85rem 1.25rem; flex:1; min-width:120px;
 }
-.summary-card .value { font-size:1.5rem; font-weight:700; letter-spacing:-0.03em; }
-.summary-card .label { font-size:0.6rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:0.15rem; }
+.summary-card .value { font-family:var(--font-heading); font-size:1.6rem; font-weight:800; letter-spacing:-0.03em; line-height:1.1; }
+.summary-card .label { font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:600; letter-spacing:0.06em; margin-top:0.25rem; }
 
 .search-block {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:var(--radius); padding:1rem; margin-bottom:0.75rem;
+  background:var(--bg-card); border:1px solid var(--border); box-shadow:var(--shadow-sm);
+  border-radius:var(--radius); padding:1.2rem; margin-bottom:1rem;
+  transition:border-color 0.15s;
 }
 .search-block:hover { border-color:var(--border-active); }
-.search-title { font-size:0.8rem; font-weight:600; margin-bottom:0.25rem; }
-.search-meta { font-size:0.6rem; color:var(--text-muted); margin-bottom:0.5rem; }
-.search-metrics { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:0.5rem; }
+.search-title { font-family:var(--font-heading); font-size:1rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:0.25rem; }
+.search-meta { font-size:0.65rem; color:var(--text-muted); margin-bottom:0.75rem; font-weight:500; }
+.search-metrics { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:0.75rem; }
 .metric {
-  display:flex; flex-direction:column; align-items:center; min-width:40px;
+  display:flex; flex-direction:column; min-width:40px;
 }
-.metric .mvalue { font-size:0.85rem; font-weight:700; line-height:1.2; }
-.metric .mlabel { font-size:0.55rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; }
+.metric .mvalue { font-family:var(--font-heading); font-size:1rem; font-weight:800; line-height:1.2; letter-spacing:-0.02em; }
+.metric .mlabel { font-size:0.6rem; color:var(--text-muted); text-transform:uppercase; font-weight:600; letter-spacing:0.04em; }
 
 .bar-group { margin:0.5rem 0; }
-.bar-row { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.2rem; }
-.bar-label { font-size:0.65rem; color:var(--text-secondary); min-width:7em; }
+.bar-row { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.3rem; }
+.bar-label { font-size:0.7rem; color:var(--text-secondary); font-weight:500; min-width:7em; }
 .bar-track {
-  flex:1; height:6px; background:var(--bg-surface); border-radius:999px; overflow:hidden;
+  flex:1; height:6px; background:var(--border); border-radius:999px; overflow:hidden;
 }
 .bar-fill { height:100%; border-radius:999px; transition:width 0.4s; }
-.bar-count { font-size:0.6rem; color:var(--text-muted); min-width:2em; text-align:right; }
+.bar-count { font-size:0.7rem; font-weight:600; color:var(--text-primary); min-width:2em; text-align:right; }
 
-.empty-state { text-align:center; padding:3rem; color:var(--text-muted); }
-.empty-state h3 { font-size:1rem; margin-bottom:0.5rem; color:var(--text-secondary); }
+.empty-state { text-align:center; padding:3rem; color:var(--text-muted); background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); }
+.empty-state h3 { font-family:var(--font-heading); font-size:1.1rem; font-weight:700; margin-bottom:0.5rem; color:var(--text-primary); letter-spacing:-0.02em; }
 </style>
 </head>
 <body>
-<div class="header">
-  <div>
-    <h1>Coverage Report</h1>
-    <span class="sub">Métricas por búsqueda</span>
-  </div>
-  <div class="header-actions">
-    <span style="font-size:0.65rem;color:var(--text-muted);">Pool: {{ pool_size }} candidatos</span>
-    <a class="header-btn" href="/">Command Room</a>
-    <a class="header-btn" href="/blind">Blind Review</a>
-  </div>
-</div>
+
+<div class="wrap">
+
+{% set active_page = "cobertura" %}{% include "_nav.html" %}
+
+<section class="page-hero">
+  <div class="eyebrow">Métricas por búsqueda</div>
+  <h2>Qué encontraron<br>los agentes.</h2>
+  <p class="subtitle">{{ pool_size }} candidatos en pool · {{ searches|length if searches else 0 }} búsquedas registradas.</p>
+</section>
 
 <div class="container">
   {% if searches %}
@@ -134,65 +160,92 @@ body {
     </div>
 
     <div class="search-metrics">
-      <div class="metric"><span class="mvalue" style="color:var(--accent);">{{ cov.total_matches }}</span><span class="mlabel">total</span></div>
-      <div class="metric"><span class="mvalue" style="color:var(--success);">{{ cov.by_band.priority_1 }}</span><span class="mlabel">prioridad 1</span></div>
-      <div class="metric"><span class="mvalue" style="color:var(--warning);">{{ cov.by_band.priority_2 }}</span><span class="mlabel">prioridad 2</span></div>
-      <div class="metric"><span class="mvalue" style="color:var(--warning);">{{ cov.by_band.review_needed }}</span><span class="mlabel">revisar</span></div>
-      <div class="metric"><span class="mvalue" style="color:var(--text-muted);">{{ cov.by_band.discard }}</span><span class="mlabel">descartar</span></div>
+      <div class="metric">
+        <a href="/talents?search_id={{ search.search_id }}" style="text-decoration:none;">
+          <span class="mvalue" style="color:var(--accent);">{{ cov.total_matches }}</span>
+        </a>
+        <span class="mlabel">total</span>
+      </div>
+      <div class="metric">
+        <a href="/talents?band=priority_1&search_id={{ search.search_id }}" style="text-decoration:none;">
+          <span class="mvalue" style="color:var(--success);">{{ cov.by_band.priority_1 }}</span>
+        </a>
+        <span class="mlabel">prioridad 1</span>
+      </div>
+      <div class="metric">
+        <a href="/talents?band=priority_2&search_id={{ search.search_id }}" style="text-decoration:none;">
+          <span class="mvalue" style="color:var(--warning);">{{ cov.by_band.priority_2 }}</span>
+        </a>
+        <span class="mlabel">prioridad 2</span>
+      </div>
+      <div class="metric">
+        <a href="/talents?band=review_needed&search_id={{ search.search_id }}" style="text-decoration:none;">
+          <span class="mvalue" style="color:var(--warning);">{{ cov.by_band.review_needed }}</span>
+        </a>
+        <span class="mlabel">revisar</span>
+      </div>
+      <div class="metric">
+        <a href="/talents?band=discard&search_id={{ search.search_id }}" style="text-decoration:none;">
+          <span class="mvalue" style="color:#b33;">{{ cov.by_band.discard }}</span>
+        </a>
+        <span class="mlabel" style="color:#b33;">descartados →</span>
+      </div>
     </div>
 
     <div class="bar-group">
       {% set max_band = [cov.by_band.priority_1, cov.by_band.priority_2, cov.by_band.review_needed, cov.by_band.discard]|max %}
       {% if max_band > 0 %}
       <div class="bar-row">
-        <span class="bar-label">Prioridad 1</span>
+        <a href="/talents?band=priority_1&search_id={{ search.search_id }}" class="bar-label" style="text-decoration:none;color:inherit;">Prioridad 1</a>
         <div class="bar-track"><div class="bar-fill" style="width:{{ (cov.by_band.priority_1 / max_band * 100)|int }}%;background:var(--success);"></div></div>
         <span class="bar-count">{{ cov.by_band.priority_1 }}</span>
       </div>
       <div class="bar-row">
-        <span class="bar-label">Prioridad 2</span>
+        <a href="/talents?band=priority_2&search_id={{ search.search_id }}" class="bar-label" style="text-decoration:none;color:inherit;">Prioridad 2</a>
         <div class="bar-track"><div class="bar-fill" style="width:{{ (cov.by_band.priority_2 / max_band * 100)|int }}%;background:var(--warning);"></div></div>
         <span class="bar-count">{{ cov.by_band.priority_2 }}</span>
       </div>
       <div class="bar-row">
-        <span class="bar-label">Revisar</span>
+        <a href="/talents?band=review_needed&search_id={{ search.search_id }}" class="bar-label" style="text-decoration:none;color:inherit;">Revisar</a>
         <div class="bar-track"><div class="bar-fill" style="width:{{ (cov.by_band.review_needed / max_band * 100)|int }}%;background:var(--warning-bg);border:1px solid var(--warning);"></div></div>
         <span class="bar-count">{{ cov.by_band.review_needed }}</span>
       </div>
       <div class="bar-row">
-        <span class="bar-label">Descartar</span>
-        <div class="bar-track"><div class="bar-fill" style="width:{{ (cov.by_band.discard / max_band * 100)|int }}%;background:var(--text-muted);opacity:0.3;"></div></div>
-        <span class="bar-count">{{ cov.by_band.discard }}</span>
+        <a href="/talents?band=discard&search_id={{ search.search_id }}" class="bar-label" style="text-decoration:none;color:#b33;font-weight:600;">Descartados ↗</a>
+        <div class="bar-track"><div class="bar-fill" style="width:{{ (cov.by_band.discard / max_band * 100)|int }}%;background:#b33;opacity:0.4;"></div></div>
+        <span class="bar-count" style="color:#b33;">{{ cov.by_band.discard }}</span>
       </div>
       {% endif %}
     </div>
 
     {% if cov.by_source %}
-    <div style="font-size:0.65rem;color:var(--text-muted);display:flex;gap:0.75rem;margin-top:0.3rem;">
-      <span>Fuentes:</span>
+    <div style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid rgba(214,211,193,0.4);">
+      <strong style="color:var(--text-secondary);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.04em;">Desglose de Orígenes:</strong>
       {% for source, count in cov.by_source.items() %}
-      <span>{{ source }}: <strong style="color:var(--text-secondary);">{{ count }}</strong></span>
+        <span style="background: var(--success-bg); color: var(--success); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(31,138,91,0.2); font-size: 0.65rem; font-weight: 600;">{{ source }}: <strong>{{ count }}</strong></span>
       {% endfor %}
     </div>
     {% endif %}
 
     {% if cov.by_status %}
-    <div style="font-size:0.65rem;color:var(--text-muted);display:flex;gap:0.75rem;margin-top:0.15rem;">
-      <span>Estado:</span>
+    <div style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-top:0.4rem;">
+      <strong style="color:var(--text-secondary);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.04em;">Estado en Revisión:</strong>
       {% for status, count in cov.by_status.items() %}
-      <span>{{ status }}: <strong style="color:var(--text-secondary);">{{ count }}</strong></span>
+      <span style="background: var(--bg-deep); color: var(--text-secondary); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); font-size: 0.65rem; font-weight: 600;">{{ status }}: <strong>{{ count }}</strong></span>
       {% endfor %}
     </div>
     {% endif %}
   </div>
+  {% endif %}
   {% endfor %}
   {% else %}
   <div class="empty-state">
     <h3>No hay búsquedas registradas</h3>
-    <p>Ejecutá un run desde la Command Room para ver métricas de cobertura.</p>
-    <p style="margin-top:0.5rem;"><a href="/" style="color:var(--accent);">Volver a Command Room</a></p>
+    <p>Ejecutá un run desde Setup para ver métricas de cobertura.</p>
+    <p style="margin-top:0.5rem;"><a href="/setup" style="color:var(--accent);">Ir a Setup</a></p>
   </div>
   {% endif %}
-</div>
+</div><!-- /container -->
+</div><!-- /wrap -->
 </body>
 </html>

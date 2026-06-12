@@ -87,13 +87,11 @@ class TalentSignalAgent(BaseAgent):
             },
         ]
 
-    def _analyze_candidate(self, candidate: dict, principles: list[dict], signals: dict) -> AgentAction:
+    async def _analyze_candidate(self, candidate: dict, principles: list[dict], signals: dict) -> AgentAction:
         name = candidate["name"]
         role = candidate.get("role", "—")
         trayectoria = candidate.get("trayectoria", "")
-        principles_text = "; ".join(p["statement"] for p in principles[:3])
 
-        # Mock analysis based on candidate data
         analysis = self._mock_analysis(name, trayectoria, principles, signals)
 
         return AgentAction(
@@ -197,7 +195,7 @@ class TalentSignalAgent(BaseAgent):
         candidates = self._get_mock_candidates()
         actions = []
         for c in candidates:
-            action = self._analyze_candidate(c, principles, signals)
+            action = await self._analyze_candidate(c, principles, signals)
             actions.append(action)
 
         return actions

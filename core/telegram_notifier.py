@@ -3,6 +3,10 @@ import requests
 import json
 from datetime import datetime, timezone
 
+from core.logger import get_logger
+
+logger = get_logger("core.telegram_notifier")
+
 
 def _esc(text: str) -> str:
     """Escape Telegram Markdown v1 special characters in external/untrusted text."""
@@ -20,7 +24,7 @@ class TelegramNotifier:
 
     def send_raw_message(self, text: str, escaped: bool = False) -> bool:
         if not self.enabled:
-            print(f"\n[MOCK TELEGRAM NOTIFICATION] Text:\n{text}\n")
+            logger.info("[MOCK TELEGRAM NOTIFICATION] Text:\n%s", text)
             return False
         
         if not escaped:
@@ -36,7 +40,7 @@ class TelegramNotifier:
             r = requests.post(url, json=payload, timeout=5)
             return r.status_code == 200
         except Exception as e:
-            print(f"[TELEGRAM ERROR] No se pudo enviar mensaje: {e}")
+            logger.error("No se pudo enviar mensaje: %s", e)
             return False
 
     def send_signal_alert(self, agent_name: str, candidate_name: str, role: str, signals: list[str], validation_questions: list[str], confidence: str = "media-alta") -> bool:

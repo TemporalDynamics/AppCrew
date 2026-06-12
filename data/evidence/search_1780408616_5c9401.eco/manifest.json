@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0",
+  "pack_id": "eco_search_1780408616_5c9401",
+  "workspace_id": "default",
+  "generated_at": "2026-06-02T13:56:59.398395+00:00",
+  "files": [
+    "manifest.json",
+    "task.json",
+    "context.json",
+    "verification.json",
+    "actions.json",
+    "result.json",
+    "trace.log",
+    "source_refs.json"
+  ]
+}
