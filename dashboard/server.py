@@ -390,6 +390,7 @@ async def api_add_candidate(
     nombre: str = Form(...),
     rol_actual: str = Form(...),
     email: str | None = Form(None),
+    whatsapp: str | None = Form(None),
     empresa: str | None = Form(None),
     ubicacion: str | None = Form(None),
     source_url: str | None = Form(None),
@@ -440,8 +441,6 @@ async def api_add_candidate(
 
     if notas:
         evidence.append(CandidateEvidence(label="recruiter_notes", value=notas, url=""))
-    if email:
-        evidence.append(CandidateEvidence(label="email", value=email, url=""))
 
     signal = CandidateSignal(
         name=nombre,
@@ -456,7 +455,28 @@ async def api_add_candidate(
         confidence="high",
         raw_score=0.0,
         workspace_id="default",
+        phone=whatsapp or "",
+        whatsapp=whatsapp or "",
     )
+    if email:
+        signal.evidence.append(CandidateEvidence(label="email", value=email, url=""))
+
+    # Apollo.io enrichment if email is missing
+    if not email:
+        try:
+            from core.tools.apollo_client import enrich_emails
+            api_key = settings.apollo_api_key
+            if api_key:
+                enriched = asyncio.run(enrich_emails(
+                    [{"dedup_key": signal.dedup_key(), "name": nombre, "company": empresa or "", "source_url": url}],
+                    api_key,
+                ))
+                if enriched and signal.dedup_key() in enriched:
+                    email = enriched[signal.dedup_key()]
+                    signal.evidence.append(CandidateEvidence(label="email", value=email, url=""))
+                    logger.info("[MANUAL ADD] Email enriquecido via Apollo para %s", nombre)
+        except Exception as exc:
+            logger.warning("[MANUAL ADD] Apollo enrichment falló (no crítico): %s", exc)
 
     effective_search_id = search_id or "manual_add"
     dedup_key = TalentPool.upsert_candidate(signal, run_id=effective_search_id)
@@ -507,6 +527,7 @@ async def api_add_candidate(
                 "raw_score": fit_score / 100,
                 "dedup_key": dedup_key,
                 "email": email or "",
+                "whatsapp": whatsapp or "",
             }
             search_code = outreach_agent._search_code_for(candidate_dict)
             telegram_link = outreach_agent._telegram_link(search_code, settings)
@@ -514,6 +535,9 @@ async def api_add_candidate(
             email_subject = outreach_agent._generate_subject(candidate_dict, settings)
 
             from contracts import AgentAction, ActionType, AgentState
+            channels = ["email"]
+            if whatsapp:
+                channels.append("whatsapp")
             action = AgentAction(
                 agent_id="outreach",
                 action_type=ActionType.INMAIL.value,
@@ -523,7 +547,9 @@ async def api_add_candidate(
                     "subject": email_subject,
                     "email_html": email_html,
                     "channel": "email",
+                    "channels": channels,
                     "to_email": email or "",
+                    "to_whatsapp": whatsapp or "",
                     "candidate_name": nombre,
                     "source_url": signal.source_url,
                     "search_code": search_code,

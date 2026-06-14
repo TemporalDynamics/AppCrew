@@ -13,6 +13,8 @@ logger = get_logger("core.sources.aggregator")
 from core.sources.torre import TorreConnector
 from core.sources.brave_search import BraveSearchConnector
 from core.sources.dork_connector import OpenSignalConnector
+from core.sources.google_dork_engine import GoogleDorkEngine
+from core.sources.github_search import GitHubSearchConnector
 from core.sources.manual_seed import ManualSeedConnector
 
 
@@ -92,10 +94,13 @@ class TalentSourceAggregator:
     def __init__(self):
         # Prefer SERPER_API_KEY; fall back to BRAVE_SEARCH_API_KEY (legacy)
         _search_key = os.getenv("SERPER_API_KEY", "") or os.getenv("BRAVE_SEARCH_API_KEY", "")
+        _github_token = os.getenv("GITHUB_TOKEN", "")
         self._live: list[TalentSourceConnector] = [
             TorreConnector(),
             BraveSearchConnector(api_key=_search_key),
             OpenSignalConnector(api_key=_search_key),
+            GoogleDorkEngine(api_key=_search_key),
+            GitHubSearchConnector(token=_github_token),
         ]
         self._seed = ManualSeedConnector()
 
@@ -246,6 +251,8 @@ class TalentSourceAggregator:
             "getonboard": "GetOnBrd",
             "computrabajo": "Computrabajo",
             "brave_search": "Web (Brave)",
+            "google_dork": "Google Dork",
+            "github": "GitHub",
             "demo_seed": "Demo (semilla)",
         }.get(s.source, s.source)
 
@@ -255,7 +262,7 @@ class TalentSourceAggregator:
 
         # Signals from external sources are inferred, not verified.
         # Mark them so the scoring layer can apply reduced weight.
-        is_external = s.source in ("torre", "brave_search", "getonboard", "computrabajo")
+        is_external = s.source in ("torre", "brave_search", "google_dork", "github", "getonboard", "computrabajo")
 
         return {
             "name": s.name,

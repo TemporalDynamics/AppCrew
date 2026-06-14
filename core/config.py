@@ -42,6 +42,9 @@ class Settings(BaseSettings):
     # Apollo.io (enriquecimiento de emails)
     apollo_api_key: str = ""
 
+    # GitHub API (sourcing)
+    github_token: str = ""
+
     # Calendly
     calendly_link: str = ""
 

@@ -39,6 +39,8 @@ class CandidateSignal:
     last_seen_at: str | None = None
     confidence: SourceConfidence = "medium"
     workspace_id: str = "default"
+    phone: str = ""
+    whatsapp: str = ""
 
     def to_dict(self) -> dict:
         return {
@@ -56,6 +58,8 @@ class CandidateSignal:
             "last_seen_at": self.last_seen_at,
             "confidence": self.confidence,
             "workspace_id": self.workspace_id,
+            "phone": self.phone,
+            "whatsapp": self.whatsapp,
         }
 
     def dedup_key(self) -> str:
