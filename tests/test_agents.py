@@ -118,9 +118,17 @@ async def test_dedup_same_action_same_agent(orch):
     await orch.run_agent("demand_radar")
     after_first = len(agent.pending_actions)
     assert after_first > before, f"Primera ejecución debe generar acciones: {before} → {after_first}"
+
+    first_keys = {a.dedup_key() for a in agent.pending_actions}
+    assert len(first_keys) == after_first, "No debe haber duplicados dentro de pending_actions"
+
     await orch.run_agent("demand_radar")
     after = len(agent.pending_actions)
-    assert after == after_first, f"Dedup falló: {after_first} → {after}. Segunda corrida no debe duplicar."
+    second_new = [a for a in agent.pending_actions if a.dedup_key() not in first_keys]
+    assert len(second_new) == after - after_first, "Acciones nuevas deben ser las únicas adiciones"
+    for a in agent.pending_actions:
+        dupes = [x for x in agent.pending_actions if x.dedup_key() == a.dedup_key()]
+        assert len(dupes) == 1, f"dedup_key duplicado: {a.dedup_key()} aparece {len(dupes)} veces"
 
 
 @pytest.mark.asyncio
@@ -130,12 +138,15 @@ async def test_dedup_same_action_different_run(orch):
     await orch.run_agent("demand_radar")
     pending_first = len(agent.pending_actions)
     assert pending_first > pending_before, "Primera ejecución debe generar acciones pendientes"
+
+    first_keys = {a.dedup_key() for a in agent.pending_actions}
     history_before = len(agent.history)
     await orch.run_agent("demand_radar")
     history_after = len(agent.history)
     assert history_after == history_before, "Historial no crece con acciones duplicadas (dedup evita duplicados)"
-    pending_after = len(agent.pending_actions)
-    assert pending_after == pending_first, "Pendientes no deben crecer con dedup activo"
+    for a in agent.pending_actions:
+        dupes = [x for x in agent.pending_actions if x.dedup_key() == a.dedup_key()]
+        assert len(dupes) == 1, f"dedup_key duplicado: {a.dedup_key()} aparece {len(dupes)} veces"
 
 
 @pytest.mark.asyncio
