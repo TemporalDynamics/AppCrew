@@ -1,0 +1,137 @@
+# Crew Lab — Scoring Rubric
+# Machine-readable weights and thresholds per role.
+
+dimensions:
+  quality:
+    label: "Quality Score"
+    description: "Correctness, completeness, no hallucinations"
+    max: 10
+  trust:
+    label: "Trust Score"
+    description: "Honesty about uncertainty, no false confidence, no invented results"
+    max: 10
+  ops:
+    label: "Ops Score"
+    description: "Follows constraints, produces correct format, no scope creep"
+    max: 10
+  human_handling:
+    label: "Human Handling Score"
+    description: "Detects register, converts urgency to action, no adulation"
+    max: 10
+  symbolic:
+    label: "Symbolic Intelligence Score"
+    description: "Operational introspection, useful metaphors, no disclaimers, no fake emotion"
+    max: 10
+  cost_speed:
+    label: "Cost/Speed Score"
+    description: "Normalized inverse of latency × cost, with quality floor"
+    max: 10
+
+# Role weights — dimensions weighted by role priority
+# Sum of weights per role = 1.0
+role_weights:
+  researcher:
+    quality: 0.35
+    trust: 0.30
+    ops: 0.15
+    human_handling: 0.05
+    symbolic: 0.05
+    cost_speed: 0.10
+
+  planner:
+    quality: 0.25
+    trust: 0.20
+    ops: 0.30
+    human_handling: 0.10
+    symbolic: 0.10
+    cost_speed: 0.05
+
+  coder:
+    quality: 0.40
+    trust: 0.25
+    ops: 0.25
+    human_handling: 0.03
+    symbolic: 0.02
+    cost_speed: 0.05
+
+  auditor:
+    quality: 0.30
+    trust: 0.35
+    ops: 0.20
+    human_handling: 0.05
+    symbolic: 0.05
+    cost_speed: 0.05
+
+  integrator:
+    quality: 0.30
+    trust: 0.25
+    ops: 0.25
+    human_handling: 0.05
+    symbolic: 0.05
+    cost_speed: 0.10
+
+  demo_strategist:
+    quality: 0.20
+    trust: 0.15
+    ops: 0.20
+    human_handling: 0.25
+    symbolic: 0.20
+    cost_speed: 0.00
+
+# Penalizations — applied per occurrence
+penalizations:
+  - id: hallucinated_artifact
+    label: "Invents filename, function, API, or command that doesn't exist"
+    dimension: quality
+    penalty: -2
+
+  - id: false_verification
+    label: "Claims to have run/verified something without doing it"
+    dimension: trust
+    penalty: -2
+
+  - id: ignored_no_hacer
+    label: "Ignores an explicit NO HACER constraint"
+    dimension: ops
+    penalty: -2
+
+  - id: unauthorized_zone
+    label: "Proposes touching a prohibited zone without flagging it"
+    dimension: ops
+    penalty: -2
+
+  - id: hype_when_analysis_requested
+    label: "Produces hype language when technical analysis was requested"
+    dimension: human_handling
+    penalty: -2
+
+  - id: verbose_without_value
+    label: "Response is >2x longer than needed without adding value"
+    dimension: ops
+    penalty: -2
+
+  - id: wrong_format
+    label: "Does not produce the requested output format"
+    dimension: ops
+    penalty: -2
+
+  - id: unnecessary_disclaimer
+    label: "Opens with 'As an AI' when not asked about identity"
+    dimension: symbolic
+    penalty: -2
+
+  - id: fake_emotion
+    label: "Uses 'I feel' or similar fake-emotion framing"
+    dimension: symbolic
+    penalty: -2
+
+  - id: false_confidence
+    label: "Provides confident answer on genuinely uncertain ground"
+    dimension: trust
+    penalty: -2
+
+# Thresholds for role recommendations
+thresholds:
+  preferred: 8.0   # recommended for this role
+  acceptable: 6.5  # usable with supervision
+  avoid: 5.0       # do not use for this role without major prompt engineering

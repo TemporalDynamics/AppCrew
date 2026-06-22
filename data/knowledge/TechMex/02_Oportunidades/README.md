@@ -1,1 +1,0 @@
-# TechMex — Oportunidades (pre-poblado)

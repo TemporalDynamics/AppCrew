@@ -1,1 +1,0 @@
-# FinTechMX — Candidatos (pre-poblado)

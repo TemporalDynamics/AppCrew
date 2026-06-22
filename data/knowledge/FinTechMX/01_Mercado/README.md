@@ -1,1 +1,0 @@
-# FinTechMX — Mercado (pre-poblado)
